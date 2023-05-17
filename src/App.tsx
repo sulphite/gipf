@@ -7,6 +7,7 @@ const App = () => {
   const [path, setPath] = useState({ start: null, end: null });
 
   const onClick = (event, source) => {
+    console.log(source)
     if (path.start === null) {
       setPath({ start: source.state.hex, end: null });
     } else {
@@ -56,7 +57,7 @@ const App = () => {
       <p>Click a tile to start drawing a path to your cursor. Click again to cancel.</p>
       <p>Hover around the board to see helper lines drawn.</p>
       <HexGrid width={1200} height={800}>
-        <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1.1} origin={{ x: 0, y: 0 }}>
+        <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1} origin={{ x: 0, y: 0 }}>
           { renderedhexes }
           <Path start={path.start} end={path.end} />
         </Layout>
