@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { HexGrid, Layout, Path, Text, Hexagon, HexUtils, GridGenerator } from 'react-hexgrid';
 import './App.css';
+import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
 
 const App = () => {
   const [hexagons, setHexagons] = useState(GridGenerator.hexagon(4));
   const [path, setPath] = useState({ start: null, end: null });
+  console.log(hexagons)
 
-  const onClick = (_event, source) => {
+  const onClick = (_event: MouseEvent<SVGGElement, MouseEvent>, source: { data?: any; state: any; props?: HexagonProps; }) => {
     console.log(source)
     if (path.start === null) {
       setPath({ start: source.state.hex, end: null });
