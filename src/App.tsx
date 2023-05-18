@@ -12,12 +12,20 @@ const App = () => {
 
 
   const onClick = (_event: MouseEvent<SVGGElement, MouseEvent>, source: { data?: any; state: any; props?: HexagonProps; }) => {
+    // check if hex is clickable
+    if(Logic.isClickable(source.state.hex)) {
+      //colour pushable rows
+      const colouredHexagons = hexagons.map(hex => {
+        return hex
+      })
+      setHexagons(colouredHexagons)
 
-    if (path.start === null) {
-      setPath({ start: source.state.hex, end: null });
-    } else {
-      setPath({ start: null, end: null });
-    }
+      // set path start/end
+      if (path.start === null) {
+        setPath({ start: source.state.hex, end: null });
+      } else {
+        setPath({ start: null, end: null });
+      }}
   };
 
   const onMouseEnter = (_event, source) => {
