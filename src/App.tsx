@@ -6,7 +6,7 @@ const App = () => {
   const [hexagons, setHexagons] = useState(GridGenerator.hexagon(4));
   const [path, setPath] = useState({ start: null, end: null });
 
-  const onClick = (event, source) => {
+  const onClick = (_event, source) => {
     console.log(source)
     if (path.start === null) {
       setPath({ start: source.state.hex, end: null });
@@ -15,7 +15,7 @@ const App = () => {
     }
   };
 
-  const onMouseEnter = (event, source) => {
+  const onMouseEnter = (_event, source) => {
     const targetHex = source.state.hex;
 
     // Color some hexagons
@@ -25,9 +25,9 @@ const App = () => {
       hex.props.className = HexUtils.distance(targetHex, hex) < 2 ? 'active' : '';
 
       // If the tile is on the same coordinate, add class specific to the coordinate name
-      hex.props.className += targetHex.q === hex.q ? ' q ' : '';
-      hex.props.className += targetHex.r === hex.r ? ' r ' : '';
-      hex.props.className += targetHex.s === hex.s ? ' s ' : '';
+      // hex.props.className += targetHex.q === hex.q ? ' q ' : '';
+      // hex.props.className += targetHex.r === hex.r ? ' r ' : '';
+      // hex.props.className += targetHex.s === hex.s ? ' s ' : '';
 
       return hex;
     });
