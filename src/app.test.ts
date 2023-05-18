@@ -1,9 +1,9 @@
-// import {test, expect } from "vitest"
-//import { App } from "./App"
+import {test, expect } from "vitest"
+// import { App } from "./App"
 
-// test("tests are running", () => {
-//   expect(true).toBe(true)
-// })
+test("tests are running", () => {
+  expect(true).toBe(true)
+})
 
 /*
 

@@ -32,7 +32,6 @@ const App = () => {
       // hex.props.className += targetHex.q === hex.q ? ' q ' : '';
       // hex.props.className += targetHex.r === hex.r ? ' r ' : '';
       // hex.props.className += targetHex.s === hex.s ? ' s ' : '';
-      HexUtils.
 
       return hex;
     });
