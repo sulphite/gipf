@@ -1,5 +1,6 @@
 import { MouseEvent, useState } from 'react';
 import { HexGrid, Layout, Path, Text, Hexagon, HexUtils, GridGenerator } from 'react-hexgrid';
+import * as Logic from "./Logic";
 import './App.css';
 import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
 
@@ -11,7 +12,7 @@ const App = () => {
 
 
   const onClick = (_event: MouseEvent<SVGGElement, MouseEvent>, source: { data?: any; state: any; props?: HexagonProps; }) => {
-    console.log(source)
+
     if (path.start === null) {
       setPath({ start: source.state.hex, end: null });
     } else {
@@ -25,9 +26,12 @@ const App = () => {
     // Color some hexagons
     const coloredHexagons = hexagons.map(hex => {
       hex.props = hex.props || {};
-      // Highlight tiles that are next to the target (1 distance away)
-      hex.props.className = HexUtils.distance(targetHex, hex) < 2 ? 'active' : '';
 
+      //highlight outer ring
+      hex.props.className = Logic.isClickable(hex) ? "outer" : ""
+
+      // Highlight tiles that are next to the target (1 distance away)
+      hex.props.className += HexUtils.distance(targetHex, hex) < 1 ? ' active ' : '';
       // If the tile is on the same coordinate, add class specific to the coordinate name
       // hex.props.className += targetHex.q === hex.q ? ' q ' : '';
       // hex.props.className += targetHex.r === hex.r ? ' r ' : '';
