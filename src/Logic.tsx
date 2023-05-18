@@ -10,3 +10,7 @@ export const getValidNeighbors = (hex: HexCoordinates) => {
   let neighbors = HexUtils.neighbors(hex).filter(x => HexUtils.lengths(x) === 3)
   return neighbors
 }
+
+export const hexIncludes = (arr, hex: HexCoordinates) => {
+  return arr.some((ele: HexCoordinates) => HexUtils.equals(ele, hex))
+}

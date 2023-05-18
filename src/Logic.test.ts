@@ -1,5 +1,6 @@
 import { test, expect } from "vitest"
 import * as Logic from "./Logic"
+import { HexUtils } from "react-hexgrid"
 
 const testCoord = {q: 1, r: 0, s: -1}
 
@@ -20,3 +21,14 @@ test("isClickable returns boolean", () => {
  test("getvalidNeighbors returns only 3rd ring hexes", () => {
   expect(Logic.getValidNeighbors({q: 4, r: -1, s: -3}).length).toBe(2)
  })
+
+//  test("can check neighbors", () => {
+//   console.log(HexUtils.direction(1))
+//   console.log(HexUtils.neighbors(testCoord))
+//   expect(HexUtils.neighbors(testCoord)).toContain(HexUtils.direction(1))
+//  })
+
+test("hexIncludes function works", () => {
+  expect(Logic.hexIncludes(HexUtils.neighbors(testCoord),HexUtils.direction(1))).toBeDefined
+  expect(Logic.hexIncludes(HexUtils.neighbors(testCoord),HexUtils.direction(1))).toBe(true)
+})

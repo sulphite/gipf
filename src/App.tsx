@@ -16,6 +16,12 @@ const App = () => {
     if(Logic.isClickable(source.state.hex)) {
       //colour pushable rows
       const colouredHexagons = hexagons.map(hex => {
+        hex.props = hex.props || {};
+
+        if (Logic.getValidNeighbors(source.state.hex).includes(hex)) {
+          console.log(true)
+        }
+
         return hex
       })
       setHexagons(colouredHexagons)
