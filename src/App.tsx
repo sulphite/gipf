@@ -6,7 +6,9 @@ import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
 const App = () => {
   const [hexagons, setHexagons] = useState(GridGenerator.hexagon(4));
   const [path, setPath] = useState({ start: null, end: null });
-  console.log(hexagons)
+  const [playerPieces, setPlayerPieces] = useState({black: 15, white: 15});
+  const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
+
 
   const onClick = (_event: MouseEvent<SVGGElement, MouseEvent>, source: { data?: any; state: any; props?: HexagonProps; }) => {
     console.log(source)
@@ -30,6 +32,7 @@ const App = () => {
       // hex.props.className += targetHex.q === hex.q ? ' q ' : '';
       // hex.props.className += targetHex.r === hex.r ? ' r ' : '';
       // hex.props.className += targetHex.s === hex.s ? ' s ' : '';
+      HexUtils.
 
       return hex;
     });
