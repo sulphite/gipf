@@ -16,3 +16,7 @@ test("isClickable returns boolean", () => {
  test("getvalidNeighbors returns something", () => {
   expect(Logic.getValidNeighbors(testCoord)).toBeDefined()
  })
+
+ test("getvalidNeighbors returns only 3rd ring hexes", () => {
+  expect(Logic.getValidNeighbors({q: 4, r: -1, s: -3}).length).toBe(2)
+ })

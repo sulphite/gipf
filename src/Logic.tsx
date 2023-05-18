@@ -7,6 +7,6 @@ export const isClickable = (hex: HexCoordinates) => {
 }
 
 export const getValidNeighbors = (hex: HexCoordinates) => {
-  let neighbors = HexUtils.neighbors(hex)
+  let neighbors = HexUtils.neighbors(hex).filter(x => HexUtils.lengths(x) === 3)
   return neighbors
 }
