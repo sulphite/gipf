@@ -33,11 +33,11 @@ svg g.s .hexagon {
   fill-opacity: 0.4;
 }
 svg g.active  .hexagon {
-  fill: Coral;
+  fill: rgb(254, 100, 157);
   fill-opacity: 0.9;
 }
 svg g polygon {
-  stroke: #7be3f6;
+  stroke: #7be4f687;
   stroke-width: 0.2;
   transition: fill-opacity .5s;
 }
@@ -49,9 +49,9 @@ svg g text {
 }
 svg path {
   fill: none;
-  stroke: #03090a;
-  stroke-width: 0.2em;
-  stroke-opacity: 0.9;
+  stroke: #59def5;
+  stroke-width: 0.1em;
+  stroke-opacity: 0.7;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
