@@ -4,22 +4,33 @@ import * as Logic from "./Logic";
 import './App.css';
 import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
 
+const initializeGrid = () => {
+  return GridGenerator.hexagon(4).map(hex => {
+    hex.props = hex.props || {}
+    hex.props.state = ""
+    return hex
+  })
+}
+
 const App = () => {
-  const [hexagons, setHexagons] = useState(GridGenerator.hexagon(4));
+  const [hexagons, setHexagons] = useState(initializeGrid());
   const [path, setPath] = useState({ start: null, end: null });
-  const [playerPieces, setPlayerPieces] = useState({black: 15, white: 15});
+  const [gameState, setGameState] = useState({black: 15, white: 15});
   const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
+  console.log(HexUtils.direction(1).props)
 
 
   const onClick = (_event: MouseEvent<SVGGElement, MouseEvent>, source: { data?: any; state: any; props?: HexagonProps; }) => {
+    console.log(source.state.hex.props)
     // check if hex is clickable
     if(Logic.isClickable(source.state.hex)) {
       //colour pushable rows
       const colouredHexagons = hexagons.map(hex => {
         hex.props = hex.props || {};
 
-        if (Logic.getValidNeighbors(source.state.hex).includes(hex)) {
+        if (Logic.hexIncludes(Logic.getValidNeighbors(source.state.hex),hex)) {
           console.log(true)
+          hex.props.className += " pushable"
         }
 
         return hex
