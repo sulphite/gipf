@@ -21,6 +21,7 @@ const App = () => {
       q: hex.q,
       r: hex.r,
       s: hex.s,
+      coords: {q: hex.q,r: hex.r,s: hex.s},
       id: HexUtils.getID({q: hex.q,r: hex.r,s: hex.s}),
       data: {status: "" },
       className: HexUtils.lengths({q: hex.q,r: hex.r,s: hex.s}) === 4 ? "outer" : ""
@@ -35,16 +36,15 @@ const App = () => {
     if(Logic.isClickable(source.state.hex)) {
       //colour pushable rows
       const pushable = Logic.getPushable(source.state.hex)
-      const colouredHexagons = hexagons.map(hex => {
-        hex.props = hex.props || {};
+      const colouredHexagons = hexagonData.map(hex => {
 
-        if (Logic.hexIncludes(pushable,hex)) {
-          hex.props.className += " pushable"
+        if (Logic.hexIncludes(pushable,hex.coords)) {
+          hex.className += " pushable"
         }
 
         return hex
       })
-      setHexagons(colouredHexagons)
+      setHexagonData(colouredHexagons)
 
       // set path start/end
       if (path.start === null) {
