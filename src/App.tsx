@@ -24,10 +24,11 @@ const App = () => {
     // check if hex is clickable
     if(Logic.isClickable(source.state.hex)) {
       //colour pushable rows
+      const pushable = Logic.getPushable(source.state.hex)
       const colouredHexagons = hexagons.map(hex => {
         hex.props = hex.props || {};
 
-        if (Logic.hexIncludes(Logic.getValidNeighbors(source.state.hex),hex)) {
+        if (Logic.hexIncludes(pushable,hex)) {
           console.log(true)
           hex.props.className += " pushable"
         }
