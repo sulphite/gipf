@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { HexGrid, Layout, Path, Text, Hexagon, HexUtils, GridGenerator } from 'react-hexgrid';
 import * as Logic from "./Logic";
 import './App.css';
@@ -7,7 +7,7 @@ import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
 const initializeGrid = () => {
   return GridGenerator.hexagon(4).map(hex => {
     hex.props = hex.props || {}
-    hex.props.state = ""
+
     return hex
   })
 }
@@ -15,12 +15,11 @@ const initializeGrid = () => {
 const App = () => {
   const [hexagons, setHexagons] = useState(initializeGrid());
   const [path, setPath] = useState({ start: null, end: null });
-  const [gameState, setGameState] = useState({black: 15, white: 15});
-  const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
-  console.log(HexUtils.direction(1).props)
+  // const [gameState, setGameState] = useState({black: 15, white: 15});
+  // const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
 
 
-  const onClick = (_event: MouseEvent<SVGGElement, MouseEvent>, source: { data?: any; state: any; props?: HexagonProps; }) => {
+  const onClick = (_event: any, source: { data?: any; state: any; props?: HexagonProps; }) => {
     console.log(source.state.hex.props)
     // check if hex is clickable
     if(Logic.isClickable(source.state.hex)) {
@@ -45,7 +44,7 @@ const App = () => {
       }}
   };
 
-  const onMouseEnter = (_event, source) => {
+  const onMouseEnter = (_event: any, source: any) => {
     const targetHex = source.state.hex;
 
     // Color some hexagons

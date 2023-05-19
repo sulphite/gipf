@@ -11,6 +11,6 @@ export const getValidNeighbors = (hex: HexCoordinates) => {
   return neighbors
 }
 
-export const hexIncludes = (arr, hex: HexCoordinates) => {
+export const hexIncludes = (arr: HexCoordinates[], hex: HexCoordinates) => {
   return arr.some((ele: HexCoordinates) => HexUtils.equals(ele, hex))
 }
