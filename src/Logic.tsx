@@ -43,3 +43,7 @@ export const findHex = (id: string) => {
   let coords = id.split(",").map(n => parseInt(n))
   return {q: coords[0], r: coords[1], s: coords[2]}
 }
+
+export const isPushable = (start: HexCoordinates, target: HexCoordinates) => {
+  return hexIncludes(getValidNeighbors(start), target)
+}

@@ -50,23 +50,23 @@ const App = () => {
   },[selected])
 
   const onClick = (_event: any, source: { data?: any; state: any; props?: HexagonProps; }) => {
-    // console.log(source.state.hex.props)
-    // check if hex is clickable
+    // check if hex is clickable; if yes we set selected and start path
+    const targetHexID = HexUtils.getID(source.state.hex)
     if(Logic.isClickable(source.state.hex)) {
-      const targetHexID = HexUtils.getID(source.state.hex)
       // set selected hex
       setSelected(prev => {
         return (prev && prev === targetHexID) ? "" : targetHexID}
       )
-
-
-
       // set path start/end
       if (path.start === null) {
         setPath({ start: source.state.hex, end: null });
       } else {
         setPath({ start: null, end: null });
-      }}
+      }
+    // otherwise if there is a selected hex
+    } else if(selected && selected !== targetHexID ) {
+
+    }
   };
 
   const onMouseEnter = (_event: any, source: any) => {

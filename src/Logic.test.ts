@@ -53,3 +53,12 @@ test("findHex returns hex coordinates", () => {
   expect(Logic.findHex("1,0,-1")).toBeDefined
   expect(Logic.findHex("1,0,-1")).toStrictEqual({q: 1, r: 0, s: -1})
 })
+
+test("isPushable returns boolean", () => {
+  expect(Logic.isPushable(testCoordOuter, testCoord)).toBeDefined()
+  expect(Logic.isPushable(testCoordOuter, testCoord)).toBe(false)
+})
+
+test("isPushable returns correct boolean", () => {
+  expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3})).toBe(true)
+})
