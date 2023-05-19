@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { HexGrid, Layout, Path, Text, Hexagon, HexUtils, GridGenerator } from 'react-hexgrid';
 import * as Logic from "./Logic";
 import './App.css';
@@ -7,35 +7,46 @@ import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
 const initializeGrid = () => {
   return GridGenerator.hexagon(4).map(hex => {
     hex.props = hex.props || {}
-    hex.props.state = ""
+
     return hex
   })
 }
 
 const App = () => {
+  // const hexagons = GridGenerator.hexagon(4)
   const [hexagons, setHexagons] = useState(initializeGrid());
   const [path, setPath] = useState({ start: null, end: null });
-  const [gameState, setGameState] = useState({black: 15, white: 15});
-  const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
-  console.log(HexUtils.direction(1).props)
+  const [hexagonData, setHexagonData] = useState(hexagons.map(hex => {
+    return {
+      q: hex.q,
+      r: hex.r,
+      s: hex.s,
+      coords: {q: hex.q,r: hex.r,s: hex.s},
+      id: HexUtils.getID({q: hex.q,r: hex.r,s: hex.s}),
+      data: {status: "" },
+      className: HexUtils.lengths({q: hex.q,r: hex.r,s: hex.s}) === 4 ? "outer" : ""
+    }
+  }));
+  // const [gameState, setGameState] = useState({black: 15, white: 15});
+  // const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
 
-
-  const onClick = (_event: MouseEvent<SVGGElement, MouseEvent>, source: { data?: any; state: any; props?: HexagonProps; }) => {
-    console.log(source.state.hex.props)
+  const onClick = (_event: any, source: { data?: any; state: any; props?: HexagonProps; }) => {
+    // console.log(source.state.hex.props)
     // check if hex is clickable
     if(Logic.isClickable(source.state.hex)) {
       //colour pushable rows
-      const colouredHexagons = hexagons.map(hex => {
-        hex.props = hex.props || {};
+      const pushable = Logic.getPushable(source.state.hex)
+      const colouredHexagons = hexagonData.map(hex => {
 
-        if (Logic.hexIncludes(Logic.getValidNeighbors(source.state.hex),hex)) {
-          console.log(true)
-          hex.props.className += " pushable"
+        if (Logic.hexIncludes(pushable,hex.coords)) {
+          hex.className += " pushable"
+        } else {
+          hex.className = HexUtils.lengths(hex.coords) === 4 ? "outer" : ""
         }
 
         return hex
       })
-      setHexagons(colouredHexagons)
+      setHexagonData(colouredHexagons)
 
       // set path start/end
       if (path.start === null) {
@@ -45,18 +56,18 @@ const App = () => {
       }}
   };
 
-  const onMouseEnter = (_event, source) => {
+  const onMouseEnter = (_event: any, source: any) => {
     const targetHex = source.state.hex;
 
     // Color some hexagons
-    const coloredHexagons = hexagons.map(hex => {
-      hex.props = hex.props || {};
+    const coloredHexagons = hexagonData.map(hex => {
+
 
       //highlight outer ring
-      hex.props.className = Logic.isClickable(hex) ? "outer" : ""
+      // hex.props.className = Logic.isClickable(hex) ? "outer" : ""
 
       // Highlight tiles that are next to the target (1 distance away)
-      hex.props.className += HexUtils.distance(targetHex, hex) < 1 ? ' active ' : '';
+      // hex.props.className += HexUtils.distance(targetHex, hex) < 1 ? ' active ' : '';
       // If the tile is on the same coordinate, add class specific to the coordinate name
       // hex.props.className += targetHex.q === hex.q ? ' q ' : '';
       // hex.props.className += targetHex.r === hex.r ? ' r ' : '';
@@ -66,21 +77,24 @@ const App = () => {
     });
 
     setPath({ start: path.start, end: targetHex });
-    setHexagons(coloredHexagons);
+    setHexagonData(coloredHexagons);
   };
 
-  const renderedhexes = hexagons.map((hex, i) => {
+  const renderedhexes = hexagonData.map((hex) => {
+    console.log(hex)
     return (
     <Hexagon
-      key={i}
+      key={hex.id}
       q={hex.q}
       r={hex.r}
       s={hex.s}
-      className={hex.props ? hex.props.className : null}
+      data={hex.data}
+      className={hex.className}
       onMouseEnter={(e, h) => onMouseEnter(e, h)}
       onClick={(e, h) => onClick(e, h)}
     >
-      <Text>{HexUtils.getID(hex)}</Text>
+      <Text>{hex.id}</Text>
+      {/* <circle className="black" r="3" /> */}
     </Hexagon>
   )})
 
