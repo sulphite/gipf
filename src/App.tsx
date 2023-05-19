@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HexGrid, Layout, Path, Text, Hexagon, HexUtils, GridGenerator } from 'react-hexgrid';
 import * as Logic from "./Logic";
 import './App.css';
@@ -23,6 +23,19 @@ const App = () => {
   console.log(selected)
   // const [gameState, setGameState] = useState({black: 15, white: 15});
   // const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
+
+  // this effect sets classes based on selected
+  useEffect(() => {
+    setHexagonData(prev => prev.map(hex => {
+        if(hex.id === selected) {
+          hex.className.push("selected")
+        } else {
+          hex.className = hex.className.filter(n => n !== "selected")
+        }
+        return hex
+      })
+    )
+  },[selected])
 
   const onClick = (_event: any, source: { data?: any; state: any; props?: HexagonProps; }) => {
     // console.log(source.state.hex.props)

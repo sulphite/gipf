@@ -40,7 +40,7 @@ svg g.pushable  .hexagon {
   fill: rgb(233, 254, 100);
   fill-opacity: 0.7;
 }
-svg g.active  .hexagon {
+svg g.selected  .hexagon {
   fill: rgb(254, 100, 157);
   fill-opacity: 0.9;
 }
