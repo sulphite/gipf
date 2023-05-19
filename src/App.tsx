@@ -17,7 +17,7 @@ const App = () => {
       coords: {q: hex.q,r: hex.r,s: hex.s},
       id: HexUtils.getID({q: hex.q,r: hex.r,s: hex.s}),
       data: {status: "" },
-      className: HexUtils.lengths({q: hex.q,r: hex.r,s: hex.s}) === 4 ? "outer" : ""
+      className: HexUtils.lengths({q: hex.q,r: hex.r,s: hex.s}) === 4 ? ["outer"] : []
     }
   }));
   console.log(selected)
@@ -34,15 +34,14 @@ const App = () => {
         return (prev && prev === targetHexID) ? "" : targetHexID}
       )
       //colour pushable rows
-      const pushable = Logic.getPushable(source.state.hex)
+      const pushable = selected ? Logic.getPushable(source.state.hex) : []
       const colouredHexagons = hexagonData.map(hex => {
 
         if (Logic.hexIncludes(pushable,hex.coords)) {
-          hex.className += " pushable"
+          hex.className.push("pushable")
         } else {
-          hex.className = HexUtils.lengths(hex.coords) === 4 ? "outer" : ""
+          hex.className = hex.className.filter(n => n !== "pushable")
         }
-
         return hex
       })
       setHexagonData(colouredHexagons)
@@ -87,7 +86,7 @@ const App = () => {
       r={hex.r}
       s={hex.s}
       data={hex.data}
-      className={hex.className}
+      className={hex.className.join(" ")}
       onMouseEnter={(e, h) => onMouseEnter(e, h)}
       onClick={(e, h) => onClick(e, h)}
     >
