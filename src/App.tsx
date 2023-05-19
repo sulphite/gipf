@@ -24,17 +24,21 @@ const App = () => {
   // const [gameState, setGameState] = useState({black: 15, white: 15});
   // const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
 
-  // this effect sets classes based on selected
+  // this effect adds selected class
   useEffect(() => {
     setHexagonData(prev => prev.map(hex => {
         if(hex.id === selected) {
-          hex.className.push("selected")
+          hex.className.push("selected");
+          // hex.data.status = "black"
         } else {
           hex.className = hex.className.filter(n => n !== "selected")
         }
         return hex
-      })
-    )
+    }));
+    if(selected) {
+
+    }
+
   },[selected])
 
   const onClick = (_event: any, source: { data?: any; state: any; props?: HexagonProps; }) => {
@@ -104,7 +108,7 @@ const App = () => {
       onClick={(e, h) => onClick(e, h)}
     >
       <Text>{hex.id}</Text>
-      {/* <circle className="black" r="3" /> */}
+      {hex.data.status && <circle className="black" r="3" />}
     </Hexagon>
   )})
 

@@ -48,3 +48,8 @@ test("getHexRow returns correct array", () => {
 test("getPushable returns correct array", () => {
   expect(Logic.getPushable(testCoordOuter).length).toBe(10)
 })
+
+test("findHex returns hex coordinates", () => {
+  expect(Logic.findHex("1,0,-1")).toBeDefined
+  expect(Logic.findHex("1,0,-1")).toStrictEqual({q: 1, r: 0, s: -1})
+})

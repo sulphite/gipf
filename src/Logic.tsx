@@ -38,3 +38,8 @@ export const getPushable = (sourceHex: HexCoordinates) => {
   let directions = getValidNeighbors(sourceHex).map(hex => findDirection(sourceHex,hex))
   return directions.map(d => getHexRow(sourceHex, d)).flat()
 }
+
+export const findHex = (id: string) => {
+  let coords = id.split(",").map(n => parseInt(n))
+  return {q: coords[0], r: coords[1], s: coords[2]}
+}
