@@ -40,6 +40,8 @@ const App = () => {
 
         if (Logic.hexIncludes(pushable,hex.coords)) {
           hex.className += " pushable"
+        } else {
+          hex.className = HexUtils.lengths(hex.coords) === 4 ? "outer" : ""
         }
 
         return hex
