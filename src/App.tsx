@@ -35,9 +35,17 @@ const App = () => {
         }
         return hex
     }));
-    if(selected) {
-
-    }
+    // colour pushable rows
+    const pushable = selected ? Logic.getPushable(Logic.findHex(selected)) : []
+    const colouredHexagons = hexagonData.map(hex => {
+      if (Logic.hexIncludes(pushable,hex.coords)) {
+        hex.className.push("pushable")
+      } else {
+        hex.className = hex.className.filter(n => n !== "pushable")
+      }
+      return hex
+    })
+    setHexagonData(colouredHexagons)
 
   },[selected])
 
@@ -50,18 +58,8 @@ const App = () => {
       setSelected(prev => {
         return (prev && prev === targetHexID) ? "" : targetHexID}
       )
-      //colour pushable rows
-      const pushable = selected ? Logic.getPushable(source.state.hex) : []
-      const colouredHexagons = hexagonData.map(hex => {
 
-        if (Logic.hexIncludes(pushable,hex.coords)) {
-          hex.className.push("pushable")
-        } else {
-          hex.className = hex.className.filter(n => n !== "pushable")
-        }
-        return hex
-      })
-      setHexagonData(colouredHexagons)
+
 
       // set path start/end
       if (path.start === null) {
@@ -73,26 +71,18 @@ const App = () => {
 
   const onMouseEnter = (_event: any, source: any) => {
     const targetHex = source.state.hex;
-
     // Color some hexagons
-    const coloredHexagons = hexagonData.map(hex => {
+    // const coloredHexagons = hexagonData.map(hex => {
 
-
-      //highlight outer ring
-      // hex.props.className = Logic.isClickable(hex) ? "outer" : ""
-
-      // Highlight tiles that are next to the target (1 distance away)
-      // hex.props.className += HexUtils.distance(targetHex, hex) < 1 ? ' active ' : '';
       // If the tile is on the same coordinate, add class specific to the coordinate name
       // hex.props.className += targetHex.q === hex.q ? ' q ' : '';
       // hex.props.className += targetHex.r === hex.r ? ' r ' : '';
       // hex.props.className += targetHex.s === hex.s ? ' s ' : '';
 
-      return hex;
-    });
-
+    //   return hex;
+    // });
     setPath({ start: path.start, end: targetHex });
-    setHexagonData(coloredHexagons);
+    // setHexagonData(coloredHexagons);
   };
 
   const renderedhexes = hexagonData.map((hex) => {
