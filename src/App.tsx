@@ -80,6 +80,7 @@ const App = () => {
       onClick={(e, h) => onClick(e, h)}
     >
       <Text>{HexUtils.getID(hex)}</Text>
+      {/* <circle className="black" r="3" /> */}
     </Hexagon>
   )})
 
