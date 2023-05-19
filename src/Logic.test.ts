@@ -3,6 +3,7 @@ import * as Logic from "./Logic"
 import { HexUtils } from "react-hexgrid"
 
 const testCoord = {q: 1, r: 0, s: -1}
+const testCoordOuter = {q: -4, r: 1, s: 3}
 
 describe("isClickable", () => {
   test("isClickable function exists", () => {
@@ -33,4 +34,14 @@ test("hexIncludes function works", () => {
 
 test("findDirection returns a direction in form of number", () => {
   expect(Logic.findDirection({q: 4, r: -1, s: -3},{q:3,r:0,s:-3})).toBe(4)
+})
+
+test("getHexRow returns array", () => {
+  expect(Logic.getHexRow(testCoord,5)).toBeDefined()
+  console.log(Logic.getHexRow(testCoordOuter,0))
+  expect(Logic.getHexRow(testCoordOuter,0).length).toBeGreaterThan(0)
+})
+
+test("getHexRow returns correct array", () => {
+  expect(Logic.getHexRow(testCoordOuter,0).length).toBe(6)
 })
