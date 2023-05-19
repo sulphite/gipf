@@ -4,18 +4,11 @@ import * as Logic from "./Logic";
 import './App.css';
 import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
 
-const initializeGrid = () => {
-  return GridGenerator.hexagon(4).map(hex => {
-    hex.props = hex.props || {}
-
-    return hex
-  })
-}
 
 const App = () => {
-  // const hexagons = GridGenerator.hexagon(4)
-  const [hexagons, setHexagons] = useState(initializeGrid());
+  const hexagons = GridGenerator.hexagon(4);
   const [path, setPath] = useState({ start: null, end: null });
+  const [selected, setSelected] = useState("")
   const [hexagonData, setHexagonData] = useState(hexagons.map(hex => {
     return {
       q: hex.q,
@@ -27,6 +20,7 @@ const App = () => {
       className: HexUtils.lengths({q: hex.q,r: hex.r,s: hex.s}) === 4 ? "outer" : ""
     }
   }));
+  console.log(selected)
   // const [gameState, setGameState] = useState({black: 15, white: 15});
   // const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
 
@@ -34,6 +28,11 @@ const App = () => {
     // console.log(source.state.hex.props)
     // check if hex is clickable
     if(Logic.isClickable(source.state.hex)) {
+      const targetHexID = HexUtils.getID(source.state.hex)
+      // set selected hex
+      setSelected(prev => {
+        return (prev && prev === targetHexID) ? "" : targetHexID}
+      )
       //colour pushable rows
       const pushable = Logic.getPushable(source.state.hex)
       const colouredHexagons = hexagonData.map(hex => {
@@ -81,7 +80,6 @@ const App = () => {
   };
 
   const renderedhexes = hexagonData.map((hex) => {
-    console.log(hex)
     return (
     <Hexagon
       key={hex.id}
