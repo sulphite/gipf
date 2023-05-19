@@ -63,9 +63,13 @@ const App = () => {
       } else {
         setPath({ start: null, end: null });
       }
-    // otherwise if there is a selected hex
-    } else if(selected && selected !== targetHexID ) {
-
+    // otherwise if there is a selected hex and we click a pushable space
+    } else if(selected && Logic.isPushable(Logic.findHex(selected),source.state.hex)) {
+      // push the piece
+      // reset selected
+      setSelected("")
+      // check for gipfs
+      // set current player
     }
   };
 
