@@ -20,16 +20,16 @@ const App = () => {
       className: HexUtils.lengths({q: hex.q,r: hex.r,s: hex.s}) === 4 ? ["outer"] : []
     }
   }));
-  console.log(selected)
   // const [gameState, setGameState] = useState({black: 15, white: 15});
-  // const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
+  const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
+  console.log(currentPlayerWhite)
 
   // this effect adds selected class
   useEffect(() => {
     setHexagonData(prev => prev.map(hex => {
         if(hex.id === selected) {
           hex.className.push("selected");
-          // hex.data.status = "black"
+          hex.data.status = currentPlayerWhite ? "white" : "black"
         } else {
           hex.className = hex.className.filter(n => n !== "selected")
         }
@@ -70,6 +70,7 @@ const App = () => {
       setSelected("")
       // check for gipfs
       // set current player
+      setCurrentPlayerWhite(prev => !prev)
     }
   };
 
@@ -102,15 +103,12 @@ const App = () => {
       onClick={(e, h) => onClick(e, h)}
     >
       <Text>{hex.id}</Text>
-      {hex.data.status && <circle className="black" r="3" />}
+      {hex.data.status && <circle className={hex.data.status} r="3" />}
     </Hexagon>
   )})
 
   return (
     <div className="App">
-      <h2>Pathfinding & active highlight</h2>
-      <p>Click a tile to start drawing a path to your cursor. Click again to cancel.</p>
-      <p>Hover around the board to see helper lines drawn.</p>
       <HexGrid width={1200} height={800}>
         <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1} origin={{ x: 0, y: 0 }}>
           { renderedhexes }
