@@ -30,3 +30,7 @@ test("hexIncludes function works", () => {
   expect(Logic.hexIncludes(HexUtils.neighbors(testCoord),HexUtils.direction(1))).toBeDefined()
   expect(Logic.hexIncludes(HexUtils.neighbors(testCoord),HexUtils.direction(1))).toBe(true)
 })
+
+test("findDirection returns a direction in form of number", () => {
+  expect(Logic.findDirection({q: 4, r: -1, s: -3},{q:3,r:0,s:-3})).toBe(4)
+})
