@@ -20,7 +20,7 @@ export const findDirection = (a: HexCoordinates, b: HexCoordinates) => {
   return HexUtils.DIRECTIONS.findIndex(x => HexUtils.equals(x, dir))
 }
 
-// function to return all hexes in that direction
+// function to return all hexes in that direction until outer ring
 // add the direction hex until distance = 4
 export const getHexRow = (startHex: HexCoordinates, direction: number) => {
   let result: HexCoordinates[] = []
@@ -32,4 +32,9 @@ export const getHexRow = (startHex: HexCoordinates, direction: number) => {
     currentHex = HexUtils.add(currentHex, dir)
   }
   return result
+}
+
+export const getPushable = (sourceHex: HexCoordinates) => {
+  let directions = getValidNeighbors(sourceHex).map(hex => findDirection(sourceHex,hex))
+  return directions.map(d => getHexRow(sourceHex, d)).flat()
 }

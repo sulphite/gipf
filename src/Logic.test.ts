@@ -38,10 +38,13 @@ test("findDirection returns a direction in form of number", () => {
 
 test("getHexRow returns array", () => {
   expect(Logic.getHexRow(testCoord,5)).toBeDefined()
-  console.log(Logic.getHexRow(testCoordOuter,0))
   expect(Logic.getHexRow(testCoordOuter,0).length).toBeGreaterThan(0)
 })
 
 test("getHexRow returns correct array", () => {
   expect(Logic.getHexRow(testCoordOuter,0).length).toBe(6)
+})
+
+test("getPushable returns correct array", () => {
+  expect(Logic.getPushable(testCoordOuter).length).toBe(10)
 })
