@@ -49,6 +49,13 @@ const App = () => {
 
   },[selected])
 
+  // const pushPiece = (start: HexCoordinates, target: HexCoordinates) => {
+  //   // shift all existing pieces in that row
+  //   // add status to target hex
+
+  //   //remove status from start hex
+  // }
+
   const onClick = (_event: any, source: { data?: any; state: any; props?: HexagonProps; }) => {
     // check if hex is clickable; if yes we set selected and start path
     const targetHexID = HexUtils.getID(source.state.hex)
@@ -66,6 +73,8 @@ const App = () => {
     // otherwise if there is a selected hex and we click a pushable space
     } else if(selected && Logic.isPushable(Logic.findHex(selected),source.state.hex)) {
       // push the piece
+      Logic.handlePushPiece(Logic.findHex(selected),source.state.hex, hexagonData, currentPlayerWhite)
+      // pushPiece(Logic.findHex(selected),source.state.hex)
       // reset selected
       setSelected("")
       // check for gipfs

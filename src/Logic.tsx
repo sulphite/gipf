@@ -47,3 +47,27 @@ export const findHex = (id: string) => {
 export const isPushable = (start: HexCoordinates, target: HexCoordinates) => {
   return hexIncludes(getValidNeighbors(start), target)
 }
+
+const isEmpty = (hex: any) => {
+  return hex.data.status === ""
+}
+
+export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, hexdata: any, whitePlayer: boolean) => {
+  let startID = HexUtils.getID(start)
+  // shift all existing pieces in that row
+  let row = getHexRow(start, findDirection(start, target)).map(coord => HexUtils.getID(coord))
+  //find adjacent hexes containing pieces and push them
+
+  //push the start piece
+  // add status to target hex
+  //remove status from start hex
+  hexdata.map((hex: any) => {
+    if(hex.id === HexUtils.getID(target)) {
+      hex.data.status = whitePlayer ? "white" : "black"
+    } else if(hex.id === startID) {
+      hex.data.status = ""
+    }
+    return hex
+  })
+  return hexdata
+}
