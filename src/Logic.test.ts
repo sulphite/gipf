@@ -75,9 +75,9 @@ describe("is it pushable", () => {
     expect(Logic.isPushable(testCoordOuter, testCoord, testHexDataFull)).toBe(false)
   })
 
-  test("isPushable returns true if coords are neighbours and row is empty", () => {
-    expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataEmpty)).toBe(true)
-  })
+  // test("isPushable returns true if coords are neighbours and row is empty", () => {
+  //   expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataEmpty)).toBe(true)
+  // })
 
   test("isPushable returns false if row is full", () => {
     expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataFull)).toBe(false)

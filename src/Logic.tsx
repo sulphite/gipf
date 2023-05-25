@@ -64,6 +64,10 @@ export const findHex = (id: string): HexCoordinates => {
   return {q: coords[0], r: coords[1], s: coords[2]}
 }
 
+const hexCoordsToHexData = (arr: HexCoordinates[], hexdata: HexData[]): HexData[] => {
+  return hexdata.filter(hex => hexIncludes(arr, hex.coords))
+}
+
 /**
  * checks that the target hex is a valid push location from start hex, and the target row has space to push to.
  * @param start - selected hex coordinate
@@ -71,7 +75,12 @@ export const findHex = (id: string): HexCoordinates => {
  * @returns boolean
  */
 export const isPushable = (start: HexCoordinates, target: HexCoordinates, hexdata: HexData[]):boolean => {
-  return hexIncludes(getValidNeighbors(start), target)
+  if (hexIncludes(getValidNeighbors(start), target)) {
+    // get the row as hex coords and filter hexdata
+    let row: HexData[] = hexCoordsToHexData(getHexRow(start,findDirection(start,target)), hexdata);
+    return row.some(hex => isEmpty(hex));
+  }
+  return false
 }
 
 const isEmpty = (hex: HexData):boolean => {
