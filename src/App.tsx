@@ -30,8 +30,9 @@ const App = () => {
         if(hex.id === selected) {
           hex.className.push("selected");
           hex.data.status = currentPlayerWhite ? "white" : "black"
-        } else {
+        } else if (Logic.isClickable(hex.coords)) {
           hex.className = hex.className.filter(n => n !== "selected")
+          hex.data.status = ""
         }
         return hex
     }));
