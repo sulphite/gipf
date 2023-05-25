@@ -2,27 +2,27 @@ import { HexUtils } from 'react-hexgrid';
 import { HexCoordinates } from 'react-hexgrid/lib/models/Hex';
 
 
-export const isClickable = (hex: HexCoordinates) => {
+export const isClickable = (hex: HexCoordinates):boolean => {
   return HexUtils.lengths(hex) === 4
 }
 
-export const getValidNeighbors = (hex: HexCoordinates) => {
+export const getValidNeighbors = (hex: HexCoordinates):HexCoordinates[] => {
   let neighbors = HexUtils.neighbors(hex).filter(x => HexUtils.lengths(x) === 3)
   return neighbors
 }
 
-export const hexIncludes = (arr: HexCoordinates[], hex: HexCoordinates) => {
+export const hexIncludes = (arr: HexCoordinates[], hex: HexCoordinates):boolean => {
   return arr.some((ele: HexCoordinates) => HexUtils.equals(ele, hex))
 }
 
-export const findDirection = (a: HexCoordinates, b: HexCoordinates) => {
+export const findDirection = (a: HexCoordinates, b: HexCoordinates):number => {
   let dir = HexUtils.subtract(b,a);
   return HexUtils.DIRECTIONS.findIndex(x => HexUtils.equals(x, dir))
 }
 
 // function to return all hexes in that direction until outer ring
 // add the direction hex until distance = 4
-export const getHexRow = (startHex: HexCoordinates, direction: number) => {
+export const getHexRow = (startHex: HexCoordinates, direction: number):HexCoordinates[] => {
   let result: HexCoordinates[] = []
   let dir = HexUtils.DIRECTIONS[direction]
 
@@ -34,7 +34,7 @@ export const getHexRow = (startHex: HexCoordinates, direction: number) => {
   return result
 }
 
-export const getPushable = (sourceHex: HexCoordinates) => {
+export const getPushable = (sourceHex: HexCoordinates):HexCoordinates[] => {
   let directions = getValidNeighbors(sourceHex).map(hex => findDirection(sourceHex,hex))
   return directions.map(d => getHexRow(sourceHex, d)).flat()
 }
@@ -44,11 +44,11 @@ export const findHex = (id: string) => {
   return {q: coords[0], r: coords[1], s: coords[2]}
 }
 
-export const isPushable = (start: HexCoordinates, target: HexCoordinates) => {
+export const isPushable = (start: HexCoordinates, target: HexCoordinates):boolean => {
   return hexIncludes(getValidNeighbors(start), target)
 }
 
-const isEmpty = (hex: any) => {
+const isEmpty = (hex: any):boolean => {
   return hex.data.status === ""
 }
 

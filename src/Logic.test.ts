@@ -62,3 +62,7 @@ test("isPushable returns boolean", () => {
 test("isPushable returns correct boolean", () => {
   expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3})).toBe(true)
 })
+
+test("isPushable returns false if row is full", () => {
+
+})
