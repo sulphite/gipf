@@ -70,7 +70,7 @@ export const findHex = (id: string): HexCoordinates => {
  * @param target - target hex coord
  * @returns boolean
  */
-export const isPushable = (start: HexCoordinates, target: HexCoordinates):boolean => {
+export const isPushable = (start: HexCoordinates, target: HexCoordinates, hexdata: HexData[]):boolean => {
   return hexIncludes(getValidNeighbors(start), target)
 }
 

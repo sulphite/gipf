@@ -1,9 +1,11 @@
 import { test, expect, describe } from "vitest"
 import * as Logic from "./Logic"
-import { HexUtils } from "react-hexgrid"
+import { HexUtils, GridGenerator } from "react-hexgrid"
+import { HexCoordinates } from "react-hexgrid/lib/models/Hex"
 
-const testCoord = {q: 1, r: 0, s: -1}
-const testCoordOuter = {q: -4, r: 1, s: 3}
+const testCoord: HexCoordinates = {q: 1, r: 0, s: -1}
+const testCoordOuter: HexCoordinates = {q: -4, r: 1, s: 3}
+
 
 describe("isClickable", () => {
   test("isClickable function exists", () => {
@@ -54,15 +56,30 @@ test("findHex returns hex coordinates", () => {
   expect(Logic.findHex("1,0,-1")).toStrictEqual({q: 1, r: 0, s: -1})
 })
 
-test("isPushable returns boolean", () => {
-  expect(Logic.isPushable(testCoordOuter, testCoord)).toBeDefined()
-  expect(Logic.isPushable(testCoordOuter, testCoord)).toBe(false)
-})
+describe("is it pushable", () => {
+  const testHexDataFull = GridGenerator.hexagon(4).map(hex => {
+    return {
+      q: hex.q,
+      r: hex.r,
+      s: hex.s,
+      coords: {q: hex.q,r: hex.r,s: hex.s},
+      id: HexUtils.getID({q: hex.q,r: hex.r,s: hex.s}),
+      data: {status: "white" },
+      className: []
+    }})
+  const testHexDataEmpty = testHexDataFull.map(hex => {
+    return {...hex, data: {status: "" }}
+  })
+  test("isPushable returns boolean", () => {
+    expect(Logic.isPushable(testCoordOuter, testCoord, testHexDataFull)).toBeDefined()
+    expect(Logic.isPushable(testCoordOuter, testCoord, testHexDataFull)).toBe(false)
+  })
 
-test("isPushable returns correct boolean", () => {
-  expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3})).toBe(true)
-})
+  test("isPushable returns true if coords are neighbours and row is empty", () => {
+    expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataEmpty)).toBe(true)
+  })
 
-test("isPushable returns false if row is full", () => {
-
+  test("isPushable returns false if row is full", () => {
+    expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataFull)).toBe(false)
+  })
 })
