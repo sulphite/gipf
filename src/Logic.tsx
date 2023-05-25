@@ -1,7 +1,21 @@
 import { HexUtils } from 'react-hexgrid';
 import { HexCoordinates } from 'react-hexgrid/lib/models/Hex';
 
+type HexData = {
+  q: number,
+  r: number,
+  s: number,
+  coords: {q: number,r: number,s: number},
+  id: string,
+  data: {status: string },
+  className: string[]
+}
 
+/**
+ * checks if a particular hex is in the outer ring.
+ * @param hex - a hex coordinate
+ * @returns boolean
+ */
 export const isClickable = (hex: HexCoordinates):boolean => {
   return HexUtils.lengths(hex) === 4
 }
@@ -11,6 +25,12 @@ export const getValidNeighbors = (hex: HexCoordinates):HexCoordinates[] => {
   return neighbors
 }
 
+/**
+ * checks if a particular hex coordinate is included in an array.
+ * @param arr an array of hex coordinates
+ * @param hex a hex coordinate
+ * @returns boolean
+ */
 export const hexIncludes = (arr: HexCoordinates[], hex: HexCoordinates):boolean => {
   return arr.some((ele: HexCoordinates) => HexUtils.equals(ele, hex))
 }
@@ -39,20 +59,26 @@ export const getPushable = (sourceHex: HexCoordinates):HexCoordinates[] => {
   return directions.map(d => getHexRow(sourceHex, d)).flat()
 }
 
-export const findHex = (id: string) => {
+export const findHex = (id: string): HexCoordinates => {
   let coords = id.split(",").map(n => parseInt(n))
   return {q: coords[0], r: coords[1], s: coords[2]}
 }
 
+/**
+ * checks that the target hex is a valid push location from start hex, and the target row has space to push to.
+ * @param start - selected hex coordinate
+ * @param target - target hex coord
+ * @returns boolean
+ */
 export const isPushable = (start: HexCoordinates, target: HexCoordinates):boolean => {
   return hexIncludes(getValidNeighbors(start), target)
 }
 
-const isEmpty = (hex: any):boolean => {
+const isEmpty = (hex: HexData):boolean => {
   return hex.data.status === ""
 }
 
-export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, hexdata: any, whitePlayer: boolean) => {
+export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, hexdata: HexData[], whitePlayer: boolean): HexData[] => {
   let startID = HexUtils.getID(start)
   // shift all existing pieces in that row
   let row = getHexRow(start, findDirection(start, target)).map(coord => HexUtils.getID(coord))
@@ -61,7 +87,7 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
   //push the start piece
   // add status to target hex
   //remove status from start hex
-  hexdata.map((hex: any) => {
+  hexdata.map((hex: HexData) => {
     if(hex.id === HexUtils.getID(target)) {
       hex.data.status = whitePlayer ? "white" : "black"
     } else if(hex.id === startID) {
