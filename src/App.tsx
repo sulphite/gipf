@@ -22,7 +22,6 @@ const App = () => {
   }));
   // const [gameState, setGameState] = useState({black: 15, white: 15});
   const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
-  console.log(currentPlayerWhite)
 
   // this effect adds selected class
   useEffect(() => {
@@ -72,9 +71,10 @@ const App = () => {
         setPath({ start: null, end: null });
       }
     // otherwise if there is a selected hex and we click a pushable space
-    } else if(selected && Logic.isPushable(Logic.findHex(selected),source.state.hex)) {
+    } else if(selected && Logic.isPushable(Logic.findHex(selected),source.state.hex, hexagonData)) {
       // push the piece
-      Logic.handlePushPiece(Logic.findHex(selected),source.state.hex, hexagonData, currentPlayerWhite)
+      let newhexes = Logic.handlePushPiece(Logic.findHex(selected),source.state.hex, hexagonData, currentPlayerWhite)
+      setHexagonData(newhexes)
       // pushPiece(Logic.findHex(selected),source.state.hex)
       // reset selected
       setSelected("")

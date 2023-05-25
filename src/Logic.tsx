@@ -87,16 +87,49 @@ const isEmpty = (hex: HexData):boolean => {
   return hex.data.status === ""
 }
 
+const updateHex = (hex: HexData, replaceWith: HexData, hexdata: HexData[]):HexData[] => {
+  return hexdata.map(h => {
+    if (h.coords == hex.coords) {
+      return replaceWith
+    } else {return h}
+  })
+}
+
+const pushPiece = (emptyhex: HexData, sourcehex: HexData, hexdata: HexData[]) => {
+  let fill = sourcehex.data.status
+
+  return updateHex(sourcehex, {...sourcehex, data: {status: ""}}, updateHex(emptyhex,{...emptyhex, data: {status: fill}},hexdata))
+}
+
 export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, hexdata: HexData[], whitePlayer: boolean): HexData[] => {
   let startID = HexUtils.getID(start)
+  let data = hexdata
   // shift all existing pieces in that row
-  let row = getHexRow(start, findDirection(start, target)).map(coord => HexUtils.getID(coord))
-  //find adjacent hexes containing pieces and push them
+  let toBePushed: HexData[] = []
+  let wholeRow = hexCoordsToHexData(getHexRow(start, findDirection(start, target)),hexdata)
 
+  //find adjacent hexes containing pieces
+  wholeRow.some(hex => {
+    if(isEmpty(hex)) {
+      toBePushed.push(hex);
+      return true
+    } else {
+      toBePushed.push(hex);
+      return false
+    }
+  })
+  toBePushed.reverse()
+  //push them
+  toBePushed.forEach((h, i, arr) => {
+    if(i < toBePushed.length -1) {
+      console.log("pushing", h.id, arr[i+1].id)
+      data = pushPiece(h, arr[i+1], data)
+    }
+  })
   //push the start piece
   // add status to target hex
   //remove status from start hex
-  hexdata.map((hex: HexData) => {
+  return data.map((hex: HexData) => {
     if(hex.id === HexUtils.getID(target)) {
       hex.data.status = whitePlayer ? "white" : "black"
     } else if(hex.id === startID) {
@@ -104,5 +137,5 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
     }
     return hex
   })
-  return hexdata
+  return data
 }
