@@ -70,16 +70,26 @@ describe("is it pushable", () => {
   const testHexDataEmpty = testHexDataFull.map(hex => {
     return {...hex, data: {status: "" }}
   })
+
+  const testHexDataMostlyFull = testHexDataFull.map(hex => {
+    if(HexUtils.equals(hex.coords, {q: -2, r: -1, s: 3})) {
+      return {...hex, data: {status: "" }}
+    } else {return hex}
+  })
   test("isPushable returns boolean", () => {
     expect(Logic.isPushable(testCoordOuter, testCoord, testHexDataFull)).toBeDefined()
     expect(Logic.isPushable(testCoordOuter, testCoord, testHexDataFull)).toBe(false)
   })
 
-  // test("isPushable returns true if coords are neighbours and row is empty", () => {
-  //   expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataEmpty)).toBe(true)
-  // })
+  test("isPushable returns true if coords are neighbours and row is empty", () => {
+    expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataEmpty)).toBe(true)
+  })
 
   test("isPushable returns false if row is full", () => {
     expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataFull)).toBe(false)
+  })
+
+  test("isPushable returns true if row has one space", () => {
+    expect(Logic.isPushable(testCoordOuter, {q:-3,r:0,s:3}, testHexDataMostlyFull)).toBe(true)
   })
 })
