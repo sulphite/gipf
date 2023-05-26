@@ -119,6 +119,11 @@ const App = () => {
   return (
     <div className="App">
       <h2><span>{currentPlayerWhite ? "White" : "Black"}</span> to play.</h2>
+      <div className='game-state'>
+        <p>Pieces remaining:</p>
+        <span>White: {gameState.white}</span>
+        <span>Black: {gameState.black}</span>
+      </div>
       <HexGrid width={1200} height={800}>
         <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1} origin={{ x: 0, y: 0 }}>
           { renderedhexes }
