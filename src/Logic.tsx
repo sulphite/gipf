@@ -70,14 +70,18 @@ export const findHex = (id: string): HexCoordinates => {
   return {q: coords[0], r: coords[1], s: coords[2]}
 }
 
+/**
+ * converts a collection of hexcoords to a collection of matching data.
+ * @param arr an array of hex coordinates
+ * @param hexdata full hexdata
+ * @returns array of hexdata
+ */
 export const hexCoordsToHexData = (arr: HexCoordinates[], hexdata: HexData[]): HexData[] => {
   let data = hexdata.filter(hex => hexIncludes(arr, hex.coords))
   // filtering changes the order of the data.
   if(arr[0].q > arr[arr.length -1].q || arr[0].s < arr[arr.length -1].s) {
-    console.log("REVERSO")
     data.reverse()
   }
-  console.log(arr[0], data[0].coords)
   return data
 }
 
@@ -118,27 +122,23 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
   let startID = HexUtils.getID(start)
   let data = hexdata
   // shift all existing pieces in that row
-  console.log("beginning push piece")
   let toBePushed: HexData[] = []
   let wholeRow = hexCoordsToHexData(getHexRow(start, findDirection(start, target)),hexdata)
-  console.log("first element of row", wholeRow[0])
   //find adjacent hexes containing pieces
   wholeRow.some(hex => {
     if(isEmpty(hex)) {
       toBePushed.push(hex);
       return true
     } else {
-      // console.log("adding", hex.coords)
       toBePushed.push(hex);
       return false
     }
   })
-  // console.log("we will push", toBePushed.length)
+  // reverse the array, to start from empty space
   toBePushed.reverse()
   //push them
   toBePushed.forEach((h, i, arr) => {
     if(i < toBePushed.length -1) {
-      console.log("pushing", h.id, arr[i+1].id)
       data = pushPiece(h, arr[i+1], data)
     }
   })
