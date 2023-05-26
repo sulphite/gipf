@@ -20,7 +20,7 @@ const App = () => {
       className: HexUtils.lengths({q: hex.q,r: hex.r,s: hex.s}) === 4 ? ["outer"] : []
     }
   }));
-  // const [gameState, setGameState] = useState({black: 15, white: 15});
+  const [gameState, setGameState] = useState({black: 15, white: 15});
   const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
 
   // this effect adds .selected class to the selected hex
@@ -118,6 +118,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <h2><span>{currentPlayerWhite ? "White" : "Black"}</span> to play.</h2>
       <HexGrid width={1200} height={800}>
         <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1} origin={{ x: 0, y: 0 }}>
           { renderedhexes }
