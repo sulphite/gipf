@@ -16,6 +16,9 @@ const testHexDataFull = GridGenerator.hexagon(4).map(hex => {
     data: {status: "white" },
     className: []
   }})
+const testHexDataEmpty = testHexDataFull.map(hex => {
+  return {...hex, data: {status: "" }}
+})
 
 describe("isClickable", () => {
   test("isClickable function exists", () => {
@@ -63,7 +66,7 @@ test("getHexRow returns correct array, in the right order", () => {
 })
 
 test("getPushable returns correct array", () => {
-  expect(Logic.getPushable(testCoordOuter).length).toBe(10)
+  expect(Logic.getPushable(testCoordOuter, testHexDataEmpty).length).toBe(10)
 })
 
 test("findHex returns hex coordinates", () => {
@@ -73,9 +76,7 @@ test("findHex returns hex coordinates", () => {
 
 describe("is it pushable", () => {
 
-  const testHexDataEmpty = testHexDataFull.map(hex => {
-    return {...hex, data: {status: "" }}
-  })
+
 
   const testHexDataMostlyFull = testHexDataFull.map(hex => {
     if(HexUtils.equals(hex.coords, {q: -2, r: -1, s: 3})) {

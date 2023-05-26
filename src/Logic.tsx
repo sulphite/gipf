@@ -20,6 +20,11 @@ export const isClickable = (hex: HexCoordinates):boolean => {
   return HexUtils.lengths(hex) === 4
 }
 
+/**
+ * get all pushable locations from a start hex
+ * @param hex  hex on the outer ring
+ * @returns array of pushable locations
+ */
 export const getValidNeighbors = (hex: HexCoordinates):HexCoordinates[] => {
   let neighbors = HexUtils.neighbors(hex).filter(x => HexUtils.lengths(x) === 3)
   return neighbors
@@ -66,10 +71,11 @@ export const getHexRow = (startHex: HexCoordinates, direction: HexCoordinates):H
 /**
  * from am outer hex, returns all hexes in rows that are pushable to.
  * @param sourceHex - a hex coordinate on the outer ring
+ * @param hexdata - full hex state data
  * @returns a flat array of hex coords
  */
-export const getPushable = (sourceHex: HexCoordinates):HexCoordinates[] => {
-  let directions = getValidNeighbors(sourceHex).map(hex => findDirection(sourceHex,hex))
+export const getPushable = (sourceHex: HexCoordinates, hexdata: HexData[]):HexCoordinates[] => {
+  let directions = getValidNeighbors(sourceHex).filter(x => isPushable(sourceHex,x,hexdata)).map(hex => findDirection(sourceHex,hex))
   return directions.map(d => getHexRow(sourceHex, d)).flat()
 }
 

@@ -23,7 +23,7 @@ const App = () => {
   // const [gameState, setGameState] = useState({black: 15, white: 15});
   const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
 
-  // this effect adds selected class
+  // this effect adds .selected class to the selected hex
   useEffect(() => {
     setHexagonData(prev => prev.map(hex => {
         if(hex.id === selected) {
@@ -36,7 +36,7 @@ const App = () => {
         return hex
     }));
     // colour pushable rows
-    const pushable = selected ? Logic.getPushable(Logic.findHex(selected)) : []
+    const pushable = selected ? Logic.getPushable(Logic.findHex(selected),hexagonData) : []
     const colouredHexagons = hexagonData.map(hex => {
       if (Logic.hexIncludes(pushable,hex.coords)) {
         hex.className.push("pushable")
@@ -46,7 +46,6 @@ const App = () => {
       return hex
     })
     setHexagonData(colouredHexagons)
-
   },[selected])
 
   // const pushPiece = (start: HexCoordinates, target: HexCoordinates) => {
