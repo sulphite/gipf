@@ -74,7 +74,9 @@ const App = () => {
       // push the piece
       let newhexes = Logic.handlePushPiece(Logic.findHex(selected),source.state.hex, hexagonData, currentPlayerWhite)
       setHexagonData(newhexes)
-      // pushPiece(Logic.findHex(selected),source.state.hex)
+      setGameState(prev => {
+        return currentPlayerWhite ? {...prev, white: prev.white - 1} : {...prev, black: prev.black - 1}
+      })
       // reset selected
       setSelected("")
       // check for gipfs
