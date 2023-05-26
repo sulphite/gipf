@@ -46,11 +46,14 @@ export const findDirection = (a: HexCoordinates, b: HexCoordinates):HexCoordinat
   // return HexUtils.DIRECTIONS.findIndex(x => HexUtils.equals(x, dir))
 }
 
-// function to return all hexes in that direction until outer ring
-// add the direction hex until distance = 4
+/**
+ * from a start point and direction vector, creates an array of all hexes in that direction, not including outer ring.
+ * @param startHex - a hex on the outer ring
+ * @param direction - unit vector hex direction
+ * @returns an array of hex coords
+ */
 export const getHexRow = (startHex: HexCoordinates, direction: HexCoordinates):HexCoordinates[] => {
   let result: HexCoordinates[] = []
-  // let dir = HexUtils.DIRECTIONS[direction]
 
   let currentHex = HexUtils.add(startHex, direction)
   while (HexUtils.lengths(currentHex) < 4) {
@@ -60,6 +63,11 @@ export const getHexRow = (startHex: HexCoordinates, direction: HexCoordinates):H
   return result
 }
 
+/**
+ * from am outer hex, returns all hexes in rows that are pushable to.
+ * @param sourceHex - a hex coordinate on the outer ring
+ * @returns a flat array of hex coords
+ */
 export const getPushable = (sourceHex: HexCoordinates):HexCoordinates[] => {
   let directions = getValidNeighbors(sourceHex).map(hex => findDirection(sourceHex,hex))
   return directions.map(d => getHexRow(sourceHex, d)).flat()
@@ -153,5 +161,4 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
     }
     return hex
   })
-  return data
 }
