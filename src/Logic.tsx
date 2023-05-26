@@ -5,7 +5,7 @@ type HexData = {
   q: number,
   r: number,
   s: number,
-  coords: {q: number,r: number,s: number},
+  coords: HexCoordinates,
   id: string,
   data: {status: string },
   className: string[]
@@ -35,21 +35,27 @@ export const hexIncludes = (arr: HexCoordinates[], hex: HexCoordinates):boolean 
   return arr.some((ele: HexCoordinates) => HexUtils.equals(ele, hex))
 }
 
-export const findDirection = (a: HexCoordinates, b: HexCoordinates):number => {
-  let dir = HexUtils.subtract(b,a);
-  return HexUtils.DIRECTIONS.findIndex(x => HexUtils.equals(x, dir))
+/**
+ * returns the direction FROM hex a TO hex b
+ * @param a start hexcoordinate
+ * @param b target hexcoordinate
+ * @returns unit vector as hex coordinate
+ */
+export const findDirection = (a: HexCoordinates, b: HexCoordinates):HexCoordinates => {
+  return HexUtils.subtract(b,a);
+  // return HexUtils.DIRECTIONS.findIndex(x => HexUtils.equals(x, dir))
 }
 
 // function to return all hexes in that direction until outer ring
 // add the direction hex until distance = 4
-export const getHexRow = (startHex: HexCoordinates, direction: number):HexCoordinates[] => {
+export const getHexRow = (startHex: HexCoordinates, direction: HexCoordinates):HexCoordinates[] => {
   let result: HexCoordinates[] = []
-  let dir = HexUtils.DIRECTIONS[direction]
+  // let dir = HexUtils.DIRECTIONS[direction]
 
-  let currentHex = HexUtils.add(startHex, dir)
+  let currentHex = HexUtils.add(startHex, direction)
   while (HexUtils.lengths(currentHex) < 4) {
     result.push(currentHex)
-    currentHex = HexUtils.add(currentHex, dir)
+    currentHex = HexUtils.add(currentHex, direction)
   }
   return result
 }
@@ -78,6 +84,7 @@ export const isPushable = (start: HexCoordinates, target: HexCoordinates, hexdat
   if (hexIncludes(getValidNeighbors(start), target)) {
     // get the row as hex coords and filter hexdata
     let row: HexData[] = hexCoordsToHexData(getHexRow(start,findDirection(start,target)), hexdata);
+    console.log(row)
     return row.some(hex => isEmpty(hex));
   }
   return false
@@ -105,19 +112,22 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
   let startID = HexUtils.getID(start)
   let data = hexdata
   // shift all existing pieces in that row
+  console.log("beginning push piece")
   let toBePushed: HexData[] = []
   let wholeRow = hexCoordsToHexData(getHexRow(start, findDirection(start, target)),hexdata)
-
+  console.log("first element of row", wholeRow[0])
   //find adjacent hexes containing pieces
   wholeRow.some(hex => {
     if(isEmpty(hex)) {
       toBePushed.push(hex);
       return true
     } else {
+      console.log("adding", hex.coords)
       toBePushed.push(hex);
       return false
     }
   })
+  console.log("we will push", toBePushed.length)
   toBePushed.reverse()
   //push them
   toBePushed.forEach((h, i, arr) => {

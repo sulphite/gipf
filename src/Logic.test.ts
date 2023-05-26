@@ -34,17 +34,17 @@ test("hexIncludes function works", () => {
   expect(Logic.hexIncludes(HexUtils.neighbors(testCoord),HexUtils.direction(1))).toBe(true)
 })
 
-test("findDirection returns a direction in form of number", () => {
-  expect(Logic.findDirection({q: 4, r: -1, s: -3},{q:3,r:0,s:-3})).toBe(4)
+test("findDirection returns a direction as coords", () => {
+  expect(Logic.findDirection({q: 4, r: -1, s: -3},{q:3,r:0,s:-3})).toStrictEqual(HexUtils.DIRECTIONS[4])
 })
 
 test("getHexRow returns array", () => {
-  expect(Logic.getHexRow(testCoord,5)).toBeDefined()
-  expect(Logic.getHexRow(testCoordOuter,0).length).toBeGreaterThan(0)
+  expect(Logic.getHexRow(testCoord,{q: 0, r: -1, s: 1})).toBeDefined()
+  expect(Logic.getHexRow(testCoordOuter, {q: 1, r: -1, s: 0}).length).toBeGreaterThan(0)
 })
 
 test("getHexRow returns correct array", () => {
-  expect(Logic.getHexRow(testCoordOuter,0).length).toBe(6)
+  expect(Logic.getHexRow(testCoordOuter,HexUtils.DIRECTIONS[0]).length).toBe(6)
 })
 
 test("getPushable returns correct array", () => {

@@ -7,7 +7,7 @@ import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
 
 const App = () => {
   const hexagons = GridGenerator.hexagon(4);
-  const [path, setPath] = useState({ start: null, end: null });
+  // const [path, setPath] = useState({ start: null, end: null });
   const [selected, setSelected] = useState("")
   const [hexagonData, setHexagonData] = useState(hexagons.map(hex => {
     return {
@@ -65,11 +65,11 @@ const App = () => {
         return (prev && prev === targetHexID) ? "" : targetHexID}
       )
       // set path start/end
-      if (path.start === null) {
-        setPath({ start: source.state.hex, end: null });
-      } else {
-        setPath({ start: null, end: null });
-      }
+      // if (path.start === null) {
+      //   setPath({ start: source.state.hex, end: null });
+      // } else {
+      //   setPath({ start: null, end: null });
+      // }
     // otherwise if there is a selected hex and we click a pushable space
     } else if(selected && Logic.isPushable(Logic.findHex(selected),source.state.hex, hexagonData)) {
       // push the piece
@@ -84,21 +84,21 @@ const App = () => {
     }
   };
 
-  const onMouseEnter = (_event: any, source: any) => {
-    const targetHex = source.state.hex;
-    // Color some hexagons
-    // const coloredHexagons = hexagonData.map(hex => {
+  // const onMouseEnter = (_event: any, source: any) => {
+  //   const targetHex = source.state.hex;
+  //   // Color some hexagons
+  //   // const coloredHexagons = hexagonData.map(hex => {
 
-      // If the tile is on the same coordinate, add class specific to the coordinate name
-      // hex.props.className += targetHex.q === hex.q ? ' q ' : '';
-      // hex.props.className += targetHex.r === hex.r ? ' r ' : '';
-      // hex.props.className += targetHex.s === hex.s ? ' s ' : '';
+  //     // If the tile is on the same coordinate, add class specific to the coordinate name
+  //     // hex.props.className += targetHex.q === hex.q ? ' q ' : '';
+  //     // hex.props.className += targetHex.r === hex.r ? ' r ' : '';
+  //     // hex.props.className += targetHex.s === hex.s ? ' s ' : '';
 
-    //   return hex;
-    // });
-    setPath({ start: path.start, end: targetHex });
-    // setHexagonData(coloredHexagons);
-  };
+  //   //   return hex;
+  //   // });
+  //   // setPath({ start: path.start, end: targetHex });
+  //   // setHexagonData(coloredHexagons);
+  // };
 
   const renderedhexes = hexagonData.map((hex) => {
     return (
@@ -109,7 +109,7 @@ const App = () => {
       s={hex.s}
       data={hex.data}
       className={hex.className.join(" ")}
-      onMouseEnter={(e, h) => onMouseEnter(e, h)}
+      // onMouseEnter={(e, h) => onMouseEnter(e, h)}
       onClick={(e, h) => onClick(e, h)}
     >
       <Text>{hex.id}</Text>
@@ -122,7 +122,7 @@ const App = () => {
       <HexGrid width={1200} height={800}>
         <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1} origin={{ x: 0, y: 0 }}>
           { renderedhexes }
-          <Path start={path.start} end={path.end} />
+          {/* <Path start={path.start} end={path.end} /> */}
         </Layout>
       </HexGrid>
     </div>
