@@ -70,8 +70,15 @@ export const findHex = (id: string): HexCoordinates => {
   return {q: coords[0], r: coords[1], s: coords[2]}
 }
 
-const hexCoordsToHexData = (arr: HexCoordinates[], hexdata: HexData[]): HexData[] => {
-  return hexdata.filter(hex => hexIncludes(arr, hex.coords))
+export const hexCoordsToHexData = (arr: HexCoordinates[], hexdata: HexData[]): HexData[] => {
+  let data = hexdata.filter(hex => hexIncludes(arr, hex.coords))
+  // filtering changes the order of the data.
+  if(arr[0].q > arr[arr.length -1].q || arr[0].s < arr[arr.length -1].s) {
+    console.log("REVERSO")
+    data.reverse()
+  }
+  console.log(arr[0], data[0].coords)
+  return data
 }
 
 /**
@@ -84,7 +91,6 @@ export const isPushable = (start: HexCoordinates, target: HexCoordinates, hexdat
   if (hexIncludes(getValidNeighbors(start), target)) {
     // get the row as hex coords and filter hexdata
     let row: HexData[] = hexCoordsToHexData(getHexRow(start,findDirection(start,target)), hexdata);
-    console.log(row)
     return row.some(hex => isEmpty(hex));
   }
   return false
@@ -122,12 +128,12 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
       toBePushed.push(hex);
       return true
     } else {
-      console.log("adding", hex.coords)
+      // console.log("adding", hex.coords)
       toBePushed.push(hex);
       return false
     }
   })
-  console.log("we will push", toBePushed.length)
+  // console.log("we will push", toBePushed.length)
   toBePushed.reverse()
   //push them
   toBePushed.forEach((h, i, arr) => {
