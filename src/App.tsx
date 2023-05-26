@@ -23,6 +23,15 @@ const App = () => {
   const [gameState, setGameState] = useState({black: 15, white: 15});
   const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
 
+  //check for game end at start of each turn
+  useEffect(() => {
+    if (currentPlayerWhite && gameState.white === 0) {
+      window.alert("congrats! Black player wins")
+    } else if (gameState.black === 0) {
+      window.alert("congrats! White player wins")
+    }
+  },[currentPlayerWhite])
+
   // this effect adds .selected class to the selected hex
   useEffect(() => {
     setHexagonData(prev => prev.map(hex => {
