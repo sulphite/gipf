@@ -5,7 +5,7 @@ type HexData = {
   q: number,
   r: number,
   s: number,
-  coords: {q: number,r: number,s: number},
+  coords: HexCoordinates,
   id: string,
   data: {status: string },
   className: string[]
@@ -35,21 +35,27 @@ export const hexIncludes = (arr: HexCoordinates[], hex: HexCoordinates):boolean 
   return arr.some((ele: HexCoordinates) => HexUtils.equals(ele, hex))
 }
 
-export const findDirection = (a: HexCoordinates, b: HexCoordinates):number => {
-  let dir = HexUtils.subtract(b,a);
-  return HexUtils.DIRECTIONS.findIndex(x => HexUtils.equals(x, dir))
+/**
+ * returns the direction FROM hex a TO hex b
+ * @param a start hexcoordinate
+ * @param b target hexcoordinate
+ * @returns unit vector as hex coordinate
+ */
+export const findDirection = (a: HexCoordinates, b: HexCoordinates):HexCoordinates => {
+  return HexUtils.subtract(b,a);
+  // return HexUtils.DIRECTIONS.findIndex(x => HexUtils.equals(x, dir))
 }
 
 // function to return all hexes in that direction until outer ring
 // add the direction hex until distance = 4
-export const getHexRow = (startHex: HexCoordinates, direction: number):HexCoordinates[] => {
+export const getHexRow = (startHex: HexCoordinates, direction: HexCoordinates):HexCoordinates[] => {
   let result: HexCoordinates[] = []
-  let dir = HexUtils.DIRECTIONS[direction]
+  // let dir = HexUtils.DIRECTIONS[direction]
 
-  let currentHex = HexUtils.add(startHex, dir)
+  let currentHex = HexUtils.add(startHex, direction)
   while (HexUtils.lengths(currentHex) < 4) {
     result.push(currentHex)
-    currentHex = HexUtils.add(currentHex, dir)
+    currentHex = HexUtils.add(currentHex, direction)
   }
   return result
 }
@@ -64,8 +70,19 @@ export const findHex = (id: string): HexCoordinates => {
   return {q: coords[0], r: coords[1], s: coords[2]}
 }
 
-const hexCoordsToHexData = (arr: HexCoordinates[], hexdata: HexData[]): HexData[] => {
-  return hexdata.filter(hex => hexIncludes(arr, hex.coords))
+/**
+ * converts a collection of hexcoords to a collection of matching data.
+ * @param arr an array of hex coordinates
+ * @param hexdata full hexdata
+ * @returns array of hexdata
+ */
+export const hexCoordsToHexData = (arr: HexCoordinates[], hexdata: HexData[]): HexData[] => {
+  let data = hexdata.filter(hex => hexIncludes(arr, hex.coords))
+  // filtering changes the order of the data.
+  if(arr[0].q > arr[arr.length -1].q || arr[0].s < arr[arr.length -1].s) {
+    data.reverse()
+  }
+  return data
 }
 
 /**
@@ -107,7 +124,6 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
   // shift all existing pieces in that row
   let toBePushed: HexData[] = []
   let wholeRow = hexCoordsToHexData(getHexRow(start, findDirection(start, target)),hexdata)
-
   //find adjacent hexes containing pieces
   wholeRow.some(hex => {
     if(isEmpty(hex)) {
@@ -118,11 +134,11 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
       return false
     }
   })
+  // reverse the array, to start from empty space
   toBePushed.reverse()
   //push them
   toBePushed.forEach((h, i, arr) => {
     if(i < toBePushed.length -1) {
-      console.log("pushing", h.id, arr[i+1].id)
       data = pushPiece(h, arr[i+1], data)
     }
   })
