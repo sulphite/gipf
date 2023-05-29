@@ -179,15 +179,20 @@ export const findLines = (hexdata: HexData[]) => {
  * @param row - array of hexdata
  * @returns an array of 2 indices, or false if not found
  */
-export const checkRow = (row: HexData[]) => {
-  let start:number = 0
-  let end:number = 4
-  let slice: any[]
+export const checkRow = (row: HexData[]): [number,number] | boolean => {
+  let start:number = 0;
+  let end:number = 4;
+  let slice: HexData[]
+  let result: [number,number] | boolean = false
   while (end <= row.length) {
-    slice = row.slice(start,end)
-    if(slice.every(x => x.data.status === slice[0].data.status)) {return [start,end]}
-    start += 1
-    end += 1
+    slice = row.slice(start,end);
+    if(slice.every(x => x.data.status === slice[0].data.status)) {
+      result = [start,end];
+      end += 1;
+    } else {
+      start += 1;
+      end += 1;
+    }
   }
-  return false
+  return result;
 }

@@ -132,3 +132,7 @@ test("find lines of 4 returns false on an empty board", () => {
 test("find lines returns something on a full board", () => {
   expect(Logic.findLines(testHexDataFull)).not.toBeFalsy()
 })
+
+test("checkrow returns correct numbers", () => {
+  expect(Logic.checkRow(testHexDataFull.slice(0,6))).toStrictEqual([0,6])
+})
