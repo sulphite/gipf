@@ -168,3 +168,26 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
     return hex
   })
 }
+
+export const findLines = (hexdata: HexData[]) => {
+  let outer = hexdata.filter(hex => isClickable(hex.coords))
+  console.log(outer.length)
+}
+
+/**
+ * returns the start and end index of the first instance of 4 consecutive same elements
+ * @param row - array of hexdata
+ * @returns an array of 2 indices, or false if not found
+ */
+export const checkRow = (row: HexData[]) => {
+  let start:number = 0
+  let end:number = 4
+  let slice: any[]
+  while (end <= row.length) {
+    slice = row.slice(start,end)
+    if(slice.every(x => x.data.status === slice[0].data.status)) {return [start,end]}
+    start += 1
+    end += 1
+  }
+  return false
+}

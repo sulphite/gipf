@@ -51,7 +51,8 @@ test("findDirection returns a direction as coords", () => {
   expect(Logic.findDirection({q: 4, r: -1, s: -3},{q:3,r:0,s:-3})).toStrictEqual(HexUtils.DIRECTIONS[4])
 })
 
-test("getHexRow returns array", () => {
+describe("getHexRow", () => {
+  test("getHexRow returns array", () => {
   expect(Logic.getHexRow(testCoord,{q: 0, r: -1, s: 1})).toBeDefined()
   expect(Logic.getHexRow(testCoordOuter, {q: 1, r: -1, s: 0}).length).toBeGreaterThan(0)
 })
@@ -63,7 +64,7 @@ test("getHexRow returns correct array", () => {
 test("getHexRow returns correct array, in the right order", () => {
   expect(Logic.getHexRow({q:3,r:1,s:-4},HexUtils.DIRECTIONS[3])[0]).toEqual({q:2,r:1,s:-3})
   expect(Logic.getHexRow(testCoordOuter,HexUtils.DIRECTIONS[0])[0]).toEqual({q:-3,r:1,s:2})
-})
+})})
 
 test("getPushable returns correct array", () => {
   expect(Logic.getPushable(testCoordOuter, testHexDataEmpty).length).toBe(10)
@@ -101,23 +102,33 @@ describe("is it pushable", () => {
   })
 })
 
-test("converting hex coords to data doesnt change the order, 3/0", () => {
-  let row: HexCoordinates[] = Logic.getHexRow({q:3,r:1,s:-4},HexUtils.DIRECTIONS[3])
-  expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
-  row.reverse()
-  expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+describe("converting hex coords works in every direction",() => {
+    test("converting hex coords to data doesnt change the order, 3/0", () => {
+    let row: HexCoordinates[] = Logic.getHexRow({q:3,r:1,s:-4},HexUtils.DIRECTIONS[3])
+    expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+    row.reverse()
+    expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+  })
+
+  test("converting hex coords to data doesnt change the order, 2/5", () => {
+    let row: HexCoordinates[] = Logic.getHexRow({q:1,r:3,s:-4},HexUtils.DIRECTIONS[2])
+    expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+    row.reverse()
+    expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+  })
+
+  test("converting hex coords to data doesnt change the order, 1/4", () => {
+    let row: HexCoordinates[] = Logic.getHexRow({q:-4,r:1,s:3},HexUtils.DIRECTIONS[1])
+    expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+    row.reverse()
+    expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+  })
 })
 
-test("converting hex coords to data doesnt change the order, 2/5", () => {
-  let row: HexCoordinates[] = Logic.getHexRow({q:1,r:3,s:-4},HexUtils.DIRECTIONS[2])
-  expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
-  row.reverse()
-  expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+test("find lines of 4 returns false on an empty board", () => {
+  expect(Logic.findLines(testHexDataEmpty)).toBeFalsy()
 })
 
-test("converting hex coords to data doesnt change the order, 1/4", () => {
-  let row: HexCoordinates[] = Logic.getHexRow({q:-4,r:1,s:3},HexUtils.DIRECTIONS[1])
-  expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
-  row.reverse()
-  expect(Logic.hexCoordsToHexData(row,testHexDataFull)[0].coords).toEqual(row[0])
+test("find lines returns something on a full board", () => {
+  expect(Logic.findLines(testHexDataFull)).not.toBeFalsy()
 })
