@@ -125,18 +125,18 @@ describe("converting hex coords works in every direction",() => {
   })
 })
 
-test("find lines of 4 returns false on an empty board", () => {
-  expect(Logic.findLines(testHexDataEmpty)).toBeFalsy()
-})
-
-test("find lines returns something on a full board", () => {
-  expect(Logic.findLines(testHexDataFull)).not.toBeFalsy()
-})
-
 test("checkrow returns correct numbers", () => {
   expect(Logic.checkRow(testHexDataFull.slice(0,6))).toStrictEqual([0,6])
 })
 
 test("checkrow returns false for empty row", () => {
   expect(Logic.checkRow(testHexDataEmpty.slice(0,6))).toBeFalsy()
+})
+
+test("find lines of 4 returns false on an empty board", () => {
+  expect(Logic.findLines(testHexDataEmpty)).toBeFalsy()
+})
+
+test("find lines returns something on a full board", () => {
+  expect(Logic.findLines(testHexDataFull)).not.toBeFalsy()
 })

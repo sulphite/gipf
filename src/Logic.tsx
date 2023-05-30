@@ -173,21 +173,6 @@ export const handlePushPiece = (start: HexCoordinates, target: HexCoordinates, h
   })
 }
 
-export const findLines = (hexdata: HexData[]) => {
-  // create array of rows
-  let outer = hexdata.filter(hex => isClickable(hex.coords))
-  let rows = ROWSTARTPOINTS.map((arr,i) => {
-    let dir = HexUtils.DIRECTIONS[directions[i]]
-    return arr.map(num => {
-      // let rowarray = getHexRow(outer[num].coords,dir);
-      // console.log("data and first row element",outer[num].id, rowarray[0])
-      return hexCoordsToHexData(getHexRow(outer[num].coords,dir),hexdata)
-    })
-  }).flat()
-  // return rows.filter(row => checkRow(row))
-
-}
-
 /**
  * returns the start and end index of the first instance of 4 consecutive same elements
  * @param row - array of hexdata
@@ -209,4 +194,18 @@ export const checkRow = (row: HexData[]): [number,number] | boolean => {
     }
   }
   return result;
+}
+
+export const findLines = (hexdata: HexData[]) => {
+  // create array of rows
+  let outer = hexdata.filter(hex => isClickable(hex.coords))
+  let rows: HexData[][] = ROWSTARTPOINTS.map((arr,i) => {
+    let dir = HexUtils.DIRECTIONS[directions[i]]
+    return arr.map(num => {
+      // let rowarray = getHexRow(outer[num].coords,dir);
+      // console.log("data and first row element",outer[num].id, rowarray[0])
+      return hexCoordsToHexData(getHexRow(outer[num].coords,dir),hexdata)
+    })
+  }).flat()
+  return rows.filter(row => checkRow(row)).length
 }
