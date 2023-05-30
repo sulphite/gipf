@@ -207,5 +207,5 @@ export const findLines = (hexdata: HexData[]) => {
       return hexCoordsToHexData(getHexRow(outer[num].coords,dir),hexdata)
     })
   }).flat()
-  return rows.filter(row => checkRow(row)).length
+  return rows.filter(row => checkRow(row))
 }

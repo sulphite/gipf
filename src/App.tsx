@@ -22,7 +22,6 @@ const App = () => {
   }));
   const [gameState, setGameState] = useState({black: 15, white: 15});
   const [currentPlayerWhite, setCurrentPlayerWhite] = useState(true);
-  console.log(hexagonData.filter(hex => Logic.isClickable(hex.coords)))
 
   //check for game end at start of each turn
   useEffect(() => {

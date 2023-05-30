@@ -2,6 +2,7 @@ import { test, expect, describe } from "vitest"
 import * as Logic from "./Logic"
 import { HexUtils, GridGenerator } from "react-hexgrid"
 import { HexCoordinates } from "react-hexgrid/lib/models/Hex"
+import testdata from "./testdata.json"
 
 const testCoord: HexCoordinates = {q: 1, r: 0, s: -1}
 const testCoordOuter: HexCoordinates = {q: -4, r: 1, s: 3}
@@ -19,6 +20,7 @@ const testHexDataFull = GridGenerator.hexagon(4).map(hex => {
 const testHexDataEmpty = testHexDataFull.map(hex => {
   return {...hex, data: {status: "" }}
 })
+const testHexDataLineOf4 = JSON.parse(JSON.stringify(testdata))
 
 describe("isClickable", () => {
   test("isClickable function exists", () => {
@@ -133,10 +135,16 @@ test("checkrow returns false for empty row", () => {
   expect(Logic.checkRow(testHexDataEmpty.slice(0,6))).toBeFalsy()
 })
 
-test("find lines of 4 returns false on an empty board", () => {
-  expect(Logic.findLines(testHexDataEmpty)).toBeFalsy()
+test("find lines of 4 returns empty on an empty board", () => {
+  expect(Logic.findLines(testHexDataEmpty)).toStrictEqual([])
 })
 
 test("find lines returns something on a full board", () => {
   expect(Logic.findLines(testHexDataFull)).not.toBeFalsy()
+})
+
+test("find lines returns something for a valid line of 4", () => {
+  let result = Logic.findLines(testHexDataLineOf4)
+  expect(result).not.toBeFalsy()
+  expect(result.length).toBe(1)
 })
