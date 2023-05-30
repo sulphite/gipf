@@ -184,7 +184,7 @@ export const findLines = (hexdata: HexData[]) => {
       return hexCoordsToHexData(getHexRow(outer[num].coords,dir),hexdata)
     })
   }).flat()
-  return rows.filter(row => checkRow(row))
+  // return rows.filter(row => checkRow(row))
 
 }
 
@@ -200,7 +200,7 @@ export const checkRow = (row: HexData[]): [number,number] | boolean => {
   let result: [number,number] | boolean = false
   while (end <= row.length) {
     slice = row.slice(start,end);
-    if(slice.every(x => x.data.status === slice[0].data.status)) {
+    if(slice.every(x => (x.data.status && x.data.status === slice[0].data.status))) {
       result = [start,end];
       end += 1;
     } else {
