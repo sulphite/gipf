@@ -130,6 +130,7 @@ test("find lines of 4 returns false on an empty board", () => {
 })
 
 test("find lines returns something on a full board", () => {
+  // console.log(HexUtils.DIRECTIONS)
   expect(Logic.findLines(testHexDataFull)).not.toBeFalsy()
 })
 
