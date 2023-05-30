@@ -78,11 +78,11 @@ const App = () => {
       // } else {
       //   setPath({ start: null, end: null });
       // }
+
     // otherwise if there is a selected hex and we click a pushable space
     } else if(selected && Logic.isPushable(Logic.findHex(selected),source.state.hex, hexagonData)) {
       // push the piece
       let newhexes = Logic.handlePushPiece(Logic.findHex(selected),source.state.hex, hexagonData, currentPlayerWhite)
-      console.log("we are updatign after pushing the piece")
       setHexagonData(newhexes)
       setGameState(prev => {
         return currentPlayerWhite ? {...prev, white: prev.white - 1} : {...prev, black: prev.black - 1}
@@ -91,13 +91,11 @@ const App = () => {
       setSelected("");
       // check for gipfs
       let lines = Logic.findLines(newhexes);
-      console.log("we have checked for lines and found:", lines.length)
       lines.map(line => Logic.piecesToRemove(line)).forEach(line => {
         let total = Logic.countTotals(line)
         let newhexes = hexagonData.map(hex => {
           return line.map(x => x.id).includes(hex.id) ? {...hex, data: {status: ""} } : hex;
         })
-        console.log("we are updating because of a line of 4")
         setHexagonData(newhexes);
         setGameState(prev => {
           return {black: prev.black + total.black, white: prev.white + total.white}
