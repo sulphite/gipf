@@ -213,39 +213,36 @@ export const findLines = (hexdata: HexData[]) => {
 /**
  * function to return the pieces that are to be removed from board
  * @param row full row
- * @param start
- * @param end
  * @returns partial or full row of hexdata
  */
-export const piecesToRemove = (row: HexData[], start = 0, end = 4) => {
-  // let slice: HexData[]
-  // let result: number[] = [start,end]
-  // while (end <= row.length && start >= 0) {
-  //   slice = row.slice(start,end);
-  //   if(slice.every(x => x.data.status !== "")) {
-  //     result = [start,end];
-  //     end += 1;
-  //   } else {
-  //     // start += 1;
-  //     end += 1;
-  //   }
-  // }
-  // slice = row.slice(result[0],result[1])
+export const piecesToRemove = (row: HexData[]): HexData[] => {
   let pieces = row.map(x => x.data.status)
-  let indices = []
-  let idx = pieces.indexOf("");
+  let indices: number[] = []
+  let idx:number = pieces.indexOf("");
   while (idx !== -1) {
     indices.push(idx);
     idx = pieces.indexOf("", idx + 1);
   }
-  if(indices.length === 0) {
-    return row
-  } else {
-    for (let i in indices) {
-
+  if(indices.length > 0) {
+    let start = 0
+    indices = [0,...indices,pieces.length]
+    for (let i of indices) {
+      if (i - start >= 4) {
+        return pieces[start] ? row.slice(start,i) : row.slice(start+1,i)
+      } else {
+        start = i
+      }
     }
   }
+  return row
 }
 
-// need to send amount to adjust totals by.
-// need to update board state.
+export const countTotals = (line: HexData[]): {black: number, white: number} => {
+  let result = {black: 0, white: 0}
+  line.forEach(hex => {
+    if(hex.data.status == "white") {
+      result.white += 1
+    } else {result.black += 1}
+  })
+  return result
+}

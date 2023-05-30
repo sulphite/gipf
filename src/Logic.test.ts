@@ -148,3 +148,8 @@ test("find lines returns something for a valid line of 4", () => {
   expect(result).not.toBeFalsy()
   expect(result.length).toBe(1)
 })
+
+test("piecestoremove returns hexdata", () => {
+  let row = Logic.findLines(testHexDataLineOf4)[0]
+  expect(Logic.piecesToRemove(row).length).toBe(4)
+})
