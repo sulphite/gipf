@@ -209,3 +209,43 @@ export const findLines = (hexdata: HexData[]) => {
   }).flat()
   return rows.filter(row => checkRow(row))
 }
+
+/**
+ * function to return the pieces that are to be removed from board
+ * @param row full row
+ * @param start
+ * @param end
+ * @returns partial or full row of hexdata
+ */
+export const piecesToRemove = (row: HexData[], start = 0, end = 4) => {
+  // let slice: HexData[]
+  // let result: number[] = [start,end]
+  // while (end <= row.length && start >= 0) {
+  //   slice = row.slice(start,end);
+  //   if(slice.every(x => x.data.status !== "")) {
+  //     result = [start,end];
+  //     end += 1;
+  //   } else {
+  //     // start += 1;
+  //     end += 1;
+  //   }
+  // }
+  // slice = row.slice(result[0],result[1])
+  let pieces = row.map(x => x.data.status)
+  let indices = []
+  let idx = pieces.indexOf("");
+  while (idx !== -1) {
+    indices.push(idx);
+    idx = pieces.indexOf("", idx + 1);
+  }
+  if(indices.length === 0) {
+    return row
+  } else {
+    for (let i in indices) {
+
+    }
+  }
+}
+
+// need to send amount to adjust totals by.
+// need to update board state.

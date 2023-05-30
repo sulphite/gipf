@@ -87,8 +87,12 @@ const App = () => {
         return currentPlayerWhite ? {...prev, white: prev.white - 1} : {...prev, black: prev.black - 1}
       })
       // reset selected
-      setSelected("")
+      setSelected("");
       // check for gipfs
+      let lines = Logic.findLines(hexagonData);
+      lines.forEach(line => {
+        Logic.checkRow(line)
+      })
       // set current player
       setCurrentPlayerWhite(prev => !prev)
     }
