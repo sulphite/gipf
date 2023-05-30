@@ -90,8 +90,15 @@ const App = () => {
       setSelected("");
       // check for gipfs
       let lines = Logic.findLines(hexagonData);
-      lines.forEach(line => {
-        Logic.checkRow(line)
+      lines.map(line => Logic.piecesToRemove(line)).forEach(line => {
+        let total = Logic.countTotals(line)
+        let newhexes = hexagonData.map(hex => {
+          return line.map(x => x.id).includes(hex.id) ? {...hex, data: {status: ""} } : hex;
+        })
+        setHexagonData(newhexes);
+        setGameState(prev => {
+          return {black: prev.black + total.black, white: prev.white + total.white}
+        })
       })
       // set current player
       setCurrentPlayerWhite(prev => !prev)

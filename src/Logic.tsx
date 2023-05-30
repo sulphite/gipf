@@ -244,5 +244,8 @@ export const countTotals = (line: HexData[]): {black: number, white: number} => 
       result.white += 1
     } else {result.black += 1}
   })
-  return result
+  return {
+    black: result.black > 3 ? result.black : 0,
+    white: result.white > 3 ? result.white : 0
+  }
 }
