@@ -1,5 +1,5 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { HexGrid, Layout, Path, Text, Hexagon, HexUtils, GridGenerator } from 'react-hexgrid';
+import { useEffect, useState } from 'react';
+import { HexGrid, Layout, Hexagon, HexUtils, GridGenerator } from 'react-hexgrid';
 import * as Logic from "./Logic";
 import './App.css';
 import { HexagonProps } from 'react-hexgrid/lib/Hexagon/Hexagon';
@@ -139,25 +139,18 @@ const App = () => {
     </Hexagon>
   )})
 
-  const renderedPieces = [...Array(gameState.white)].map(_ele => <div className='piece'></div>)
-
   return (
     <div className="App">
-      {/* <div className='game-state'>
-        <p>Pieces remaining:</p>
-        <span>White: {gameState.white}</span>
-        <span>Black: {gameState.black}</span>
-      </div> */}
       <div className='game'>
         <div className='player-area pieces--white'>
           <span>Player White</span>
-          {currentPlayerWhite && <p>Your Turn!</p>}
+          {currentPlayerWhite && gameState.white > 0 && <p>Your Turn!</p>}
           <div className='pieces-container'>
           { [...Array(gameState.white)].map(_ele => <div className='piece white'></div>) }
             <strong>{gameState.white}</strong>
           </div>
         </div>
-        <HexGrid width={800} height={700}>
+        <HexGrid width={800} height={750}>
           <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1} origin={{ x: 0, y: 0 }}>
             { renderedhexes }
             {/* <Path start={path.start} end={path.end} /> */}
@@ -165,7 +158,7 @@ const App = () => {
         </HexGrid>
         <div className='player-area pieces--black'>
           <span>Player Black</span>
-          {!currentPlayerWhite && <p>Your Turn!</p>}
+          {!currentPlayerWhite && gameState.black > 0 && <p>Your Turn!</p>}
           <div className='pieces-container'>
           { [...Array(gameState.black)].map(_ele => <div className='piece black'></div>) }
           <strong>{gameState.black}</strong>
