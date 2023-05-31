@@ -75,3 +75,43 @@ circle.white {
   fill: antiquewhite;
   fill-opacity: 1;
 }
+.game-state {
+  display: flex;
+
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 700px;
+}
+.player-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  font-size: 1.5rem;
+  height: 100%;
+}
+
+.pieces-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.piece {
+  width: 2.5em;
+  height: 0.75em;
+}
+
+.piece.white {
+  background-color: antiquewhite;
+}
+
+.piece.black {
+  background-color: black;
+}

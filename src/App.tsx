@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { HexGrid, Layout, Path, Text, Hexagon, HexUtils, GridGenerator } from 'react-hexgrid';
 import * as Logic from "./Logic";
 import './App.css';
@@ -134,25 +134,44 @@ const App = () => {
       // onMouseEnter={(e, h) => onMouseEnter(e, h)}
       onClick={(e, h) => onClick(e, h)}
     >
-      <Text>{hex.id}</Text>
+      {/* <Text>{hex.id}</Text> */}
       {hex.data.status && <circle className={hex.data.status} r="3" />}
     </Hexagon>
   )})
 
+  const renderedPieces = [...Array(gameState.white)].map(_ele => <div className='piece'></div>)
+
   return (
     <div className="App">
-      <h2><span>{currentPlayerWhite ? "White" : "Black"}</span> to play.</h2>
-      <div className='game-state'>
+      {/* <div className='game-state'>
         <p>Pieces remaining:</p>
         <span>White: {gameState.white}</span>
         <span>Black: {gameState.black}</span>
+      </div> */}
+      <div className='game'>
+        <div className='player-area pieces--white'>
+          <span>Player White</span>
+          {currentPlayerWhite && <p>Your Turn!</p>}
+          <div className='pieces-container'>
+          { [...Array(gameState.white)].map(_ele => <div className='piece white'></div>) }
+            <strong>{gameState.white}</strong>
+          </div>
+        </div>
+        <HexGrid width={800} height={700}>
+          <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1} origin={{ x: 0, y: 0 }}>
+            { renderedhexes }
+            {/* <Path start={path.start} end={path.end} /> */}
+          </Layout>
+        </HexGrid>
+        <div className='player-area pieces--black'>
+          <span>Player Black</span>
+          {!currentPlayerWhite && <p>Your Turn!</p>}
+          <div className='pieces-container'>
+          { [...Array(gameState.black)].map(_ele => <div className='piece black'></div>) }
+          <strong>{gameState.black}</strong>
+          </div>
+        </div>
       </div>
-      <HexGrid width={1200} height={800}>
-        <Layout size={{ x: 6, y: 6 }} flat={false} spacing={1} origin={{ x: 0, y: 0 }}>
-          { renderedhexes }
-          {/* <Path start={path.start} end={path.end} /> */}
-        </Layout>
-      </HexGrid>
     </div>
   );
 };
