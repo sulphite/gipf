@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Production build
+dist/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+
+# Optional eslint cache
+.eslintcache
