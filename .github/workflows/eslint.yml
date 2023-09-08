@@ -3,9 +3,7 @@ name: ESLint
 on:
   pull_request:
     paths:
-      - '**.ts'
-      - '.eslintrc.js'
-      - 'pnpm-lock.yaml'
+      - 'src/**/*.ts'
 
 jobs:
   lint:
