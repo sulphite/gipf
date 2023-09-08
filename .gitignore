@@ -11,39 +11,5 @@ logs/
 # Environment variables
 .env
 
-# OS generated files
-.DS_Store
-
-# Text editor files
-.vscode/
-.idea/
-
-# Optional npm cache
-.npm
-
 # Optional eslint cache
 .eslintcache
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn integrity file
-.yarn-integrity
-
-# parcel-bundler cache (optional)
-.cache
-
-# typhoon cache (optional)
-.typhoncache
-
-# next.js build output (optional)
-.next
-
-# nuxt.js build output (optional)
-.nuxt
-
-# vuepress build output (optional)
-.vuepress/dist
-
-# Serverless directories (optional)
-.serverless
