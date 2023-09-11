@@ -8,6 +8,9 @@ dependencies:
   express:
     specifier: ^4.18.2
     version: 4.18.2
+  honeycomb-grid:
+    specifier: ^4.1.4
+    version: 4.1.4
   socket.io:
     specifier: ^4.7.2
     version: 4.7.2
@@ -2086,6 +2089,11 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+
+  /honeycomb-grid@4.1.4:
+    resolution: {integrity: sha512-EL7pCJUbJStnhNGJWI4PEJ9W2ZyQ8b+1wijGAyRU0QehrIoSRyqpZWtYllvEiBFx4k2n3xhK2FporZpJzzsMEw==}
+    engines: {node: '>=16'}
+    dev: false
 
   /html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
