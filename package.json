@@ -14,6 +14,7 @@
 	},
 	"scripts": {
 		"start": "tsc && node dist/index.js",
-		"lint": "eslint src"
+		"lint": "eslint src",
+    "test": "jest"
 	}
 }
