@@ -1,5 +1,4 @@
 import { Board } from "../logic/Board";
-import ITile from "../types/Tile";
 
 const board = new Board();
 
@@ -27,12 +26,10 @@ test("outer coord returns true with isOuterTile", () => {
   expect(board.isOuterTile([4, 0, -4])).toBe(true);
 });
 
-// can access fill property of tiles
 test("when I access the fill property it returns a string", () => {
   expect(board.getFill([0, 0])).toBe("");
 });
 
-// can fill a tile
 test("I can set the fill property of a tile", () => {
   board.setFill([0, 1, -1], "W");
   expect(board.getFill([0, 1, -1])).toBe("W");
@@ -46,5 +43,5 @@ test("given a tile we can get all neighbours", () => {
 test("given an outer tile we can get all inner neighbours", () => {
   const innerNeighbours = board.getInnerNeighbours([4, 0]);
   expect(innerNeighbours.size).toBe(1);
-  expect(innerNeighbours.getHex([3,0])).toBeDefined;
+  expect(innerNeighbours.getHex([3, 0])).toBeDefined;
 });

@@ -1,4 +1,4 @@
-import { Grid, Hex } from "honeycomb-grid";
+import { Grid } from "honeycomb-grid";
 import ITile from "./Tile";
 
 interface IBoard {
