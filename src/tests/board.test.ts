@@ -21,6 +21,9 @@ test("I cant get a hex outside of the grid", () => {
 // isOuterTile(coord) returns a boolean
 test("I can check if a coordinate is outer", () => {
   expect(board.isOuterTile([0, 0, 0])).toBe(false);
+});
+
+test("outer coord returns true with isOuterTile", () => {
   expect(board.isOuterTile([4, 0, -4])).toBe(true);
 });
 
@@ -36,12 +39,12 @@ test("I can set the fill property of a tile", () => {
 });
 
 test("given a tile we can get all neighbours", () => {
-  const neighbourTiles: ITile[] = board.getNeighbours([0, 0]);
-  expect(neighbourTiles).toHaveLength(6);
+  const neighbourTiles = board.getNeighbours([0, 0]);
+  expect(neighbourTiles.size).toBe(6);
 });
 
 test("given an outer tile we can get all inner neighbours", () => {
-  const innerNeighbours: ITile[] = board.getInnerNeighbours([4, 0]);
-  expect(innerNeighbours).toHaveLength(1);
-  expect(innerNeighbours[0].equals([3, 0])).toBe(true);
+  const innerNeighbours = board.getInnerNeighbours([4, 0]);
+  expect(innerNeighbours.size).toBe(1);
+  expect(innerNeighbours.getHex([3,0])).toBeDefined;
 });

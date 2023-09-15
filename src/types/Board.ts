@@ -1,7 +1,8 @@
 import { Grid, Hex } from "honeycomb-grid";
+import ITile from "./Tile";
 
 interface IBoard {
-  grid: Grid<Hex>;
+  grid: Grid<ITile>;
 }
 
 export default IBoard;
