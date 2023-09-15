@@ -35,4 +35,8 @@ export class Board implements IBoard {
   getInnerNeighbours(coord: HexCoordinates) {
     return this.getNeighbours(coord).filter((hex) => !this.isOuterTile(hex));
   }
+
+  printBoard() {
+    console.log(this.grid.toJSON())
+  }
 }

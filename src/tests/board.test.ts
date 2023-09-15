@@ -45,3 +45,7 @@ test("given an outer tile we can get all inner neighbours", () => {
   expect(innerNeighbours.size).toBe(1);
   expect(innerNeighbours.getHex([3, 0])).toBeDefined;
 });
+
+test("I can see the board data", () => {
+  board.printBoard()
+})
