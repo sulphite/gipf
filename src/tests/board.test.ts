@@ -1,3 +1,4 @@
+import { Direction } from "honeycomb-grid";
 import { Board } from "../logic/Board";
 
 const board = new Board();
@@ -46,6 +47,7 @@ test("given an outer tile we can get all inner neighbours", () => {
   expect(innerNeighbours.getHex([3, 0])).toBeDefined;
 });
 
-test("I can see the board data", () => {
-  board.printBoard()
+test("given two neighboring hexes we can get the direction from A to B", () => {
+  const direction = board.findDirection([0,0,0], [0,1,-1]);
+  expect(direction).toBe(Direction.SE);
 })
