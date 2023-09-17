@@ -48,6 +48,6 @@ test("given an outer tile we can get all inner neighbours", () => {
 });
 
 test("given two neighboring hexes we can get the direction from A to B", () => {
-  const direction = board.findDirection([0,0,0], [0,1,-1]);
+  const direction = board.findDirection([0, 0, 0], [0, 1, -1]);
   expect(direction).toBe(Direction.SE);
-})
+});
