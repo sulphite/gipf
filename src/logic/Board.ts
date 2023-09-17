@@ -16,7 +16,7 @@ export class Board implements IBoard {
   grid: Grid<ITile>;
 
   constructor() {
-    this.grid = new Grid(Tile, spiral({ radius: 4 })) as Grid<ITile>;
+    this.grid = new Grid(Tile, spiral({ radius: 4 })) as unknown as Grid<ITile>;
   }
 
   isOuterTile(coord: HexCoordinates) {

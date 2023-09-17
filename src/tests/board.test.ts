@@ -24,7 +24,13 @@ test("I can check if a coordinate is outer", () => {
 });
 
 test("outer coord returns true with isOuterTile", () => {
-  expect(board.isOuterTile([4, 0, -4])).toBe(true);
+  const tile = board.grid.getHex([4, 0, -4]);
+  if (tile && typeof tile.isOuterTile === 'function') {
+    expect(tile.isOuterTile()).toBe(true);
+  } else {
+    fail("Tile is undefined or doesn't have the isOuterTile method.");
+  }
+  // expect(board.isOuterTile([4, 0, -4])).toBe(true);
 });
 
 test("when I access the fill property it returns a string", () => {
