@@ -18,11 +18,11 @@ jobs:
         with:
           node-version: "20.x"
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Install bun
+        run: npm install -g bun
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Run ESLint
-        run: pnpm run lint
+        run: bun lint
