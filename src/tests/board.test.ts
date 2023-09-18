@@ -32,11 +32,11 @@ test("given a tile we can get all neighbours", () => {
   expect(neighbourTiles.size).toBe(6);
 });
 
-test("given an outer tile we can get all inner neighbours", () => {
-  const innerNeighbours = board.getInnerNeighbours([4, 0]);
-  expect(innerNeighbours.size).toBe(1);
-  expect(innerNeighbours.getHex([3, 0])).toBeDefined;
-});
+// test("given an outer tile we can get all inner neighbours", () => {
+//   const innerNeighbours = board.getInnerNeighbours([4, 0]);
+//   expect(innerNeighbours.size).toBe(1);
+//   expect(innerNeighbours.getHex([3, 0])).toBeDefined;
+// });
 
 test("given two neighboring hexes we can get the direction from A to B", () => {
   const direction = board.findDirection([0, 0, 0], [0, 1, -1]);

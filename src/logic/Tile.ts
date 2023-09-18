@@ -12,4 +12,11 @@ export class Tile extends Hex implements ITile {
     const thisTile = grid.getHex([this.q, this.r, this.s]);
     return thisTile?.fill;
   }
+
+  setFill(grid: Grid<ITile>, state: string): void {
+    const thisTile = grid.getHex([this.q, this.r, this.s]);
+    if (thisTile) {
+      thisTile.fill = state;
+    }
+  }
 }

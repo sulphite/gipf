@@ -20,13 +20,8 @@ export class Board implements IBoard {
     this.grid = new Grid(Tile, spiral({ radius: 4 })) as unknown as Grid<ITile>;
   }
 
-  isOuterTile(coord: HexCoordinates) {
-    return this.grid.distance(coord, [0, 0]) === 4;
-  }
-
-  // getFill(coord: HexCoordinates) {
-  //   const thisTile = this.grid.getHex(coord);
-  //   return thisTile?.fill;
+  // isOuterTile(coord: HexCoordinates) {
+  //   return this.grid.distance(coord, [0, 0]) === 4;
   // }
 
   // getFill(coord: HexCoordinates) {
@@ -34,22 +29,19 @@ export class Board implements IBoard {
   //   return thisTile?.fill;
   // }
 
-  setFill(coord: HexCoordinates, state: string): void {
-    const thisTile = this.grid.getHex(coord);
-    if (thisTile) {
-      thisTile.fill = state;
-    }
-    console.log(this.grid.getHex(coord));
-  }
+  // getFill(coord: HexCoordinates) {
+  //   const thisTile = this.grid.getHex(coord);
+  //   return thisTile?.fill;
+  // }
 
   getNeighbours(coord: HexCoordinates) {
     const ringTraverser = ring({ center: coord, radius: 1 });
     return this.grid.traverse(ringTraverser);
   }
 
-  getInnerNeighbours(coord: HexCoordinates) {
-    return this.getNeighbours(coord).filter((hex) => !this.isOuterTile(hex));
-  }
+  // getInnerNeighbours(coord: HexCoordinates) {
+  //   return this.getNeighbours(coord).filter((hex) => !this.isOuterTile(hex));
+  // }
 
   printBoard(): void {
     console.log(this.grid.toJSON());
