@@ -1,5 +1,5 @@
 import { Grid } from "honeycomb-grid";
-import ITile from "./Tile";
+import ITile from "./ITile";
 
 interface IBoard {
   grid: Grid<ITile>;
