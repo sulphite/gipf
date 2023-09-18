@@ -8,8 +8,9 @@ import {
   spiral,
   toCube,
 } from "honeycomb-grid";
-import IBoard from "../types/Board";
-import ITile from "../types/Tile";
+
+import IBoard from "../types/IBoard";
+import ITile from "../types/ITile";
 import { Tile } from "./Tile";
 
 export class Board implements IBoard {
@@ -23,10 +24,15 @@ export class Board implements IBoard {
     return this.grid.distance(coord, [0, 0]) === 4;
   }
 
-  getFill(coord: HexCoordinates) {
-    const thisTile = this.grid.getHex(coord);
-    return thisTile?.fill;
-  }
+  // getFill(coord: HexCoordinates) {
+  //   const thisTile = this.grid.getHex(coord);
+  //   return thisTile?.fill;
+  // }
+
+  // getFill(coord: HexCoordinates) {
+  //   const thisTile = this.grid.getHex(coord);
+  //   return thisTile?.fill;
+  // }
 
   setFill(coord: HexCoordinates, state: string): void {
     const thisTile = this.grid.getHex(coord);
