@@ -32,3 +32,13 @@ test("given two neighboring hexes we can get the direction from A to B", () => {
   const direction = board.findDirection([0, 0, 0], [0, 1, -1]);
   expect(direction).toBe(Direction.SE);
 });
+
+test("given an outer tile and a neighboring inner tile I can get a row of tiles", () => {
+  const row = board.getRow([4,0],[3,0])
+  console.log(row);
+})
+
+test("given a row isPushable returns true if there is at least one empty space", () => {
+  const row = board.getRow([4,0],[3,0])
+  expect(board.isPushable(row)).toBe(true)
+})
