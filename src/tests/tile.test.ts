@@ -20,9 +20,8 @@ test("I can set the fill property of a tile", () => {
   const tile = board.grid.getHex([0, 1, -1]);
 
   tile &&
-    typeof tile.setFill === "function" &&
-    typeof tile.getFill === "function"
-    ? (tile.setFill("W"),
-      expect(tile.getFill()).toBe("W"))
+  typeof tile.setFill === "function" &&
+  typeof tile.getFill === "function"
+    ? (tile.setFill("W"), expect(tile.getFill()).toBe("W"))
     : fail("tile is undefined");
 });

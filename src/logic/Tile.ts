@@ -5,7 +5,7 @@ export class Tile extends Hex implements ITile {
   fill = "";
 
   isOuterTile() {
-    return [this.q, this.r, this.s].some(value => Math.abs(value) === 4);
+    return [this.q, this.r, this.s].some((value) => Math.abs(value) === 4);
   }
 
   getFill() {

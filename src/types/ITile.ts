@@ -1,4 +1,4 @@
-import { Grid, Hex } from "honeycomb-grid";
+import { Hex } from "honeycomb-grid";
 
 interface ITile extends Hex {
   fill?: string;
