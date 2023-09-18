@@ -20,28 +20,14 @@ export class Board implements IBoard {
     this.grid = new Grid(Tile, spiral({ radius: 4 })) as unknown as Grid<ITile>;
   }
 
-  // isOuterTile(coord: HexCoordinates) {
-  //   return this.grid.distance(coord, [0, 0]) === 4;
-  // }
-
-  // getFill(coord: HexCoordinates) {
-  //   const thisTile = this.grid.getHex(coord);
-  //   return thisTile?.fill;
-  // }
-
-  // getFill(coord: HexCoordinates) {
-  //   const thisTile = this.grid.getHex(coord);
-  //   return thisTile?.fill;
-  // }
-
   getNeighbours(coord: HexCoordinates) {
     const ringTraverser = ring({ center: coord, radius: 1 });
     return this.grid.traverse(ringTraverser);
   }
 
-  // getInnerNeighbours(coord: HexCoordinates) {
-  //   return this.getNeighbours(coord).filter((hex) => !this.isOuterTile(hex));
-  // }
+  getInnerNeighbours(coord: HexCoordinates) {
+    return this.getNeighbours(coord).filter((tile: any) => !tile.isOuterTile());
+  }
 
   printBoard(): void {
     console.log(this.grid.toJSON());

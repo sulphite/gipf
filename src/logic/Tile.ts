@@ -5,18 +5,14 @@ export class Tile extends Hex implements ITile {
   fill = "";
 
   isOuterTile() {
-    return [this.q, this.r, this.s].some((value) => Math.abs(value) === 4);
+    return [this.q, this.r, this.s].some(value => Math.abs(value) === 4);
   }
 
-  getFill(grid: Grid<ITile>) {
-    const thisTile = grid.getHex([this.q, this.r, this.s]);
-    return thisTile?.fill;
+  getFill() {
+    return this.fill;
   }
 
-  setFill(grid: Grid<ITile>, state: string): void {
-    const thisTile = grid.getHex([this.q, this.r, this.s]);
-    if (thisTile) {
-      thisTile.fill = state;
-    }
+  setFill(state: string): void {
+    this.fill = state;
   }
 }
