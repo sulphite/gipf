@@ -1,4 +1,4 @@
-import { Grid, Hex } from "honeycomb-grid";
+import { Hex } from "honeycomb-grid";
 import ITile from "../types/ITile";
 
 export class Tile extends Hex implements ITile {

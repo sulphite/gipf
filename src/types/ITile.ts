@@ -3,7 +3,7 @@ import { Grid, Hex } from "honeycomb-grid";
 interface ITile extends Hex {
   fill?: string;
   isOuterTile?(): boolean;
-  getFill?(): string | undefined;
+  getFill?(): string;
   setFill?(state: string): void;
 }
 

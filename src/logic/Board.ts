@@ -17,7 +17,7 @@ export class Board implements IBoard {
   grid: Grid<ITile>;
 
   constructor() {
-    this.grid = new Grid(Tile, spiral({ radius: 4 })) as unknown as Grid<ITile>;
+    this.grid = new Grid(Tile, spiral({ radius: 4 })) as Grid<ITile>;
   }
 
   getNeighbours(coord: HexCoordinates) {
@@ -26,7 +26,7 @@ export class Board implements IBoard {
   }
 
   getInnerNeighbours(coord: HexCoordinates) {
-    return this.getNeighbours(coord).filter((tile: any) => !tile.isOuterTile());
+    return this.getNeighbours(coord).filter((tile) => !tile?.isOuterTile?.());
   }
 
   printBoard(): void {
