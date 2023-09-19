@@ -21,6 +21,11 @@ export class Board implements IBoard {
     this.grid = new Grid(Tile, spiral({ radius: 4 }));
   }
 
+  /**
+   * returns all neighbour tiles of a coordinate, within grid limits
+   * @param coord a hexcoordinate
+   * @returns a set of tiles as Grid
+   */
   getNeighbours(coord: HexCoordinates) {
     const ringTraverser: Traverser<Tile> = ring({
       center: coord,
@@ -28,7 +33,11 @@ export class Board implements IBoard {
     }) as Traverser<Tile>;
     return this.grid.traverse(ringTraverser);
   }
-
+  /**
+   * returns only the neighbour tiles on the inner rings.
+   * @param coord a hexcoordinate
+   * @returns a set of tiles as Grid
+   */
   getInnerNeighbours(coord: HexCoordinates) {
     return this.getNeighbours(coord).filter((tile) => !tile.isOuterTile());
   }
@@ -37,6 +46,12 @@ export class Board implements IBoard {
     console.log(this.grid.toJSON());
   }
 
+  /**
+   * finds the direction from coord A to coord B
+   * @param coordA a hexcoordinate
+   * @param coordB a neighbouring hex
+   * @returns Direction
+   */
   findDirection(coordA: HexCoordinates, coordB: HexCoordinates): Direction {
     const cubeA: CubeCoordinates = toCube(defaultHexSettings, coordA);
     const cubeB: CubeCoordinates = toCube(defaultHexSettings, coordB);
@@ -75,6 +90,12 @@ export class Board implements IBoard {
     return getDirectionByVectors(...dir);
   }
 
+  /**
+   * takes two tiles to calculate direction, and creates a row in that direction
+   * @param outerTile a tile on the outer ring
+   * @param innerTile an inner neighbour of outerTile
+   * @returns a row of tiles starting from innerTile
+   */
   getRow(outerTile: HexCoordinates, innerTile: HexCoordinates) {
     const dir = this.findDirection(outerTile, innerTile);
     const vector: Traverser<Tile> = line({
@@ -86,7 +107,12 @@ export class Board implements IBoard {
     return row.filter((tile) => !tile.isOuterTile());
   }
 
-  isPushable(row: Grid<Tile>) {
+  /**
+   * checks if a row has space to accommodate a pushed piece
+   * @param row a row of Tiles
+   * @returns boolean
+   */
+  isPushable(row: Grid<Tile>): boolean {
     return row.toArray().some((tile) => {
       return tile.fill === "";
     });
