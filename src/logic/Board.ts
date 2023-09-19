@@ -7,26 +7,29 @@ import {
   ring,
   spiral,
   toCube,
+  Traverser,
 } from "honeycomb-grid";
 
 import IBoard from "../types/IBoard";
-import ITile from "../types/ITile";
 import { Tile } from "./Tile";
 
 export class Board implements IBoard {
-  grid: Grid<ITile>;
+  grid: Grid<Tile>;
 
   constructor() {
-    this.grid = new Grid(Tile, spiral({ radius: 4 })) as Grid<ITile>;
+    this.grid = new Grid(Tile, spiral({ radius: 4 }));
   }
 
   getNeighbours(coord: HexCoordinates) {
-    const ringTraverser = ring({ center: coord, radius: 1 });
+    const ringTraverser: Traverser<Tile> = ring({
+      center: coord,
+      radius: 1,
+    }) as Traverser<Tile>;
     return this.grid.traverse(ringTraverser);
   }
 
   getInnerNeighbours(coord: HexCoordinates) {
-    return this.getNeighbours(coord).filter((tile) => !tile?.isOuterTile?.());
+    return this.getNeighbours(coord).filter((tile) => !tile.isOuterTile());
   }
 
   printBoard(): void {

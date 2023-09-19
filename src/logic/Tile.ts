@@ -1,8 +1,13 @@
-import { Hex } from "honeycomb-grid";
+import { Hex, HexCoordinates } from "honeycomb-grid";
 import ITile from "../types/ITile";
 
 export class Tile extends Hex implements ITile {
-  fill = "";
+  fill: string;
+
+  constructor(coordinates?: HexCoordinates) {
+    super(coordinates);
+    this.fill = "";
+  }
 
   isOuterTile() {
     return [this.q, this.r, this.s].some((value) => Math.abs(value) === 4);
