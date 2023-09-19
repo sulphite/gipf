@@ -21,7 +21,10 @@ export class Board implements IBoard {
   }
 
   getNeighbours(coord: HexCoordinates) {
-    const ringTraverser: Traverser<Tile> = ring({ center: coord, radius: 1 }) as Traverser<Tile>;
+    const ringTraverser: Traverser<Tile> = ring({
+      center: coord,
+      radius: 1,
+    }) as Traverser<Tile>;
     return this.grid.traverse(ringTraverser);
   }
 
