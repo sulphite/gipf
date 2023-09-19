@@ -33,12 +33,14 @@ test("given two neighboring hexes we can get the direction from A to B", () => {
   expect(direction).toBe(Direction.SE);
 });
 
-test("given an outer tile and a neighboring inner tile I can get a row of tiles", () => {
+test("given an outer tile and a neighboring inner tile I can get a row of only the inner tiles", () => {
   const row = board.getRow([4,0],[3,0])
-  console.log(row);
+  console.log("row length", row?.size);
+  expect(row?.filter(tile => !tile.isOuterTile()).size).toEqual(row?.size)
 })
 
 test("given a row isPushable returns true if there is at least one empty space", () => {
   const row = board.getRow([4,0],[3,0])
-  expect(board.isPushable(row)).toBe(true)
+  if(row) {console.log(board.isPushable(row))}
+  row ? expect(board.isPushable(row)).toBe(true) : fail("getrow returned undefined")
 })

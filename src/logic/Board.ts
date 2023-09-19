@@ -6,6 +6,7 @@ import {
   defaultHexSettings,
   ring,
   spiral,
+  line,
   toCube,
   Traverser,
 } from "honeycomb-grid";
@@ -74,5 +75,18 @@ export class Board implements IBoard {
 
     const result = getDirectionByVectors(...dir);
     return result;
+  }
+
+  getRow(outerTile: HexCoordinates, innerTile: HexCoordinates) {
+    let dir = this.findDirection(outerTile, innerTile)
+    if(dir) {
+      const vector: Traverser<Tile> = line({start: innerTile, direction: dir, length: 7}) as Traverser<Tile>;
+      const row = this.grid.traverse(vector)
+      return row;
+    }
+  }
+
+  isPushable(row: Grid<Tile>) {
+    return row.toArray().some((tile) => { return tile.fill === "" })
   }
 }
