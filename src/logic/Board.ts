@@ -37,7 +37,7 @@ export class Board implements IBoard {
     console.log(this.grid.toJSON());
   }
 
-  findDirection(coordA: HexCoordinates, coordB: HexCoordinates) {
+  findDirection(coordA: HexCoordinates, coordB: HexCoordinates): Direction {
     const cubeA: CubeCoordinates = toCube(defaultHexSettings, coordA);
     const cubeB: CubeCoordinates = toCube(defaultHexSettings, coordB);
     const dir: [number, number, number] = [
@@ -62,15 +62,14 @@ export class Board implements IBoard {
       { direction: Direction.NW, q: 0, r: -1, s: 1 },
     ];
 
-    function getDirectionByVectors(
-      q: number,
-      r: number,
-      s: number,
-    ): Direction | undefined {
+    function getDirectionByVectors(q: number, r: number, s: number): Direction {
       const enumIndex = vectors.find(
         (vector) => vector.q === q && vector.r === r && vector.s === s,
       );
-      return enumIndex ? enumIndex.direction : undefined;
+      if (!enumIndex) {
+        throw new Error("no valid direction found");
+      }
+      return enumIndex.direction;
     }
 
     const result = getDirectionByVectors(...dir);
