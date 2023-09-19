@@ -78,15 +78,21 @@ export class Board implements IBoard {
   }
 
   getRow(outerTile: HexCoordinates, innerTile: HexCoordinates) {
-    let dir = this.findDirection(outerTile, innerTile)
-    if(dir) {
-      const vector: Traverser<Tile> = line({start: innerTile, direction: dir, length: 7}) as Traverser<Tile>;
-      const row = this.grid.traverse(vector)
+    const dir = this.findDirection(outerTile, innerTile);
+    if (dir) {
+      const vector: Traverser<Tile> = line({
+        start: innerTile,
+        direction: dir,
+        length: 7,
+      }) as Traverser<Tile>;
+      const row = this.grid.traverse(vector);
       return row;
     }
   }
 
   isPushable(row: Grid<Tile>) {
-    return row.toArray().some((tile) => { return tile.fill === "" })
+    return row.toArray().some((tile) => {
+      return tile.fill === "";
+    });
   }
 }
