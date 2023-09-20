@@ -26,7 +26,7 @@ export class Board implements IBoard {
    * @param coord a hexcoordinate
    * @returns a set of tiles as Grid
    */
-  getNeighbours(coord: HexCoordinates) {
+  getNeighbours(coord: HexCoordinates): Grid<Tile> {
     const ringTraverser: Traverser<Tile> = ring({
       center: coord,
       radius: 1,
@@ -38,7 +38,7 @@ export class Board implements IBoard {
    * @param coord a hexcoordinate
    * @returns a set of tiles as Grid
    */
-  getInnerNeighbours(coord: HexCoordinates) {
+  getInnerNeighbours(coord: HexCoordinates): Grid<Tile> {
     return this.getNeighbours(coord).filter((tile) => !tile.isOuterTile());
   }
 
@@ -96,7 +96,7 @@ export class Board implements IBoard {
    * @param innerTile an inner neighbour of outerTile
    * @returns a row of tiles starting from innerTile
    */
-  getRow(outerTile: HexCoordinates, innerTile: HexCoordinates) {
+  getRow(outerTile: HexCoordinates, innerTile: HexCoordinates): Grid<Tile> {
     const dir = this.findDirection(outerTile, innerTile);
     const vector: Traverser<Tile> = line({
       start: innerTile,
