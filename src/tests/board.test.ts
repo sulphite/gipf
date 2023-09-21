@@ -76,31 +76,31 @@ test("when there is no space we get an empty array", () => {
 
 test("when a piece is pushed into the board, the order of existing pieces is maintained", () => {
   const row = board.getRow([4, -1], [3, -1]).forEach((tile) => {
-    if(tile.q % 2 === 0) {
-      tile.setFill("B")
+    if (tile.q % 2 === 0) {
+      tile.setFill("B");
     } else {
-      tile.setFill("W")
+      tile.setFill("W");
     }
   });
-  board.grid.getHex([4,-1])?.setFill("B");
-  board.grid.getHex([0,-1])?.setFill("");
+  board.grid.getHex([4, -1])?.setFill("B");
+  board.grid.getHex([0, -1])?.setFill("");
   // const before = row.toArray().map(tile => tile.fill)
-  board.pushFill([4,-1],[3,-1])
-  const after = row.toArray().map(tile => tile.fill)
-  expect(after).toEqual([ "B", "W", "B", "W", "W", "B" ])
-  expect(board.isPushable(row)).toBeFalsy()
-})
+  board.pushFill([4, -1], [3, -1]);
+  const after = row.toArray().map((tile) => tile.fill);
+  expect(after).toEqual(["B", "W", "B", "W", "W", "B"]);
+  expect(board.isPushable(row)).toBeFalsy();
+});
 
 test("a piece can be pushed when there are multiple gaps", () => {
   const row = board.getRow([4, -1], [3, -1]).forEach((tile) => {
-    if(tile.q > 0) {
-      tile.setFill("W")
+    if (tile.q > 0) {
+      tile.setFill("W");
     }
   });
-  board.grid.getHex([4,-1])?.setFill("B");
+  board.grid.getHex([4, -1])?.setFill("B");
   // const before = row.toArray().map(tile => tile.fill)
-  board.pushFill([4,-1],[3,-1])
-  const after = row.toArray().map(tile => tile.fill)
-  expect(after).toEqual([ "B", "W", "W", "W", "", "" ])
-  expect(board.isPushable(row)).toBeTruthy()
-})
+  board.pushFill([4, -1], [3, -1]);
+  const after = row.toArray().map((tile) => tile.fill);
+  expect(after).toEqual(["B", "W", "W", "W", "", ""]);
+  expect(board.isPushable(row)).toBeTruthy();
+});

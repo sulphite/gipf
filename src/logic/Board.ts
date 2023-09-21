@@ -129,16 +129,16 @@ export class Board implements IBoard {
     // get the row
     const rowArray: Tile[] = this.getRow(outerTile, innerTile).toArray();
     // truncate the row after the first empty
-    let slice: number = rowArray.findIndex(tile => tile.fill === "")
-    const rowSlice = rowArray.slice(0,slice+1).reverse()
-    rowSlice.push(this.grid.getHex(outerTile) as Tile)
+    const slice: number = rowArray.findIndex((tile) => tile.fill === "");
+    const rowSlice = rowArray.slice(0, slice + 1).reverse();
+    rowSlice.push(this.grid.getHex(outerTile) as Tile);
     // working backwards, move each fill
     rowSlice.forEach((tile, i, arr) => {
-      if(i + 1 === arr.length) {
-        tile.setFill("")
+      if (i + 1 === arr.length) {
+        tile.setFill("");
       } else {
-        tile.setFill(arr[i+1].fill)
+        tile.setFill(arr[i + 1].fill);
       }
-    })
+    });
   }
 }
