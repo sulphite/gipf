@@ -68,6 +68,24 @@ export class Board implements IBoard {
   }
 
   /**
+   * Helper method to find direction based on vectors.
+   * Searches a predefined array of vectors to match input vectors to a direction.
+   * @param q - q vector component
+   * @param r - r vector component
+   * @param s - s vector component
+   * @returns The matching direction if found, throws an error otherwise.
+   */
+  getDirectionByVectors(q: number, r: number, s: number): Direction {
+    const enumIndex = vectors.find(
+      (vector) => vector.q === q && vector.r === r && vector.s === s,
+    );
+    if (!enumIndex) {
+      throw new Error("No valid direction found for the given vectors");
+    }
+    return enumIndex.direction;
+  }
+
+  /**
    * Determines the direction from one coordinate to another neighboring coordinate.
    * @param coordA - The starting coordinate.
    * @param coordB - The destination coordinate.
@@ -82,7 +100,7 @@ export class Board implements IBoard {
       cubeB.s - cubeA.s,
     ];
 
-    return Board.getDirectionByVectors(...dir);
+    return this.getDirectionByVectors(...dir);
   }
 
   /**
@@ -103,31 +121,13 @@ export class Board implements IBoard {
   }
 
   /**
-   * Checks if the row can accommodate a new tile.
+   * Checks if the row can accommodate a pushed piece.
    * @param row - The row of tiles to check.
-   * @returns `true` if there's space for a new tile, `false` otherwise.
+   * @returns `true` if there's space for the pushed piece, `false` otherwise.
    */
   isPushable(row: Grid<Tile>): boolean {
     return row.toArray().some((tile) => {
       return tile.fill === "";
     });
-  }
-
-  /**
-   * Static helper method to find direction based on vectors.
-   * Searches a predefined array of vectors to match input vectors to a direction.
-   * @param q - q vector component
-   * @param r - r vector component
-   * @param s - s vector component
-   * @returns The matching direction if found, throws an error otherwise.
-   */
-  static getDirectionByVectors(q: number, r: number, s: number): Direction {
-    const enumIndex = vectors.find(
-      (vector) => vector.q === q && vector.r === r && vector.s === s,
-    );
-    if (!enumIndex) {
-      throw new Error("No valid direction found for the given vectors");
-    }
-    return enumIndex.direction;
   }
 }
