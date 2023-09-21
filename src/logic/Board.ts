@@ -11,6 +11,24 @@ import {
   Traverser,
 } from "honeycomb-grid";
 
+// Type definition for vector mapping direction to cube coordinates
+type Vector = {
+  direction: Direction;
+  q: number;
+  r: number;
+  s: number;
+};
+
+// Predefined vector values for each hexagonal direction
+const vectors: Vector[] = [
+  { direction: Direction.NE, q: 1, r: -1, s: 0 },
+  { direction: Direction.E, q: 1, r: 0, s: -1 },
+  { direction: Direction.SE, q: 0, r: 1, s: -1 },
+  { direction: Direction.SW, q: -1, r: 1, s: 0 },
+  { direction: Direction.W, q: -1, r: 0, s: 1 },
+  { direction: Direction.NW, q: 0, r: -1, s: 1 },
+];
+
 import IBoard from "../types/IBoard";
 import { Tile } from "./Tile";
 
@@ -22,9 +40,9 @@ export class Board implements IBoard {
   }
 
   /**
-   * returns all neighbour tiles of a coordinate, within grid limits
-   * @param coord a hexcoordinate
-   * @returns a set of tiles as Grid
+   * Retrieves all neighboring tiles of a given coordinate within grid boundaries.
+   * @param coord - The coordinate to search around.
+   * @returns a Grid object containing the neighboring tiles.
    */
   getNeighbours(coord: HexCoordinates): Grid<Tile> {
     const ringTraverser: Traverser<Tile> = ring({
@@ -34,23 +52,26 @@ export class Board implements IBoard {
     return this.grid.traverse(ringTraverser);
   }
   /**
-   * returns only the neighbour tiles on the inner rings.
-   * @param coord a hexcoordinate
-   * @returns a set of tiles as Grid
+   * Retrieves only the neighboring tiles located in the inner ring.
+   * @param coord - The coordinate to search around.
+   * @returns a Grid object containing the inner neighboring tiles.
    */
   getInnerNeighbours(coord: HexCoordinates): Grid<Tile> {
     return this.getNeighbours(coord).filter((tile) => !tile.isOuterTile());
   }
 
+  /**
+   * Prints the board's state to the console.
+   */
   printBoard(): void {
     console.log(this.grid.toJSON());
   }
 
   /**
-   * finds the direction from coord A to coord B
-   * @param coordA a hexcoordinate
-   * @param coordB a neighbouring hex
-   * @returns Direction
+   * Determines the direction from one coordinate to another neighboring coordinate.
+   * @param coordA - The starting coordinate.
+   * @param coordB - The destination coordinate.
+   * @returns The direction from coordA to coordB.
    */
   findDirection(coordA: HexCoordinates, coordB: HexCoordinates): Direction {
     const cubeA: CubeCoordinates = toCube(defaultHexSettings, coordA);
@@ -61,40 +82,14 @@ export class Board implements IBoard {
       cubeB.s - cubeA.s,
     ];
 
-    type Vector = {
-      direction: Direction;
-      q: number;
-      r: number;
-      s: number;
-    };
-
-    const vectors: Vector[] = [
-      { direction: Direction.NE, q: 1, r: -1, s: 0 },
-      { direction: Direction.E, q: 1, r: 0, s: -1 },
-      { direction: Direction.SE, q: 0, r: 1, s: -1 },
-      { direction: Direction.SW, q: -1, r: 1, s: 0 },
-      { direction: Direction.W, q: -1, r: 0, s: 1 },
-      { direction: Direction.NW, q: 0, r: -1, s: 1 },
-    ];
-
-    function getDirectionByVectors(q: number, r: number, s: number): Direction {
-      const enumIndex = vectors.find(
-        (vector) => vector.q === q && vector.r === r && vector.s === s,
-      );
-      if (!enumIndex) {
-        throw new Error("no valid direction found");
-      }
-      return enumIndex.direction;
-    }
-
-    return getDirectionByVectors(...dir);
+    return Board.getDirectionByVectors(...dir);
   }
 
   /**
-   * takes two tiles to calculate direction, and creates a row in that direction
-   * @param outerTile a tile on the outer ring
-   * @param innerTile an inner neighbour of outerTile
-   * @returns a row of tiles starting from innerTile
+   * Generates a row of tiles based on a given outer tile and its inner neighbor.
+   * @param outerTile - The tile on the outer ring.
+   * @param innerTile - The tile in the inner ring neighboring the outer tile.
+   * @returns a Grid object containing the tiles forming the row, excluding outer tiles.
    */
   getRow(outerTile: HexCoordinates, innerTile: HexCoordinates): Grid<Tile> {
     const dir = this.findDirection(outerTile, innerTile);
@@ -108,13 +103,31 @@ export class Board implements IBoard {
   }
 
   /**
-   * checks if a row has space to accommodate a pushed piece
-   * @param row a row of Tiles
-   * @returns boolean
+   * Checks if the row can accommodate a new tile.
+   * @param row - The row of tiles to check.
+   * @returns `true` if there's space for a new tile, `false` otherwise.
    */
   isPushable(row: Grid<Tile>): boolean {
     return row.toArray().some((tile) => {
       return tile.fill === "";
     });
+  }
+
+  /**
+   * Static helper method to find direction based on vectors.
+   * Searches a predefined array of vectors to match input vectors to a direction.
+   * @param q - q vector component
+   * @param r - r vector component
+   * @param s - s vector component
+   * @returns The matching direction if found, throws an error otherwise.
+   */
+  static getDirectionByVectors(q: number, r: number, s: number): Direction {
+    const enumIndex = vectors.find(
+      (vector) => vector.q === q && vector.r === r && vector.s === s,
+    );
+    if (!enumIndex) {
+      throw new Error("No valid direction found for the given vectors");
+    }
+    return enumIndex.direction;
   }
 }
