@@ -10,7 +10,6 @@ We use [bun](https://bun.sh/) for its super fast package installation and test r
 
 Run tests with `bun test`
 
-
 ## Design
 
 ![image](https://github.com/sulphite/gipf-back/assets/49396588/d5f61674-5621-4856-92db-1e6330c248b6)
