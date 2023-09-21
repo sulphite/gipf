@@ -1,7 +1,11 @@
 import { Direction } from "honeycomb-grid";
 import { Board } from "../logic/Board";
 
-const board = new Board();
+let board: Board;
+
+beforeEach(() => {
+  board = new Board();
+});
 
 test("creates a grid with 61 hexes", () => {
   expect(board.grid.size).toEqual(61);
@@ -45,7 +49,27 @@ test("given an outer tile not at the corner I can get a row of only the inner ti
   expect(expectedRowLength).toEqual(row.size);
 });
 
-test("given a row isPushable returns true if there is at least one empty space", () => {
+test("given a row isPushable returns `true` if there is at least one unfilled tile in the row", () => {
   const row = board.getRow([4, 0], [3, 0]);
   expect(board.isPushable(row)).toBe(true);
 });
+
+test("given a full row, isPushable returns `false` as there are no unfilled tiles in the row for the piece to move in to", () => {
+  const row = board.getRow([4, 0], [3, 0]);
+  row.forEach(tile => tile.setFill("W"));
+  expect(board.isPushable(row)).toBe(false);
+});
+
+test("given an outer coord we can get the adjoining rows that have space", () => {
+  expect(board.getPushableRows([4,-1]).length).toEqual(2);
+  board.getRow([4, -1], [3, 0]).forEach(tile => tile.setFill("B"))
+  expect(board.getPushableRows([4,-1]).length).toEqual(1);
+  board.grid.getHex([3,0])?.setFill("");
+  expect(board.getPushableRows([4,-1]).length).toEqual(2);
+})
+
+test("when there is no space we get an empty array", () => {
+  board.getRow([4, -1], [3, 0]).forEach(tile => tile.setFill("B"))
+  board.getRow([4, -1], [3, -1]).forEach(tile => tile.setFill("B"))
+  expect(board.getPushableRows([4,-1]).length).toEqual(0);
+})

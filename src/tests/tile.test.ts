@@ -1,6 +1,10 @@
 import { Board } from "../logic/Board";
 
-const board = new Board();
+let board: Board;
+
+beforeEach(() => {
+  board = new Board();
+});
 
 test("an inner tile returns false with isOuterTile", () => {
   const tile = board.grid.getHex([0, 0, 0]);
