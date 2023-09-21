@@ -11,6 +11,9 @@ import {
   Traverser,
 } from "honeycomb-grid";
 
+import IBoard from "../types/IBoard";
+import { Tile } from "./Tile";
+
 // Type definition for vector mapping direction to cube coordinates
 type Vector = {
   direction: Direction;
@@ -28,9 +31,6 @@ const vectors: Vector[] = [
   { direction: Direction.W, q: -1, r: 0, s: 1 },
   { direction: Direction.NW, q: 0, r: -1, s: 1 },
 ];
-
-import IBoard from "../types/IBoard";
-import { Tile } from "./Tile";
 
 export class Board implements IBoard {
   grid: Grid<Tile>;
