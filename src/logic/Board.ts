@@ -117,4 +117,11 @@ export class Board implements IBoard {
       return tile.fill === "";
     });
   }
+
+  getPushableRows(coord: HexCoordinates): Grid<Tile>[] {
+    const neighbours = this.getInnerNeighbours(coord);
+    const rows: Grid<Tile>[] = [];
+    neighbours.forEach(tile => rows.push(this.getRow(coord,tile)));
+    return rows.filter(row => this.isPushable(row));
+  }
 }
