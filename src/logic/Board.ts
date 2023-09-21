@@ -1,3 +1,4 @@
+// External library imports
 import {
   CubeCoordinates,
   Grid,
@@ -11,26 +12,12 @@ import {
   Traverser,
 } from "honeycomb-grid";
 
+// Internal type imports
 import IBoard from "../types/IBoard";
+import { vectors } from "../types/vectors";
+
+// Component imports
 import { Tile } from "./Tile";
-
-// Type definition for vector mapping direction to cube coordinates
-type Vector = {
-  direction: Direction;
-  q: number;
-  r: number;
-  s: number;
-};
-
-// Predefined vector values for each hexagonal direction
-const vectors: Vector[] = [
-  { direction: Direction.NE, q: 1, r: -1, s: 0 },
-  { direction: Direction.E, q: 1, r: 0, s: -1 },
-  { direction: Direction.SE, q: 0, r: 1, s: -1 },
-  { direction: Direction.SW, q: -1, r: 1, s: 0 },
-  { direction: Direction.W, q: -1, r: 0, s: 1 },
-  { direction: Direction.NW, q: 0, r: -1, s: 1 },
-];
 
 export class Board implements IBoard {
   grid: Grid<Tile>;
