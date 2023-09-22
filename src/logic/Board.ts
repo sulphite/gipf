@@ -56,24 +56,6 @@ export class Board implements IBoard {
   }
 
   /**
-   * Helper method to find direction based on vectors.
-   * Searches a predefined array of vectors to match input vectors to a direction.
-   * @param q - q vector component
-   * @param r - r vector component
-   * @param s - s vector component
-   * @returns The matching direction if found, throws an error otherwise.
-   */
-  getDirectionByVectors(q: number, r: number, s: number): Direction {
-    const enumIndex = vectors.find(
-      (vector) => vector.q === q && vector.r === r && vector.s === s,
-    );
-    if (!enumIndex) {
-      throw new Error("No valid direction found for the given vectors");
-    }
-    return enumIndex.direction;
-  }
-
-  /**
    * Determines the direction from one coordinate to another neighboring coordinate.
    * @param coordA - The starting coordinate.
    * @param coordB - The destination coordinate.
@@ -89,6 +71,24 @@ export class Board implements IBoard {
     ];
 
     return this.getDirectionByVectors(...dir);
+  }
+
+  /**
+   * Helper method to find direction based on vectors.
+   * Searches a predefined array of vectors to match input vectors to a direction.
+   * @param q - q vector component
+   * @param r - r vector component
+   * @param s - s vector component
+   * @returns The matching direction if found, throws an error otherwise.
+   */
+  private getDirectionByVectors(q: number, r: number, s: number): Direction {
+    const enumIndex = vectors.find(
+      (vector) => vector.q === q && vector.r === r && vector.s === s,
+    );
+    if (!enumIndex) {
+      throw new Error("No valid direction found for the given vectors");
+    }
+    return enumIndex.direction;
   }
 
   /**
@@ -170,26 +170,26 @@ export class Board implements IBoard {
    * @returns `true` if four consecutive identical fills are found, `false` otherwise.
    */
   hasFourConsecutiveFills(row: Grid<Tile>): boolean {
-    const tileFillsArray = row.toArray().map((tile) => tile.fill);
+    const tilesArray = row.toArray().map((tile) => tile.fill);
     let startIndex: number = 0;
     let endIndex: number = 4;
     let consecutiveFills: string[];
-    let resultIndices: [number, number] | boolean = false;
+    let consecutiveIndices: [number, number] | boolean = false;
 
-    while (endIndex <= tileFillsArray.length) {
-      consecutiveFills = tileFillsArray.slice(startIndex, endIndex);
+    while (endIndex <= tilesArray.length) {
+      consecutiveFills = tilesArray.slice(startIndex, endIndex);
       if (
         consecutiveFills.every(
           (piece) => piece && piece === consecutiveFills[0],
         )
       ) {
-        resultIndices = [startIndex, endIndex];
+        consecutiveIndices = [startIndex, endIndex];
         endIndex += 1;
       } else {
         startIndex += 1;
         endIndex += 1;
       }
     }
-    return resultIndices ? true : false;
+    return consecutiveIndices ? true : false;
   }
 }
