@@ -38,6 +38,7 @@ export class Board implements IBoard {
     }) as Traverser<Tile>;
     return this.grid.traverse(ringTraverser);
   }
+
   /**
    * Retrieves only the neighboring tiles located in the inner ring.
    * @param coord - The coordinate to search around.
@@ -118,27 +119,73 @@ export class Board implements IBoard {
     });
   }
 
+  /**
+   * Gets rows adjacent to a given coordinate where a piece can be pushed.
+   * @param coord - The coordinate to search around.
+   * @returns an array of Grid<Tile> objects, each containing a row that can accommodate a pushed piece.
+   */
   getPushableRows(coord: HexCoordinates): Grid<Tile>[] {
     const neighbours = this.getInnerNeighbours(coord);
-    const rows: Grid<Tile>[] = [];
-    neighbours.forEach((tile) => rows.push(this.getRow(coord, tile)));
-    return rows.filter((row) => this.isPushable(row));
+
+    return neighbours.reduce((pushableRows: Grid<Tile>[], tile: Tile) => {
+      const row = this.getRow(coord, tile);
+      if (this.isPushable(row)) {
+        pushableRows.push(row);
+      }
+      return pushableRows;
+    }, []);
   }
 
-  pushFill(outerTile: HexCoordinates, innerTile: HexCoordinates): void {
-    // get the row
-    const rowArray: Tile[] = this.getRow(outerTile, innerTile).toArray();
-    // truncate the row after the first empty
-    const slice: number = rowArray.findIndex((tile) => tile.fill === "");
-    const rowSlice = rowArray.slice(0, slice + 1).reverse();
-    rowSlice.push(this.grid.getHex(outerTile) as Tile);
-    // working backwards, move each fill
-    rowSlice.forEach((tile, i, arr) => {
+  /**
+   * Pushes a piece from an outer tile into a row up to the first empty tile.
+   * @param outerTile - The tile on the outer ring from which the piece originates.
+   * @param innerTile - The tile in the inner ring neighboring the outer tile.
+   */
+  pushPiece(outerTile: HexCoordinates, innerTile: HexCoordinates): void {
+    // Get the row, truncate after the first empty tile, and reverse it
+    const firstEmptyIndex = this.getRow(outerTile, innerTile)
+      .toArray()
+      .findIndex((tile) => tile.fill === "");
+    const rowArray = this.getRow(outerTile, innerTile)
+      .toArray()
+      .slice(0, firstEmptyIndex + 1)
+      .reverse();
+
+    // Add the tile from the outerTile coordinates into the array
+    rowArray.push(this.grid.getHex(outerTile) as Tile);
+
+    // Update each tile's fill, working backwards
+    rowArray.forEach((tile, i, arr) => {
       if (i + 1 === arr.length) {
         tile.setFill("");
       } else {
         tile.setFill(arr[i + 1].fill);
       }
     });
+  }
+
+  /**
+   * Checks if a row contains four consecutive tiles with identical non-empty fills.
+   * @param row - The row of tiles to check.
+   * @returns `true` if four consecutive identical fills are found, `false` otherwise.
+   */
+  hasFourConsecutiveFills(row: Grid<Tile>): boolean {
+    const tileFillsArray = row.toArray().map((tile) => tile.fill);
+    let startIndex: number = 0;
+    let endIndex: number = 4;
+    let consecutiveFills: string[];
+    let resultIndices: [number, number] | boolean = false;
+
+    while (endIndex <= tileFillsArray.length) {
+      consecutiveFills = tileFillsArray.slice(startIndex, endIndex);
+      if (consecutiveFills.every((piece) => piece && piece === consecutiveFills[0])) {
+        resultIndices = [startIndex, endIndex];
+        endIndex += 1;
+      } else {
+        startIndex += 1;
+        endIndex += 1;
+      }
+    }
+    return resultIndices ? true : false;
   }
 }
