@@ -1,4 +1,4 @@
-import { Board } from "../logic/Board";
+import { Board } from "../../logic/Board";
 
 let board: Board;
 
