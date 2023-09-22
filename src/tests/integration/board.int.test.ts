@@ -56,5 +56,7 @@ test("given a row I can check if it contains 4 consecutive pieces of the same co
     .getRow([4, -1], [3, 0])
     .forEach((tile) => tile.setFill("B"));
   expect(board.hasFourConsecutiveFills(filledRow)).toBe(true);
-  expect(board.hasFourConsecutiveFills(board.getRow([4, -1], [3, -1]))).toBe(false);
+  expect(board.hasFourConsecutiveFills(board.getRow([4, -1], [3, -1]))).toBe(
+    false,
+  );
 });

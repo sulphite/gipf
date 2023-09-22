@@ -178,7 +178,11 @@ export class Board implements IBoard {
 
     while (endIndex <= tileFillsArray.length) {
       consecutiveFills = tileFillsArray.slice(startIndex, endIndex);
-      if (consecutiveFills.every((piece) => piece && piece === consecutiveFills[0])) {
+      if (
+        consecutiveFills.every(
+          (piece) => piece && piece === consecutiveFills[0],
+        )
+      ) {
         resultIndices = [startIndex, endIndex];
         endIndex += 1;
       } else {
