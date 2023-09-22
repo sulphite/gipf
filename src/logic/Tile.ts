@@ -20,4 +20,8 @@ export class Tile extends Hex implements ITile {
   setFill(state: string): void {
     this.fill = state;
   }
+
+  clear(): void {
+    this.fill = "";
+  }
 }

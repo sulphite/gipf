@@ -5,6 +5,7 @@ interface ITile extends Hex {
   isOuterTile(): boolean;
   getFill(): string;
   setFill(state: string): void;
+  clear(): void;
 }
 
 export default ITile;

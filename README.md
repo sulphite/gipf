@@ -10,8 +10,11 @@ We use [bun](https://bun.sh/) for its super fast package installation and test r
 
 Run tests with `bun test`
 
-
 ## Design
+
+Cube coordinate system for hexagonal grids (from redblobgames.com)
+![image](https://github.com/sulphite/gipf-back/assets/49396588/bdce33c3-5a62-4cab-b3ad-fd6c22b01e2c)
+
 
 ![image](https://github.com/sulphite/gipf-back/assets/49396588/d5f61674-5621-4856-92db-1e6330c248b6)
 
