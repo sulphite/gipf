@@ -62,8 +62,8 @@ test("given a row I can check if it contains 4 consecutive pieces of the same co
 });
 
 test("I can check the entire board for rows containing 4 consecutive pieces of the same colour and receive matches", () => {
-  expect(board.checkAllRows()).toHaveLength(0)
+  expect(board.checkAllRows()).toHaveLength(0);
   board.getRow([4, -1], [3, 0]).forEach((tile) => tile.setFill("B"));
-  let result = board.checkAllRows()
-  expect(result).toHaveLength(1)
-})
+  const result = board.checkAllRows();
+  expect(result).toHaveLength(1);
+});

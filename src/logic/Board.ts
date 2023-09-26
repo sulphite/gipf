@@ -21,11 +21,11 @@ import { Tile } from "./Tile";
 
 export class Board implements IBoard {
   grid: Grid<Tile>;
-  uniqueRows: Grid<Tile>[]
+  uniqueRows: Grid<Tile>[];
 
   constructor() {
     this.grid = new Grid(Tile, spiral({ radius: 4 }));
-    this.uniqueRows = this.getUniqueRows()
+    this.uniqueRows = this.getUniqueRows();
   }
 
   /**
@@ -196,13 +196,13 @@ export class Board implements IBoard {
   }
 
   checkAllRows(): Grid<Tile>[] {
-    const matchedRows: Grid<Tile>[] = []
+    const matchedRows: Grid<Tile>[] = [];
     this.uniqueRows.forEach((row) => {
-      if(this.hasFourConsecutiveFills(row)) {
-        matchedRows.push(row)
+      if (this.hasFourConsecutiveFills(row)) {
+        matchedRows.push(row);
       }
-    })
-    return matchedRows
+    });
+    return matchedRows;
   }
 
   /**
