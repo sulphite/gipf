@@ -59,3 +59,8 @@ test("given a full row, isPushable returns `false` as there are no unfilled tile
   row.forEach((tile) => tile.setFill("W"));
   expect(board.isPushable(row)).toBe(false);
 });
+
+test("get unique rows gives us 21 rows", () => {
+  const uniqueRows = board.getUniqueRows();
+  expect(uniqueRows).toHaveLength(21);
+});

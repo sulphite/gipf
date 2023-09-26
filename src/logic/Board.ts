@@ -21,9 +21,11 @@ import { Tile } from "./Tile";
 
 export class Board implements IBoard {
   grid: Grid<Tile>;
+  uniqueRows: Grid<Tile>[];
 
   constructor() {
     this.grid = new Grid(Tile, spiral({ radius: 4 }));
+    this.uniqueRows = this.getUniqueRows();
   }
 
   /**
@@ -191,5 +193,61 @@ export class Board implements IBoard {
       }
     }
     return consecutiveIndices ? true : false;
+  }
+
+  checkAllRows(): Grid<Tile>[] {
+    const matchedRows: Grid<Tile>[] = [];
+    this.uniqueRows.forEach((row) => {
+      if (this.hasFourConsecutiveFills(row)) {
+        matchedRows.push(row);
+      }
+    });
+    return matchedRows;
+  }
+
+  /**
+   * Gets all unique rows in all directions.
+   * @returns an array of Grid<Tile> objects, each containing a unique row.
+   */
+  getUniqueRows(): Grid<Tile>[] {
+    const uniqueRows: Grid<Tile>[] = [];
+
+    // Assuming the grid is centered at 0,0
+    // Only need to check one sixth of the directions due to symmetry
+    const startingTiles = this.grid.filter(
+      (tile) =>
+        Math.abs(tile.q) === 4 ||
+        Math.abs(tile.r) === 4 ||
+        Math.abs(tile.s) === 4,
+    );
+
+    startingTiles.forEach((outerTile) => {
+      const innerNeighbours = this.getInnerNeighbours(outerTile);
+      innerNeighbours.forEach((innerTile) => {
+        const row = this.getRow(outerTile, innerTile);
+        if (
+          !uniqueRows.some((existingRow) => this.areRowsEqual(existingRow, row))
+        ) {
+          uniqueRows.push(row);
+        }
+      });
+    });
+
+    return uniqueRows;
+  }
+
+  private areRowsEqual(firstRow: Grid<Tile>, secondRow: Grid<Tile>): boolean {
+    if (firstRow.size !== secondRow.size) return false;
+
+    for (const firstTile of firstRow) {
+      const secondTile = secondRow.getHex([
+        firstTile.q,
+        firstTile.r,
+        firstTile.s,
+      ]);
+      if (!secondTile) return false;
+    }
+
+    return true;
   }
 }
