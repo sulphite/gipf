@@ -195,31 +195,37 @@ export class Board implements IBoard {
     return consecutiveIndices;
   }
 
-  clearFills(row: Grid<Tile>, indices:[number,number]): {B: number, W: number} {
+  clearFills(
+    row: Grid<Tile>,
+    indices: [number, number],
+  ): { B: number; W: number } {
     let [start, end] = indices;
     const tileArray = row.toArray();
-    const tileCounts = {"B": 0, "W": 0}
+    const tileCounts = { B: 0, W: 0 };
     for (let index = end; index <= tileArray.length; index++) {
-      if(tileArray[index] && tileArray[index].fill) {
+      if (tileArray[index] && tileArray[index].fill) {
         end += 1;
-      } else {break;}
+      } else {
+        break;
+      }
     }
     for (let index = start - 1; index >= 0; index--) {
-      if(tileArray[index] && tileArray[index].fill) {
+      if (tileArray[index] && tileArray[index].fill) {
         start -= 1;
-      } else {break;}
+      } else {
+        break;
+      }
     }
     for (let index = start; index < end; index++) {
-      let tile = tileArray[index]
-      if(tile.fill === 'B') {
+      const tile = tileArray[index];
+      if (tile.fill === "B") {
         tileCounts.B += 1;
-      }
-      else if(tile.fill === 'W') {
+      } else if (tile.fill === "W") {
         tileCounts.W += 1;
       }
-      tile.clear()
+      tile.clear();
     }
-    return tileCounts
+    return tileCounts;
   }
 
   // clearFills(row: Grid<Tile>, indices:[number,number]): void {
@@ -231,10 +237,10 @@ export class Board implements IBoard {
 
   // }
 
-  checkAllRows(): [Grid<Tile>, [number,number]][] {
-    const matchedRows: [Grid<Tile>, [number,number]][] = [];
+  checkAllRows(): [Grid<Tile>, [number, number]][] {
+    const matchedRows: [Grid<Tile>, [number, number]][] = [];
     this.uniqueRows.forEach((row) => {
-      const indices = this.hasFourConsecutiveFills(row)
+      const indices = this.hasFourConsecutiveFills(row);
       if (indices) {
         matchedRows.push([row, indices]);
       }
