@@ -171,7 +171,7 @@ export class Board implements IBoard {
    * @param row - The row of tiles to check.
    * @returns `true` if four consecutive identical fills are found, `false` otherwise.
    */
-  hasFourConsecutiveFills(row: Grid<Tile>): boolean {
+  hasFourConsecutiveFills(row: Grid<Tile>): [number, number] | false {
     const tilesArray = row.toArray().map((tile) => tile.fill);
     let startIndex: number = 0;
     let endIndex: number = 4;
@@ -192,14 +192,51 @@ export class Board implements IBoard {
         endIndex += 1;
       }
     }
-    return consecutiveIndices ? true : false;
+    return consecutiveIndices;
   }
 
-  checkAllRows(): Grid<Tile>[] {
-    const matchedRows: Grid<Tile>[] = [];
+  clearFills(row: Grid<Tile>, indices:[number,number]): {B: number, W: number} {
+    let [start, end] = indices;
+    const tileArray = row.toArray();
+    const tileCounts = {"B": 0, "W": 0}
+    for (let index = end; index <= tileArray.length; index++) {
+      if(tileArray[index] && tileArray[index].fill) {
+        end += 1;
+      } else {break;}
+    }
+    for (let index = start - 1; index >= 0; index--) {
+      if(tileArray[index] && tileArray[index].fill) {
+        start -= 1;
+      } else {break;}
+    }
+    for (let index = start; index < end; index++) {
+      let tile = tileArray[index]
+      if(tile.fill === 'B') {
+        tileCounts.B += 1;
+      }
+      else if(tile.fill === 'W') {
+        tileCounts.W += 1;
+      }
+      tile.clear()
+    }
+    return tileCounts
+  }
+
+  // clearFills(row: Grid<Tile>, indices:[number,number]): void {
+  //   let [start, end] = indices;
+  //   for (let index = start; index < end; index++) {
+  //     let tile = row.toArray()[index]
+  //     tile.clear()
+  //   }
+
+  // }
+
+  checkAllRows(): [Grid<Tile>, [number,number]][] {
+    const matchedRows: [Grid<Tile>, [number,number]][] = [];
     this.uniqueRows.forEach((row) => {
-      if (this.hasFourConsecutiveFills(row)) {
-        matchedRows.push(row);
+      const indices = this.hasFourConsecutiveFills(row)
+      if (indices) {
+        matchedRows.push([row, indices]);
       }
     });
     return matchedRows;

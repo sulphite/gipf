@@ -55,15 +55,51 @@ test("given a row I can check if it contains 4 consecutive pieces of the same co
   const filledRow = board
     .getRow([4, -1], [3, 0])
     .forEach((tile) => tile.setFill("B"));
-  expect(board.hasFourConsecutiveFills(filledRow)).toBe(true);
+  const result = board.hasFourConsecutiveFills(filledRow)
+  expect(result).toBeTruthy();
   expect(board.hasFourConsecutiveFills(board.getRow([4, -1], [3, -1]))).toBe(
     false,
   );
+});
+
+test("given a longer row I can check if it contains 4 consecutive pieces of the same colour", () => {
+  const filledRow = board
+    .getRow([4, 0], [3, 0])
+    .forEach((tile) => tile.setFill("B"));
+  board.grid.getHex([-2,0])?.clear()
+  const result = board.hasFourConsecutiveFills(filledRow)
+  console.log(result)
+  expect(result).toBeTruthy();
 });
 
 test("I can check the entire board for rows containing 4 consecutive pieces of the same colour and receive matches", () => {
   expect(board.checkAllRows()).toHaveLength(0);
   board.getRow([4, -1], [3, 0]).forEach((tile) => tile.setFill("B"));
   const result = board.checkAllRows();
+  console.log(result[0][1])
   expect(result).toHaveLength(1);
 });
+
+test("clearFills clears all fills of a full row", () => {
+  const row = board.getRow([4, -1], [3, 0]);
+  row.forEach((tile) => tile.setFill("W"));
+  board.checkAllRows().forEach((matchedRow) => board.clearFills(...matchedRow))
+  expect(board.isPushable(row)).toBe(true)
+  expect(board.grid.getHex([3,0])?.fill).toBe("")
+})
+
+test("clearFills does not remove pieces that are not adjacent to the row of 4", () => {
+  //set up filled row
+  const row = board.getRow([4, 0], [3, 0]);
+  row.forEach((tile) => tile.setFill("W"));
+  // make a gap
+  board.grid.getHex([-2,0])?.clear();
+  board.grid.getHex([-1,0])?.setFill("B");
+  const matchedRows = board.checkAllRows()
+  const result = board.clearFills(...matchedRows[0])
+  console.log(row.toArray().map(tile => tile.fill), result)
+  let filledTileCount = 0;
+  row.toArray().forEach((tile) => {if(tile.fill) {filledTileCount += 1}});
+  expect(filledTileCount).toBe(1)
+  expect(result).toEqual({B: 1, W: 4})
+})
