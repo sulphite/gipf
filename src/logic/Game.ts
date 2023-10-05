@@ -34,15 +34,11 @@ export class Game {
     } else {
       matches.forEach((matchedRow) => {
         const piecesToReturn = this.board.clearFills(...matchedRow);
-        if(piecesToReturn.B > piecesToReturn.W) {
-          this.score.black += piecesToReturn.B
+        if (piecesToReturn.B > piecesToReturn.W) {
+          this.score.black += piecesToReturn.B;
         } else {
-          this.score.white += piecesToReturn.W
+          this.score.white += piecesToReturn.W;
         }
-        // this.score = {
-        //   black: this.score.black + piecesToReturn.B,
-        //   white: this.score.white + piecesToReturn.W,
-        // };
       });
     }
   }

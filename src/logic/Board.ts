@@ -236,8 +236,8 @@ export class Board implements IBoard {
       }
       tile.clear();
     }
-    tileCounts.B = tileCounts.B < 4 ? -tileCounts.B : tileCounts.B
-    tileCounts.W = tileCounts.W < 4 ? -tileCounts.W : tileCounts.W
+    tileCounts.B = tileCounts.B < 4 ? -tileCounts.B : tileCounts.B;
+    tileCounts.W = tileCounts.W < 4 ? -tileCounts.W : tileCounts.W;
     return tileCounts;
   }
 
