@@ -13,16 +13,43 @@ export class Game {
   }
 
   placePiece(coord: HexCoordinates) {
-    const player = this.currentPlayerBlack ? "black" : "white"
-    const legalRows = this.board.getInnerNeighbours(coord).filter(tile => this.board.isPushable(this.board.getRow(coord, tile)))
-    if(legalRows.size > 0) {
-      this.board.fillTile(coord, player)
-      this.score[player] -= 1
+    const player = this.currentPlayerBlack ? "black" : "white";
+    const legalTiles = this.board
+      .getInnerNeighbours(coord)
+      .filter((tile) => this.board.isPushable(this.board.getRow(coord, tile)))
+      .toArray();
+    if (legalTiles.length > 0) {
+      this.board.fillTile(coord, player);
+      this.score[player] -= 1;
     }
-    return this.board.printBoard()
+    return legalTiles;
+    // return this.board.printBoard()
   }
 
+  makeMove(coordOuter: HexCoordinates, coordInner: HexCoordinates) {
+    this.board.pushPiece(coordOuter, coordInner);
+    const matches = this.board.checkAllRows();
+    if (matches.length > 1) {
+      return matches;
+    } else {
+      matches.forEach((matchedRow) => {
+        const piecesToReturn = this.board.clearFills(...matchedRow);
+        if(piecesToReturn.B > piecesToReturn.W) {
+          this.score.black += piecesToReturn.B
+        } else {
+          this.score.white += piecesToReturn.W
+        }
+        // this.score = {
+        //   black: this.score.black + piecesToReturn.B,
+        //   white: this.score.white + piecesToReturn.W,
+        // };
+      });
+    }
+  }
 
+  endTurn(): void {
+    this.currentPlayerBlack = !this.currentPlayerBlack;
+  }
   /*
     game turn:
     - check that current player has tiles remaining; end game if not
