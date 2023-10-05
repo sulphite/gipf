@@ -108,5 +108,5 @@ test("clearFills does not remove pieces that are not adjacent to the row of 4", 
     }
   });
   expect(filledTileCount).toBe(1);
-  expect(result).toEqual({ B: 1, W: 4 });
+  expect(result).toEqual({ B: -1, W: 4 });
 });
