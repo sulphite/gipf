@@ -5,11 +5,21 @@ export class Game {
   board;
   score: { black: number; white: number };
   currentPlayerBlack: boolean;
+  winner: null | string;
 
   constructor() {
     this.board = new Board();
     this.score = { black: 15, white: 15 };
     this.currentPlayerBlack = true;
+    this.winner = null;
+  }
+
+  checkGameEnd(): void {
+    if (this.currentPlayerBlack && this.score.black == 0) {
+      this.winner = "white";
+    } else if (!this.currentPlayerBlack && this.score.white == 0) {
+      this.winner = "black";
+    }
   }
 
   placePiece(coord: HexCoordinates) {
