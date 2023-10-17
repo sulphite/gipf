@@ -2,7 +2,7 @@ import { ServerWebSocket } from "bun";
 
 export class Room {
   id: string;
-  sockets: ServerWebSocket[];
+  sockets: ServerWebSocket<unknown>[];
   isFull: boolean;
 
   constructor(id: string) {
@@ -11,7 +11,7 @@ export class Room {
     this.isFull = false
   }
 
-  addSocket(ws: ServerWebSocket) {
+  addSocket(ws: ServerWebSocket<unknown>) {
     this.sockets.push(ws)
     if(this.sockets.length == 2) {
       this.isFull = true;
