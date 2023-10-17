@@ -1,6 +1,7 @@
 import { customAlphabet } from 'nanoid';
 import { Room } from './Room';
 import { ServerWebSocket } from 'bun';
+
 const alphabet = '0123456789ABCDEFGHJ';
 const nanoid = customAlphabet(alphabet, 4);
 
@@ -25,6 +26,7 @@ export class Lobby {
   }
 
   getOpenRoom() {
-    let room = Object.entries(this.rooms).find((entry) => entry[1].isFull = false)
+    const roomEntry = Object.entries(this.rooms).find((entry) => entry[1].isFull = false)
+    return roomEntry ? roomEntry[1] : this.createRoom();
   }
 }
