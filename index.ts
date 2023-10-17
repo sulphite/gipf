@@ -1,9 +1,10 @@
+import { nanoid } from "nanoid";
 import { Lobby } from "./src/Lobby";
 
 const port = 3000;
 const lobby = new Lobby();
 
-const server = Bun.serve({
+const server = Bun.serve<{name: string;}>({
   port: port,
   websocket: {
     open(ws) {
@@ -29,16 +30,19 @@ const server = Bun.serve({
         let room = lobby.getOpenRoom();
         room.addSocket(ws);
         console.log(`added ${message.name} to room ${room.id}`)
+        ws.send(JSON.stringify({ type: "roomJoined", room: room.id }))
       }
 
       const out = `${ws.data.name}: ${msg}`;
       console.log(out)
-      if (ws.publishText("room", out) !== out.length) {
-        throw new Error("Failed to publish message");
-      }
+
+      // if (ws.publishText("room", out) !== out.length) {
+      //   throw new Error("Failed to publish message");
+      // }
     },
     close(ws) {
-      // remainingClients++;
+      lobby.removePlayer(ws.data.name)
+      console.log(`${ws.data.name} left. ${Object.keys(lobby.players).length} players remain`)
     },
 
     perMessageDeflate: false,
@@ -49,7 +53,7 @@ const server = Bun.serve({
     if (
       server.upgrade(req, {
         data: {
-          name: new URL(req.url).searchParams.get("name") || "ClientName",
+          name: nanoid(),
         },
       })
     )

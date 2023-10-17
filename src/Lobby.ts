@@ -25,6 +25,10 @@ export class Lobby {
     this.players[name] = ws;
   }
 
+  removePlayer(name:string) {
+    delete this.players[name];
+  }
+
   getOpenRoom() {
     const roomEntry = Object.entries(this.rooms).find((entry) => entry[1].isFull = false)
     return roomEntry ? roomEntry[1] : this.createRoom();
