@@ -1,5 +1,5 @@
 export interface Message {
-  type: "join" | "roomJoined" | "lobby";
+  type: "join" | "roomJoined" | "lobby" | "move";
   data: any;
 }
 
@@ -16,4 +16,9 @@ export interface JoinData extends Message {
 export interface LobbyData extends Message {
   type: "lobby";
   data: {msg: string};
+}
+
+export interface MoveData extends Message {
+  type: "move";
+  data: {};
 }

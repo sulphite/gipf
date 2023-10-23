@@ -1,12 +1,16 @@
 import { nanoid } from "nanoid";
 import { Lobby } from "./src/Lobby";
-import { Message, JoinData, RoomJoinedData, LobbyData } from "./src/types/message";
+import { Message, JoinData, RoomJoinedData, LobbyData, MoveData } from "./src/types/message";
 
 const port = 3000;
 const lobby = new Lobby();
 
 const isJoinMessage = (msg: Message): msg is JoinData => {
   return msg.type === 'join';
+}
+
+const isMoveMessage = (msg: Message): msg is MoveData => {
+  return msg.type === 'move';
 }
 
 const server = Bun.serve<{name: string;}>({
@@ -31,6 +35,12 @@ const server = Bun.serve<{name: string;}>({
         console.log(`added ${message.data.name} to room ${room.id}`)
         let response: RoomJoinedData = { type: "roomJoined", data: {room: room.id} }
         ws.send(JSON.stringify(response))
+      }
+
+      // player makes a move
+      if(isMoveMessage(message)) {
+        console.log(message.data)
+        // handle game move
       }
 
       const out = `${ws.data.name}: ${msg}`;
