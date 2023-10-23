@@ -29,10 +29,10 @@ export class Lobby {
     delete this.players[name];
   }
 
-  getOpenRoom() {
-    const roomEntry = Object.entries(this.rooms).find(
-      (entry) => (entry[1].isFull = false),
+  getOpenRoom(): Room {
+    const partiallyFilledRoom = Object.values(this.rooms).find(
+      (room: Room) => room.isFull === false,
     );
-    return roomEntry ? roomEntry[1] : this.createRoom();
+    return partiallyFilledRoom ? partiallyFilledRoom : this.createRoom();
   }
 }

@@ -1,6 +1,6 @@
 export interface Message {
   type: "join" | "roomJoined" | "lobby" | "move";
-  data: any;
+  data: unknown;
 }
 
 export interface RoomJoinedData extends Message {
@@ -20,5 +20,5 @@ export interface LobbyData extends Message {
 
 export interface MoveData extends Message {
   type: "move";
-  data: {};
+  data: object;
 }
