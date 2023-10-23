@@ -1,8 +1,13 @@
 import { nanoid } from "nanoid";
 import { Lobby } from "./src/Lobby";
+import { Message, JoinData, RoomJoinedData, LobbyData } from "./src/types/message";
 
 const port = 3000;
 const lobby = new Lobby();
+
+const isJoinMessage = (msg: Message): msg is JoinData => {
+  return msg.type === 'join';
+}
 
 const server = Bun.serve<{name: string;}>({
   port: port,
@@ -10,21 +15,22 @@ const server = Bun.serve<{name: string;}>({
     open(ws) {
       lobby.addPlayer(ws.data.name, ws);
       ws.subscribe("lobby")
-      let connectionMessage = JSON.stringify({type: "lobby", data:`${ws.data.name} connected. ${Object.keys(lobby.players).length} players are here`})
+      let connectionMessage: LobbyData = {type: "lobby", data:{msg: `${ws.data.name} connected. ${Object.keys(lobby.players).length} players are here`}}
       console.log(connectionMessage);
-      ws.publishText("lobby", connectionMessage)
+      ws.publishText("lobby", JSON.stringify(connectionMessage))
     },
     message(ws, msg: string) {
-      const message = JSON.parse(msg);
+      const message: Message = JSON.parse(msg);
 
-      // join event
-      if(message.type == "join") {
+      // join a room
+      if(isJoinMessage(message)) {
         let room = lobby.getOpenRoom();
         room.addSocket(ws);
         ws.unsubscribe("lobby");
         ws.subscribe(room.id);
-        console.log(`added ${message.name} to room ${room.id}`)
-        ws.send(JSON.stringify({ type: "roomJoined", room: room.id }))
+        console.log(`added ${message.data.name} to room ${room.id}`)
+        let response: RoomJoinedData = { type: "roomJoined", data: {room: room.id} }
+        ws.send(JSON.stringify(response))
       }
 
       const out = `${ws.data.name}: ${msg}`;
