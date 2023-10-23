@@ -8,14 +8,13 @@ export class Room {
   constructor(id: string) {
     this.id = id;
     this.sockets = [];
-    this.isFull = false
+    this.isFull = false;
   }
 
   addSocket(ws: ServerWebSocket<unknown>) {
-    this.sockets.push(ws)
-    if(this.sockets.length == 2) {
+    this.sockets.push(ws);
+    if (this.sockets.length == 2) {
       this.isFull = true;
     }
   }
-
 }
