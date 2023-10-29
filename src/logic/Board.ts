@@ -139,7 +139,7 @@ export class Board implements IBoard {
   }
 
   /**
-   * Pushes a piece from an outer tile into a row up to the first empty tile.
+   * Pushes a piece from an outer tile into a row and updates positions of other pieces in the row.
    * @param outerTile - The tile on the outer ring from which the piece originates.
    * @param innerTile - The tile in the inner ring neighboring the outer tile.
    */
@@ -169,9 +169,9 @@ export class Board implements IBoard {
   /**
    * Checks if a row contains four consecutive tiles with identical non-empty fills.
    * @param row - The row of tiles to check.
-   * @returns `true` if four consecutive identical fills are found, `false` otherwise.
+   * @returns a pair of indices if four consecutive identical fills are found, `false` otherwise.
    */
-  hasFourConsecutiveFills(row: Grid<Tile>): boolean {
+  hasFourConsecutiveFills(row: Grid<Tile>): [number, number] | false {
     const tilesArray = row.toArray().map((tile) => tile.fill);
     let startIndex: number = 0;
     let endIndex: number = 4;
@@ -192,14 +192,58 @@ export class Board implements IBoard {
         endIndex += 1;
       }
     }
-    return consecutiveIndices ? true : false;
+    return consecutiveIndices;
   }
 
-  checkAllRows(): Grid<Tile>[] {
-    const matchedRows: Grid<Tile>[] = [];
+  /**
+   *
+   * @param row
+   * @param indices
+   * @returns an object with the counts of black and white pieces removed
+   */
+  clearFills(
+    row: Grid<Tile>,
+    indices: [number, number],
+  ): { B: number; W: number } {
+    let [start, end] = indices;
+    const tileArray = row.toArray();
+    const tileCounts = { B: 0, W: 0 };
+    for (let index = end; index <= tileArray.length; index++) {
+      if (tileArray[index] && tileArray[index].fill) {
+        end += 1;
+      } else {
+        break;
+      }
+    }
+    for (let index = start - 1; index >= 0; index--) {
+      if (tileArray[index] && tileArray[index].fill) {
+        start -= 1;
+      } else {
+        break;
+      }
+    }
+    for (let index = start; index < end; index++) {
+      const tile = tileArray[index];
+      if (tile.fill === "B") {
+        tileCounts.B += 1;
+      } else if (tile.fill === "W") {
+        tileCounts.W += 1;
+      }
+      tile.clear();
+    }
+    return tileCounts;
+  }
+
+  /**
+   * checks all possible rows in the board for 4 consecutive same colour pieces
+   * @returns an array of matches, each match containing the row and the indices of the start and end points of the block of 4.
+   */
+  checkAllRows(): [Grid<Tile>, [number, number]][] {
+    const matchedRows: [Grid<Tile>, [number, number]][] = [];
     this.uniqueRows.forEach((row) => {
-      if (this.hasFourConsecutiveFills(row)) {
-        matchedRows.push(row);
+      const indices = this.hasFourConsecutiveFills(row);
+      if (indices) {
+        matchedRows.push([row, indices]);
       }
     });
     return matchedRows;
