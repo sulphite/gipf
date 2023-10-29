@@ -57,6 +57,11 @@ export class Board implements IBoard {
     console.log(this.grid.toJSON());
   }
 
+  fillTile(coord: HexCoordinates, player: "black" | "white"): void {
+    const fill = player == "black" ? "B" : "W";
+    this.grid.getHex(coord)?.setFill(fill);
+  }
+
   /**
    * Determines the direction from one coordinate to another neighboring coordinate.
    * @param coordA - The starting coordinate.
@@ -231,6 +236,8 @@ export class Board implements IBoard {
       }
       tile.clear();
     }
+    tileCounts.B = tileCounts.B < 4 ? -tileCounts.B : tileCounts.B;
+    tileCounts.W = tileCounts.W < 4 ? -tileCounts.W : tileCounts.W;
     return tileCounts;
   }
 
