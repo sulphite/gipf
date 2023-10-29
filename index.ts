@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { Lobby } from "./src/Lobby";
+import { Lobby } from "./src/websocket/Lobby";
 import { Message, JoinData, RoomJoinedData, LobbyData, MoveData } from "./src/types/message";
 
 const port = 3000;
@@ -45,10 +45,6 @@ const server = Bun.serve<{name: string;}>({
 
       const out = `${ws.data.name}: ${msg}`;
       console.log(out)
-
-      // if (ws.publishText("room", out) !== out.length) {
-      //   throw new Error("Failed to publish message");
-      // }
     },
     close(ws) {
       lobby.removePlayer(ws.data.name)
