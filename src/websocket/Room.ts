@@ -12,7 +12,7 @@ export class Room {
     this.id = id;
     this.sockets = [];
     this.isFull = false;
-    this.game = new Game;
+    this.game = new Game();
     this.gameStarted = false;
   }
 
