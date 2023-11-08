@@ -16,13 +16,13 @@ export class Room {
     this.gameStarted = false;
   }
 
-  addSocket(ws: ServerWebSocket<{name: string}>) {
+  addSocket(ws: ServerWebSocket<{ name: string }>) {
     this.sockets.push(ws);
     if (this.sockets.length == 2) {
       this.isFull = true;
-      this.game.player2 = ws.data.name
+      this.game.player2 = ws.data.name;
     } else {
-      this.game.player1 = ws.data.name
+      this.game.player1 = ws.data.name;
     }
   }
 }
