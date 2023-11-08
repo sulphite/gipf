@@ -6,11 +6,15 @@ export class Game {
   score: { black: number; white: number };
   currentPlayerBlack: boolean;
   winner: null | string;
+  player1: string;
+  player2: string;
 
   constructor() {
     this.board = new Board();
     this.score = { black: 15, white: 15 };
     this.currentPlayerBlack = true;
+    this.player1 = "";
+    this.player2 = "";
     this.winner = null;
   }
 
