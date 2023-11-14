@@ -25,5 +25,6 @@ export interface MoveData extends Message {
   data: {
     room: string;
     coord: HexCoordinates;
+    moveTo: HexCoordinates;
   };
 }

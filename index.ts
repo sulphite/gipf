@@ -41,6 +41,12 @@ const server = Bun.serve<{name: string;}>({
       if(isMoveMessage(message)) {
         console.log(message.data)
         // handle game move
+        let room = lobby.rooms[message.data.room];
+        if(room) {
+          // place piece at coord
+          room.game.makeMove(message.data.coord, message.data.moveTo)
+          // publish update to whole room
+        }
       }
 
       const out = `${ws.data.name}: ${msg}`;
