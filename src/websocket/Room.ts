@@ -3,7 +3,7 @@ import { Game } from "../logic/Game";
 
 export class Room {
   id: string;
-  sockets: ServerWebSocket<unknown>[];
+  sockets: ServerWebSocket<{ name: string }>[];
   isFull: boolean;
   game: Game;
   gameStarted: boolean;

@@ -7,7 +7,7 @@ const nanoid = customAlphabet(alphabet, 4);
 
 export class Lobby {
   rooms: { [key: string]: Room };
-  players: { [key: string]: ServerWebSocket<unknown> };
+  players: { [key: string]: ServerWebSocket<{ name: string }> };
 
   constructor() {
     this.rooms = {};
@@ -21,7 +21,7 @@ export class Lobby {
     return room;
   }
 
-  addPlayer(name: string, ws: ServerWebSocket<unknown>) {
+  addPlayer(name: string, ws: ServerWebSocket<{ name: string }>) {
     this.players[name] = ws;
   }
 
