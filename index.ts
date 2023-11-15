@@ -13,13 +13,13 @@ const isMoveMessage = (msg: Message): msg is MoveData => {
   return msg.type === 'move';
 }
 
-const server = Bun.serve<{name: string;}>({
+const server = Bun.serve<{ name: string; }>({
   port: port,
   websocket: {
     open(ws) {
       lobby.addPlayer(ws.data.name, ws);
       ws.subscribe("lobby")
-      let connectionMessage: LobbyData = {type: "lobby", data:{msg: `${ws.data.name} connected. ${Object.keys(lobby.players).length} players are here`}}
+      let connectionMessage: LobbyData = { type: "lobby", data: { msg: `${ws.data.name} connected. ${Object.keys(lobby.players).length} players are here` } }
       console.log(connectionMessage);
       ws.publishText("lobby", JSON.stringify(connectionMessage))
     },
@@ -27,20 +27,26 @@ const server = Bun.serve<{name: string;}>({
       const message: Message = JSON.parse(msg);
 
       // join a room
-      if(isJoinMessage(message)) {
+      if (isJoinMessage(message)) {
         let room = lobby.getOpenRoom();
         room.addSocket(ws);
         ws.unsubscribe("lobby");
         ws.subscribe(room.id);
         console.log(`added ${message.data.name} to room ${room.id}`)
-        let response: RoomJoinedData = { type: "roomJoined", data: {room: room.id} }
+        let response: RoomJoinedData = { type: "roomJoined", data: { room: room.id } }
         ws.send(JSON.stringify(response))
       }
 
       // player makes a move
-      if(isMoveMessage(message)) {
+      if (isMoveMessage(message)) {
         console.log(message.data)
         // handle game move
+        let room = lobby.rooms[message.data.room];
+        if (room) {
+          // place piece at coord
+          room.game.makeMove(message.data.coord, message.data.moveTo)
+          // publish update to whole room
+        }
       }
 
       const out = `${ws.data.name}: ${msg}`;
@@ -67,6 +73,6 @@ const server = Bun.serve<{name: string;}>({
 
     return new Response("Error");
   },
-  });
+});
 
 console.log(`Waiting for some clients to connect...\n`, `  http://${server.hostname}:${port}/`);
