@@ -3,11 +3,12 @@ name: Run Unit Tests
 on:
   pull_request:
     paths:
-      - "src/**/*.ts"
+      - "backend/src/**/*.ts"
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    working-directory: ./backend
 
     steps:
       - name: Checkout code
