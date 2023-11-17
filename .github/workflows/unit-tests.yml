@@ -5,10 +5,13 @@ on:
     paths:
       - "backend/src/**/*.ts"
 
+defaults:
+  run:
+    working-directory: ./backend
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    working-directory: ./backend
 
     steps:
       - name: Checkout code
