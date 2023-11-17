@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "tests/**/*", "index.ts", "../shared/types"]
+  "include": ["src/**/*", "tests/**/*", "index.ts", "src/shared/types"]
 }

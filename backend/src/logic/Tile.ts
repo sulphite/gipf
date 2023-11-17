@@ -1,5 +1,5 @@
 import { Hex, HexCoordinates } from "honeycomb-grid";
-import { ITile } from "../../../shared/types/index";
+import { ITile } from "../shared/types/index";
 
 export class Tile extends Hex implements ITile {
   fill: string;
