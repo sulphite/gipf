@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { Lobby } from "./src/websocket/Lobby";
-import { Message, JoinData, RoomJoinedData, LobbyData, MoveData } from "./src/types/message";
+import { Message, JoinData, RoomJoinedData, LobbyData, MoveData } from "./src/types/index";
 
 const port = 3000;
 const lobby = new Lobby();

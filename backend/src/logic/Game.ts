@@ -1,4 +1,4 @@
-import { HexCoordinates } from "../types/hex";
+import { HexCoordinates } from "../types/index";
 import { Board } from "./Board";
 
 export class Game {

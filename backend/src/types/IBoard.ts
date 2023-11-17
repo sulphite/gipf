@@ -1,8 +1,6 @@
 import { Grid } from "honeycomb-grid";
-import ITile from "./ITile";
+import { ITile } from "./index";
 
-interface IBoard {
+export interface IBoard {
   grid: Grid<ITile>;
 }
-
-export default IBoard;
