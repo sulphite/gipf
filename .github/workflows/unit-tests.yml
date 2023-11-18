@@ -3,7 +3,11 @@ name: Run Unit Tests
 on:
   pull_request:
     paths:
-      - "src/**/*.ts"
+      - "backend/src/**/*.ts"
+
+defaults:
+  run:
+    working-directory: ./backend
 
 jobs:
   test:

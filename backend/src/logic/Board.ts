@@ -13,8 +13,7 @@ import {
 } from "honeycomb-grid";
 
 // Internal type imports
-import IBoard from "../types/IBoard";
-import { vectors } from "../types/vectors";
+import { vectors, IBoard } from "../shared/types/index";
 
 // Component imports
 import { Tile } from "./Tile";
