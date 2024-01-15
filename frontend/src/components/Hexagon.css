@@ -1,0 +1,11 @@
+.hexagon {
+  fill:aquamarine;
+  stroke: #666;
+  stroke-width: 3px;
+  transition: all 0.3s ease;
+}
+
+.hexagon:hover {
+  fill:rgb(251, 132, 111);
+
+}
