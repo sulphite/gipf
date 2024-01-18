@@ -1,8 +1,11 @@
 import { Point } from "honeycomb-grid"
-// import { HexagonProps } from "./Board"
+import { HexagonProps } from "./Board"
 
-export const Hexagon = ({ data }) => {
-  console.log(data)
+type PropsData = {
+  data: HexagonProps;
+}
+
+export const Hexagon = ({ data }: PropsData) => {
 
   const formatPoints = (pointsarray: Point[]): string => {
     return pointsarray.map(coord => `${coord.x},${coord.y}`).join(" ")
