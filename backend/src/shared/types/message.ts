@@ -1,4 +1,5 @@
-import { HexCoordinates } from "honeycomb-grid";
+import { Grid, HexCoordinates } from "honeycomb-grid";
+import { ITile } from "./ITile";
 
 export interface Message {
   type: "join" | "roomJoined" | "lobby" | "move";
@@ -7,7 +8,11 @@ export interface Message {
 
 export interface RoomJoinedData extends Message {
   type: "roomJoined";
-  data: { room: string };
+  data: {
+    room: string;
+    playerColour: string;
+    grid: string;
+  };
 }
 
 export interface JoinData extends Message {

@@ -50,10 +50,15 @@ export class Board implements IBoard {
   }
 
   /**
-   * Prints the board's state to the console.
+   * Creates a string from the board's state.
    */
-  printBoard(): void {
+  serialise(): string {
     console.log(this.grid.toJSON());
+    const griddata: any[] = []
+    this.grid.forEach(hex => {
+      griddata.push({"q": hex.q, "r": hex.r, "corners": hex.corners, "fill": hex.fill})
+    })
+    return JSON.stringify(griddata)
   }
 
   fillTile(coord: HexCoordinates, player: "black" | "white"): void {
