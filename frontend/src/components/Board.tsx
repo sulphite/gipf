@@ -9,15 +9,23 @@ export type HexagonProps = {
   center?: Point;
 }
 
-export const Board = ({ hexes } ) => {
+type GridHexData = {
+  fill: string;
+  q: number;
+  r: number;
+  corners: Point[]
+}
 
-  const hexdata: HexagonProps[] = hexes.map(hex => {
-    return {
+export const Board = ( {hexes}: {hexes: GridHexData[]} ) => {
+
+  const hexagons = hexes.map((hex: GridHexData) => {
+    return <Hexagon
+    data={{
       coords: JSON.stringify({q: hex.q, r: hex.r}),
       points: hex.corners,
       piece: hex.fill,
       isOuter: true
-    }
+    }} key={JSON.stringify({q: hex.q, r: hex.r})} />
   })
 
   return (<svg
@@ -29,7 +37,8 @@ export const Board = ({ hexes } ) => {
   xmlns="http://www.w3.org/2000/svg"
 >
   <g>
-    {hexdata.map((h) => <Hexagon data={h} />)}
+    {/* {hexdata.map((h) => <Hexagon data={h} />)} */}
+    {hexagons}
   </g>
 </svg>)
 }

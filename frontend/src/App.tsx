@@ -13,6 +13,7 @@ function App() {
   const [colour, setColour] = useState<string | null>(null)
   const [hexes, setHexes] = useState<any[] | null>(null)
 
+
   useEffect(() => {
     // Connect to server
     const mysocket = new WebSocket(wsAddress);
