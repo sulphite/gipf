@@ -54,11 +54,16 @@ export class Board implements IBoard {
    */
   serialise(): string {
     console.log(this.grid.toJSON());
-    const griddata: any[] = []
-    this.grid.forEach(hex => {
-      griddata.push({"q": hex.q, "r": hex.r, "corners": hex.corners, "fill": hex.fill})
-    })
-    return JSON.stringify(griddata)
+    const griddata: any[] = [];
+    this.grid.forEach((hex) => {
+      griddata.push({
+        q: hex.q,
+        r: hex.r,
+        corners: hex.corners,
+        fill: hex.fill,
+      });
+    });
+    return JSON.stringify(griddata);
   }
 
   fillTile(coord: HexCoordinates, player: "black" | "white"): void {

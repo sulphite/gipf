@@ -1,7 +1,10 @@
-import { Hex, HexCoordinates, defineHex } from "honeycomb-grid";
+import { HexCoordinates, defineHex } from "honeycomb-grid";
 import { ITile } from "../shared/types/index";
 
-export class Tile extends defineHex({ dimensions: 50, origin: 'topLeft' }) implements ITile {
+export class Tile
+  extends defineHex({ dimensions: 50, origin: "topLeft" })
+  implements ITile
+{
   fill: string;
 
   constructor(coordinates?: HexCoordinates) {

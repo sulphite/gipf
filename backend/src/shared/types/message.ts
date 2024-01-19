@@ -1,5 +1,4 @@
-import { Grid, HexCoordinates } from "honeycomb-grid";
-import { ITile } from "./ITile";
+import { HexCoordinates } from "honeycomb-grid";
 
 export interface Message {
   type: "join" | "roomJoined" | "lobby" | "move";
