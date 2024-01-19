@@ -61,7 +61,7 @@ export class Board implements IBoard {
         r: hex.r,
         corners: hex.corners,
         fill: hex.fill,
-        center: hex.center,
+        outer: hex.isOuterTile(),
       });
     });
     return JSON.stringify(griddata);

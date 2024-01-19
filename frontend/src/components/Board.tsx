@@ -5,8 +5,7 @@ export type HexagonProps = {
   coords: string;
   points: Point[];
   piece?: string;
-  isOuter: boolean;
-  center?: Point;
+  outer: boolean;
 }
 
 type GridHexData = {
@@ -14,7 +13,7 @@ type GridHexData = {
   q: number;
   r: number;
   corners: Point[];
-  center: Point;
+  outer: boolean;
 }
 
 export const Board = ( {hexes}: {hexes: GridHexData[]} ) => {
@@ -25,8 +24,7 @@ export const Board = ( {hexes}: {hexes: GridHexData[]} ) => {
       coords: JSON.stringify({q: hex.q, r: hex.r}),
       points: hex.corners,
       piece: hex.fill,
-      center: hex.center,
-      isOuter: true
+      outer: hex.outer
     }} key={JSON.stringify({q: hex.q, r: hex.r})} />
   })
 
