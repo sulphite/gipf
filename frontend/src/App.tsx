@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import { Grid } from "honeycomb-grid";
 import './App.css'
 import { Board } from './components/Board';
 
@@ -37,7 +36,6 @@ function App() {
 
         console.log(grid)
         setHexes(grid)
-        // grid.forEach(hex => console.log(hex.corners))
       }
     }
 

@@ -15,9 +15,13 @@ export const Hexagon = ({ data }: PropsData) => {
     console.log("click")
   }
 
+  const centerX = data.points.reduce((sum, vertex) => sum + vertex.x, 0) / 6
+  const centerY = data.points.reduce((sum, vertex) => sum + vertex.y, 0) / 6
+
   return (
     <g className="hexagon" onClick={clickHandle}>
       <polygon points={formatPoints(data.points)} />
+      {data.piece && <circle className={data.piece} cx={centerX} cy={centerY} r="25" />}
     </g>
   )
 }

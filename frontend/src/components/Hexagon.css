@@ -1,11 +1,19 @@
-.hexagon {
-  fill:aquamarine;
+.hexagon polygon {
+  fill:rgb(99, 220, 194);
   stroke: #666;
   stroke-width: 3px;
   transition: all 0.3s ease;
 }
 
-.hexagon:hover {
-  fill:rgb(251, 132, 111);
+.hexagon:hover polygon {
+  fill:rgb(251, 111, 158);
 
+}
+
+.hexagon .B {
+  fill: #222;
+}
+
+.hexagon .W {
+  fill: antiquewhite;
 }
