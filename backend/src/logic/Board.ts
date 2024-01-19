@@ -17,6 +17,7 @@ import { vectors, IBoard } from "../shared/types/index";
 
 // Component imports
 import { Tile } from "./Tile";
+import { GridHexData } from "../shared/types/gridhexdata";
 
 export class Board implements IBoard {
   grid: Grid<Tile>;
@@ -54,7 +55,7 @@ export class Board implements IBoard {
    */
   serialise(): string {
     console.log(this.grid.toJSON());
-    const griddata: any[] = [];
+    const griddata: GridHexData[] = [];
     this.grid.forEach((hex) => {
       griddata.push({
         q: hex.q,

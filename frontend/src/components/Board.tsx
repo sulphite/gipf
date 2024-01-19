@@ -1,18 +1,11 @@
 import { Point } from 'honeycomb-grid'
 import { Hexagon } from "./Hexagon"
+import { GridHexData } from "../../../backend/src/shared/types/gridhexdata"
 
 export type HexagonProps = {
   coords: string;
   points: Point[];
   piece?: string;
-  outer: boolean;
-}
-
-type GridHexData = {
-  fill: string;
-  q: number;
-  r: number;
-  corners: Point[];
   outer: boolean;
 }
 
