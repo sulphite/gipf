@@ -1,0 +1,24 @@
+.hexagon polygon {
+  fill:rgb(113, 242, 214);
+  stroke: #fff;
+  stroke-width: 3px;
+  transition: all 0.3s ease;
+}
+
+.outer polygon {
+  fill: rgb(99, 220, 194);
+}
+
+.outer:hover polygon {
+  fill:rgb(251, 111, 158);
+
+}
+
+
+.hexagon .B {
+  fill: #222;
+}
+
+.hexagon .W {
+  fill: antiquewhite;
+}

@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
+import { Board } from './components/Board';
 
 const wsAddress: string = "ws://localhost:3000";
 
@@ -8,6 +9,9 @@ function App() {
   const [socketConnected, setSocketConnected] = useState(false)
   const [name, setName] = useState("")
   const [room, setRoom] = useState(null)
+  const [colour, setColour] = useState<string | null>(null)
+  const [hexes, setHexes] = useState<any[] | null>(null)
+
 
   useEffect(() => {
     // Connect to server
@@ -20,10 +24,18 @@ function App() {
     }
     // Log messages from server
     mysocket.onmessage = msg => {
-      console.log("message", msg.data);
+      // console.log("message", msg.data);
       const messageData = JSON.parse(msg.data)
+
+      // on joining room, room and player colour are set
+      // board is loaded
       if(messageData.type == "roomJoined") {
         setRoom(messageData.data.room)
+        messageData.data.playerColour == "1" ? setColour("W") : setColour("B")
+        const grid = JSON.parse(messageData.data.grid)
+
+        console.log(grid)
+        setHexes(grid)
       }
     }
 
@@ -66,6 +78,7 @@ function App() {
           </button>
         </div>
       }
+      {hexes && <Board hexes={hexes} />}
     </>
   )
 }

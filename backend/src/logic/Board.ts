@@ -17,6 +17,7 @@ import { vectors, IBoard } from "../shared/types/index";
 
 // Component imports
 import { Tile } from "./Tile";
+import { GridHexData } from "../shared/types/gridhexdata";
 
 export class Board implements IBoard {
   grid: Grid<Tile>;
@@ -50,10 +51,21 @@ export class Board implements IBoard {
   }
 
   /**
-   * Prints the board's state to the console.
+   * Creates a string from the board's state.
    */
-  printBoard(): void {
+  serialise(): string {
     console.log(this.grid.toJSON());
+    const griddata: GridHexData[] = [];
+    this.grid.forEach((hex) => {
+      griddata.push({
+        q: hex.q,
+        r: hex.r,
+        corners: hex.corners,
+        fill: hex.fill,
+        outer: hex.isOuterTile(),
+      });
+    });
+    return JSON.stringify(griddata);
   }
 
   fillTile(coord: HexCoordinates, player: "black" | "white"): void {

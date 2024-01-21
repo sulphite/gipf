@@ -7,7 +7,11 @@ export interface Message {
 
 export interface RoomJoinedData extends Message {
   type: "roomJoined";
-  data: { room: string };
+  data: {
+    room: string;
+    playerColour: string;
+    grid: string;
+  };
 }
 
 export interface JoinData extends Message {
