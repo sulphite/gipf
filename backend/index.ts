@@ -33,11 +33,14 @@ const server = Bun.serve<{ name: string; }>({
         ws.unsubscribe("lobby");
         ws.subscribe(room.id);
         console.log(`added ${message.data.name} to room ${room.id}`)
-        let response: RoomJoinedData = { type: "roomJoined", data: {
-          room: room.id,
-          playerColour: "1",
-          grid: room.game.board.serialise()
-        } }
+        let response: RoomJoinedData = {
+          type: "roomJoined", data:
+          {
+            room: room.id,
+            playerColour: "1",
+            grid: room.game.board.serialise()
+          }
+        }
         ws.send(JSON.stringify(response))
       }
 
