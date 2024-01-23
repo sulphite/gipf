@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState, createContext } from 'react'
 import './App.css'
 import { Board } from './components/Board';
 
@@ -12,6 +12,7 @@ function App() {
   const [colour, setColour] = useState<string | null>(null)
   const [hexes, setHexes] = useState<any[] | null>(null)
 
+  const wsContext = createContext(socket)
 
   useEffect(() => {
     // Connect to server
@@ -49,6 +50,7 @@ function App() {
       setSocketConnected(false)
     }
     setSocket(mysocket)
+
   }, [])
 
   const joinRoom = () => {
@@ -78,7 +80,9 @@ function App() {
           </button>
         </div>
       }
-      {hexes && <Board hexes={hexes} />}
+      <wsContext.Provider value={socket}>
+        {hexes && <Board hexes={hexes} />}
+      </wsContext.Provider>
     </>
   )
 }
