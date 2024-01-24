@@ -1,6 +1,7 @@
-import { ChangeEvent, useEffect, useState, createContext } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
+import { wsContext } from './Context';
 
 const wsAddress: string = "ws://localhost:3000";
 
@@ -11,8 +12,6 @@ function App() {
   const [room, setRoom] = useState(null)
   const [colour, setColour] = useState<string | null>(null)
   const [hexes, setHexes] = useState<any[] | null>(null)
-
-  const wsContext = createContext(socket)
 
   useEffect(() => {
     // Connect to server
