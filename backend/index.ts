@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { Lobby } from "./src/websocket/Lobby";
-import { Message, JoinData, RoomJoinedData, LobbyData, MoveData } from "./src/shared/types/index";
+import { Message, JoinData, RoomJoinedData, LobbyData, MoveData, PlaceData } from "./src/shared/types/index";
 
 const port = 3000;
 const lobby = new Lobby();
@@ -11,6 +11,10 @@ const isJoinMessage = (msg: Message): msg is JoinData => {
 
 const isMoveMessage = (msg: Message): msg is MoveData => {
   return msg.type === 'move';
+}
+
+const isPlaceMessage = (msg: Message): msg is PlaceData => {
+  return msg.type === 'place';
 }
 
 const server = Bun.serve<{ name: string; }>({
@@ -43,6 +47,23 @@ const server = Bun.serve<{ name: string; }>({
         }
         ws.send(JSON.stringify(response))
       }
+
+      // placing a piece
+      if (isPlaceMessage(message)) {
+        console.log("Received place message", message.data)
+        let room = lobby.rooms[message.data.room];
+        if (room) {
+          // place piece at coord
+          const rows = room.game.placePiece(message.data.coord)
+          // return legal rows to push to
+          let response = {
+            type: "moveValidityResponse",
+            data: {
+              valid: rows.length > 0,
+              rows: rows
+          }}
+          ws.send(JSON.stringify(response))
+      }}
 
       // player makes a move
       if (isMoveMessage(message)) {
