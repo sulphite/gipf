@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
-import { wsContext } from './Context';
+import { wsMessengerContext } from './Context';
 
 const wsAddress: string = "ws://localhost:3000";
 
@@ -73,6 +73,17 @@ function App() {
     setName(e.target.value)
   }
 
+  const sendSocketMessageWithRoom = (type: string, data: any): void => {
+    if (socket) {
+      socket.send(JSON.stringify({
+        type: type,
+        data: {...data, room: room}
+      }))
+    } else {
+      throw new Error("socket is not connected")
+    }
+  }
+
   const connectionStatusClass = socketConnected ? "connection connection-ok" : "connection connection-warn"
 
   return (
@@ -88,9 +99,9 @@ function App() {
           </button>
         </div>
       }
-      <wsContext.Provider value={socket}>
+      <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
         {hexes && <Board hexes={hexes} />}
-      </wsContext.Provider>
+      </wsMessengerContext.Provider>
     </>
   )
 }

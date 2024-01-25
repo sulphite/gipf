@@ -1,24 +1,30 @@
 import { Point } from "honeycomb-grid";
 import { HexagonProps } from "./Board";
 import { useContext } from "react";
-import { wsContext } from "../Context";
+import { wsMessengerContext } from "../Context";
 
 type PropsData = {
   data: HexagonProps;
 }
 
 export const Hexagon = ({ data }: PropsData) => {
-  const socket: WebSocket | null = useContext(wsContext)
+  // const socket: WebSocket | null = useContext(wsContext)
+  const sendFunc = useContext(wsMessengerContext)
 
   const formatPoints = (pointsarray: Point[]): string => {
     return pointsarray.map(coord => `${coord.x},${coord.y}`).join(" ")
   }
 
   const clickHandle = () => {
-    if (socket && data.outer) {
-      console.log("sending coord to backend")
-      let message = JSON.stringify({type: "place", data: {room: "", coord: data.coords}})
-      socket.send(message)
+    if (data.outer && sendFunc) {
+      // console.log("sending coord to backend")
+      // let message = JSON.stringify({type: "place", data: {room: "", coord: data.coords}})
+      try {
+        sendFunc("place", {coord: data.coords})
+        console.log("sent successfully")
+      } catch (error: unknown) {
+        console.error(error)
+      }
     } else {
       console.log("clicked inner hex")
     }
