@@ -37,6 +37,6 @@ export interface PlaceData extends Message {
   type: "place";
   data: {
     room: string;
-    coord: HexCoordinates;
+    coord: string;
   };
 }
