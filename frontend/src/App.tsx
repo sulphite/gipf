@@ -37,6 +37,15 @@ function App() {
         console.log(grid)
         setHexes(grid)
       }
+
+      if(messageData.type == "moveValidityResponse") {
+        console.log(messageData)
+        if (messageData.data.valid) {
+          messageData.data.rows.forEach(tile => {
+            console.log(tile)
+          })
+        }
+      }
     }
 
     mysocket.onerror = (e) => {
