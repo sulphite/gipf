@@ -25,4 +25,17 @@ export class Room {
       this.game.player1 = ws.data.name;
     }
   }
+
+  broadcast(message: any) {
+    this.sockets.forEach((socket) => {
+      socket.send(JSON.stringify(message))
+    })
+  }
+
+  sendBoardUpdate() {
+    this.broadcast({
+      type: "boardUpdate",
+      data: {grid: this.game.board.serialise()}
+    })
+  }
 }
