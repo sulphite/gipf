@@ -24,7 +24,6 @@ function App() {
     }
     // Log messages from server
     mysocket.onmessage = msg => {
-      // console.log("message", msg.data);
       const messageData = JSON.parse(msg.data)
 
       // on joining room, room and player colour are set

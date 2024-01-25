@@ -8,7 +8,6 @@ type PropsData = {
 }
 
 export const Hexagon = ({ data }: PropsData) => {
-  // const socket: WebSocket | null = useContext(wsContext)
   const sendFunc = useContext(wsMessengerContext)
 
   const formatPoints = (pointsarray: Point[]): string => {
@@ -17,9 +16,8 @@ export const Hexagon = ({ data }: PropsData) => {
 
   const clickHandle = () => {
     if (data.outer && sendFunc) {
-      // console.log("sending coord to backend")
-      // let message = JSON.stringify({type: "place", data: {room: "", coord: data.coords}})
       try {
+        console.log(`sending ${data.coords} to backend`)
         sendFunc("place", {coord: data.coords})
         console.log("sent successfully")
       } catch (error: unknown) {
