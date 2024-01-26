@@ -26,7 +26,7 @@ export class Room {
     }
   }
 
-  broadcast(message: any) {
+  broadcast(message: unknown) {
     this.sockets.forEach((socket) => {
       socket.send(JSON.stringify(message));
     });
