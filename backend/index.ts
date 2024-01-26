@@ -63,6 +63,7 @@ const server = Bun.serve<{ name: string; }>({
               rows: rows
           }}
           ws.send(JSON.stringify(response))
+          // no need to update board until the move is confirmed
       }}
 
       // player makes a move
