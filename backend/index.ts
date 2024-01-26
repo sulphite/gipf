@@ -54,15 +54,16 @@ const server = Bun.serve<{ name: string; }>({
         let room = lobby.rooms[message.data.room];
         if (room) {
           // place piece at coord
-          const rows = room.game.placePiece(JSON.parse(message.data.coord))
-          // return legal rows to push to
+          const tiles = room.game.getPushableTiles(JSON.parse(message.data.coord))
+          // return legal tiles to push to
           let response = {
             type: "moveValidityResponse",
             data: {
-              valid: rows.length > 0,
-              rows: rows
+              valid: tiles.length > 0,
+              tiles: tiles
           }}
           ws.send(JSON.stringify(response))
+          // no need to update board until the move is confirmed
       }}
 
       // player makes a move

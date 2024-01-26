@@ -26,16 +26,16 @@ export class Room {
     }
   }
 
-  broadcast(message: any) {
+  broadcast(message: unknown) {
     this.sockets.forEach((socket) => {
-      socket.send(JSON.stringify(message))
-    })
+      socket.send(JSON.stringify(message));
+    });
   }
 
   sendBoardUpdate() {
     this.broadcast({
       type: "boardUpdate",
-      data: {grid: this.game.board.serialise()}
-    })
+      data: { grid: this.game.board.serialise() },
+    });
   }
 }
