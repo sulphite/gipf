@@ -27,7 +27,7 @@ export class Game {
   }
 
   // board is not updated; we only update the board after a move.
-  placePiece(coord: HexCoordinates) {
+  getPushableTiles(coord: HexCoordinates) {
     // const player = this.currentPlayerBlack ? "black" : "white";
     const legalTiles = this.board
       .getInnerNeighbours(coord)
