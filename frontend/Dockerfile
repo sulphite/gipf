@@ -1,13 +1,11 @@
 FROM node:latest
 
-WORKDIR /app
+WORKDIR /app/frontend
 
 COPY package*.json .
 
 RUN npm install -g pnpm
 
-RUN pnpm install --no-frozen-lockfile
+RUN pnpm install
 
-COPY . /app/
-
-EXPOSE 5173
+COPY . .
