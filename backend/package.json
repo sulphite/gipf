@@ -22,7 +22,7 @@
   },
   "scripts": {
     "format": "prettier --write .",
-    "start": "tsc && node dist/index.js",
+    "run": "index.js",
     "lint": "eslint src",
     "test": "jest"
   }
