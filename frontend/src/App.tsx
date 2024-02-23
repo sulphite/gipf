@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
+import { wsMessengerContext } from './Context';
 
 const wsAddress: string = "ws://localhost:3000";
 
@@ -11,7 +12,6 @@ function App() {
   const [room, setRoom] = useState(null)
   const [colour, setColour] = useState<string | null>(null)
   const [hexes, setHexes] = useState<any[] | null>(null)
-
 
   useEffect(() => {
     // Connect to server
@@ -24,7 +24,6 @@ function App() {
     }
     // Log messages from server
     mysocket.onmessage = msg => {
-      // console.log("message", msg.data);
       const messageData = JSON.parse(msg.data)
 
       // on joining room, room and player colour are set
@@ -36,6 +35,15 @@ function App() {
 
         console.log(grid)
         setHexes(grid)
+      }
+
+      if(messageData.type == "moveValidityResponse") {
+        console.log(messageData)
+        if (messageData.data.valid) {
+          messageData.data.rows.forEach(tile => {
+            console.log(tile)
+          })
+        }
       }
     }
 
@@ -49,6 +57,7 @@ function App() {
       setSocketConnected(false)
     }
     setSocket(mysocket)
+
   }, [])
 
   const joinRoom = () => {
@@ -61,6 +70,17 @@ function App() {
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
+  }
+
+  const sendSocketMessageWithRoom = (type: string, data: any): void => {
+    if (socket) {
+      socket.send(JSON.stringify({
+        type: type,
+        data: {...data, room: room}
+      }))
+    } else {
+      throw new Error("socket is not connected")
+    }
   }
 
   const connectionStatusClass = socketConnected ? "connection connection-ok" : "connection connection-warn"
@@ -78,7 +98,9 @@ function App() {
           </button>
         </div>
       }
-      {hexes && <Board hexes={hexes} />}
+      <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
+        {hexes && <Board hexes={hexes} />}
+      </wsMessengerContext.Provider>
     </>
   )
 }

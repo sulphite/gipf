@@ -26,21 +26,25 @@ export class Game {
     }
   }
 
-  placePiece(coord: HexCoordinates) {
-    const player = this.currentPlayerBlack ? "black" : "white";
+  // board is not updated; we only update the board after a move.
+  getPushableTiles(coord: HexCoordinates) {
+    // const player = this.currentPlayerBlack ? "black" : "white";
     const legalTiles = this.board
       .getInnerNeighbours(coord)
       .filter((tile) => this.board.isPushable(this.board.getRow(coord, tile)))
       .toArray();
-    if (legalTiles.length > 0) {
-      this.board.fillTile(coord, player);
-      this.score[player] -= 1;
-    }
+    // if (legalTiles.length > 0) {
+    //   this.board.fillTile(coord, player);
+    //   this.score[player] -= 1;
+    // }
     return legalTiles;
-    // return this.board.printBoard()
   }
 
   makeMove(coordOuter: HexCoordinates, coordInner: HexCoordinates) {
+    const player = this.currentPlayerBlack ? "black" : "white";
+    this.board.fillTile(coordOuter, player);
+    this.score[player] -= 1;
+
     this.board.pushPiece(coordOuter, coordInner);
     const matches = this.board.checkAllRows();
     if (matches.length > 1) {
