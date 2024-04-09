@@ -5,9 +5,11 @@ import { wsMessengerContext } from "../Context";
 
 type PropsData = {
   data: HexagonProps;
+  handleSelect: (coord: string) => void;
+  selected: boolean;
 }
 
-export const Hexagon = ({ data }: PropsData) => {
+export const Hexagon = ({ data, handleSelect, selected }: PropsData) => {
   const sendFunc = useContext(wsMessengerContext)
 
   const formatPoints = (pointsarray: Point[]): string => {
@@ -16,6 +18,7 @@ export const Hexagon = ({ data }: PropsData) => {
 
   const clickHandle = () => {
     if (data.outer && sendFunc) {
+      handleSelect(data.coords)
       try {
         console.log(`sending ${data.coords} to backend`)
         sendFunc("place", {coord: data.coords})
@@ -30,7 +33,7 @@ export const Hexagon = ({ data }: PropsData) => {
 
   const centerX = data.points.reduce((sum, vertex) => sum + vertex.x, 0) / 6
   const centerY = data.points.reduce((sum, vertex) => sum + vertex.y, 0) / 6
-  const classes = `hexagon ${data.outer ? "outer" : ""}`
+  const classes = `hexagon ${data.outer ? "outer" : ""} ${selected ? "selected" : ""}`
 
   return (
     <g className={classes} onClick={clickHandle}>

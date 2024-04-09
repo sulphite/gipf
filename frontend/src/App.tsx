@@ -40,7 +40,7 @@ function App() {
       if(messageData.type == "moveValidityResponse") {
         console.log(messageData)
         if (messageData.data.valid) {
-          messageData.data.rows.forEach(tile => {
+          messageData.data.tiles.forEach(tile => {
             console.log(tile)
           })
         }

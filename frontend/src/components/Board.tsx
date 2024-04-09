@@ -1,6 +1,7 @@
 import { Point } from 'honeycomb-grid'
 import { Hexagon } from "./Hexagon"
 import { GridHexData } from "../../../backend/src/shared/types/gridhexdata"
+import { useState } from 'react';
 
 export type HexagonProps = {
   coords: string;
@@ -10,6 +11,16 @@ export type HexagonProps = {
 }
 
 export const Board = ( {hexes}: {hexes: GridHexData[]} ) => {
+  const [selected, setSelected ]  = useState<string | null>(null)
+  console.log(selected)
+
+  const handleSelect = (coord: string) => {
+    if (selected) {
+      setSelected(null)
+    } else {
+      setSelected(coord)
+    }
+  }
 
   const hexagons = hexes.map((hex: GridHexData) => {
     return <Hexagon
@@ -18,7 +29,10 @@ export const Board = ( {hexes}: {hexes: GridHexData[]} ) => {
       points: hex.corners,
       piece: hex.fill,
       outer: hex.outer
-    }} key={JSON.stringify({q: hex.q, r: hex.r})} />
+    }}
+    handleSelect={handleSelect}
+    key={JSON.stringify({q: hex.q, r: hex.r})}
+    selected={selected == JSON.stringify({q: hex.q, r: hex.r})} />
   })
 
   return (<svg
