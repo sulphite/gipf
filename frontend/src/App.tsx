@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
 import { wsMessengerContext } from './Context';
+import { GridHexData } from '../../backend/src/shared/types/gridhexdata';
 
 const wsAddress: string = "ws://localhost:3000";
 
@@ -11,7 +12,7 @@ function App() {
   const [name, setName] = useState("")
   const [room, setRoom] = useState(null)
   const [colour, setColour] = useState<string>("")
-  const [hexes, setHexes] = useState<any[] | null>(null)
+  const [hexes, setHexes] = useState<GridHexData[] | null>(null)
 
   useEffect(() => {
     // Connect to server
@@ -31,9 +32,7 @@ function App() {
       if(messageData.type == "roomJoined") {
         setRoom(messageData.data.room)
         messageData.data.playerColour == "1" ? setColour("W") : setColour("B")
-        const grid = JSON.parse(messageData.data.grid)
-
-        // console.log(grid)
+        const grid: GridHexData[] = JSON.parse(messageData.data.grid)
         setHexes(grid)
       }
 
@@ -42,7 +41,7 @@ function App() {
         if (messageData.data.valid) {
           messageData.data.tiles.forEach((tile: {q: number; r: number; fill: string}) => {
             console.log(tile)
-
+            // TODO: add clickable property to hexes
           })
         }
       }

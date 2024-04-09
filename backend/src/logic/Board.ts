@@ -54,7 +54,7 @@ export class Board implements IBoard {
    * Creates a string from the board's state.
    */
   serialise(): string {
-    console.log(this.grid.toJSON());
+    //console.log(this.grid.toJSON());
     const griddata: GridHexData[] = [];
     this.grid.forEach((hex) => {
       griddata.push({
@@ -63,6 +63,7 @@ export class Board implements IBoard {
         corners: hex.corners,
         fill: hex.fill,
         outer: hex.isOuterTile(),
+        clickable: false,
       });
     });
     return JSON.stringify(griddata);
