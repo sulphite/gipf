@@ -10,7 +10,7 @@ export type HexagonProps = {
   outer: boolean;
 }
 
-export const Board = ( {hexes}: {hexes: GridHexData[]} ) => {
+export const Board = ( {hexes, colour}: {hexes: GridHexData[]; colour: string} ) => {
   const [selected, setSelected ]  = useState<string | null>(null)
   console.log(selected)
 
@@ -23,16 +23,17 @@ export const Board = ( {hexes}: {hexes: GridHexData[]} ) => {
   }
 
   const hexagons = hexes.map((hex: GridHexData) => {
+    let thisIsSelected = selected == JSON.stringify({q: hex.q, r: hex.r});
     return <Hexagon
     data={{
       coords: JSON.stringify({q: hex.q, r: hex.r}),
       points: hex.corners,
-      piece: hex.fill,
+      piece: thisIsSelected ? colour : hex.fill,
       outer: hex.outer
     }}
     handleSelect={handleSelect}
     key={JSON.stringify({q: hex.q, r: hex.r})}
-    selected={selected == JSON.stringify({q: hex.q, r: hex.r})} />
+    selected={thisIsSelected} />
   })
 
   return (<svg

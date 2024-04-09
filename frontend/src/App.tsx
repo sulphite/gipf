@@ -10,7 +10,7 @@ function App() {
   const [socketConnected, setSocketConnected] = useState(false)
   const [name, setName] = useState("")
   const [room, setRoom] = useState(null)
-  const [colour, setColour] = useState<string | null>(null)
+  const [colour, setColour] = useState<string>("")
   const [hexes, setHexes] = useState<any[] | null>(null)
 
   useEffect(() => {
@@ -33,15 +33,16 @@ function App() {
         messageData.data.playerColour == "1" ? setColour("W") : setColour("B")
         const grid = JSON.parse(messageData.data.grid)
 
-        console.log(grid)
+        // console.log(grid)
         setHexes(grid)
       }
 
       if(messageData.type == "moveValidityResponse") {
         console.log(messageData)
         if (messageData.data.valid) {
-          messageData.data.tiles.forEach(tile => {
+          messageData.data.tiles.forEach((tile: {q: number; r: number; fill: string}) => {
             console.log(tile)
+
           })
         }
       }
@@ -99,7 +100,7 @@ function App() {
         </div>
       }
       <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
-        {hexes && <Board hexes={hexes} />}
+        {hexes && <Board hexes={hexes} colour={colour} />}
       </wsMessengerContext.Provider>
     </>
   )
