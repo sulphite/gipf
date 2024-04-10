@@ -26,6 +26,7 @@ export const Board = ( {hexes, colour}: {hexes: GridHexData[]; colour: string} )
   const sendMove = (moveTo: string) => {
     if(sendFunc && selected) {
       sendFunc("move", {moveTo, coord: selected})
+      setSelected(null)
     } else {
       throw new Error("no selected tile or socket error")
     }
