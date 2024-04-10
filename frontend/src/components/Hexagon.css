@@ -9,7 +9,12 @@
   fill: rgb(99, 220, 194);
 }
 
-.outer:hover polygon {
+.clickable polygon {
+  animation: pulse 1s infinite;
+  cursor: pointer;
+}
+
+.outer:hover polygon, .clickable:hover polygon {
   fill:rgb(251, 111, 158);
 
 }
@@ -19,10 +24,26 @@
 }
 
 
+
 .hexagon .B {
   fill: #222;
 }
 
 .hexagon .W {
   fill: antiquewhite;
+}
+
+@keyframes pulse {
+  0% {
+    fill:rgb(113, 242, 214);
+  }
+
+  50% {
+    fill:rgb(146, 255, 231);
+  }
+
+
+  100% {
+    fill:rgb(113, 242, 214);
+  }
 }

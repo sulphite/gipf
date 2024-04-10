@@ -12,7 +12,7 @@ function App() {
   const [name, setName] = useState("")
   const [room, setRoom] = useState(null)
   const [colour, setColour] = useState<string>("")
-  const [hexes, setHexes] = useState<GridHexData[] | null>(null)
+  const [hexes, setHexes] = useState<GridHexData[]>([])
 
   useEffect(() => {
     // Connect to server
@@ -39,6 +39,18 @@ function App() {
       if(messageData.type == "moveValidityResponse") {
         console.log(messageData)
         if (messageData.data.valid) {
+          const clickableTilesStringArray: string[] = messageData.data.tiles.map((tile:{q: number; r: number; fill: string}) => JSON.stringify({q: tile.q, r: tile.r}))
+          setHexes((prevHexes: GridHexData[]) => {
+            const newHexes: GridHexData[] = prevHexes.map(hex => {
+              if(clickableTilesStringArray.includes(JSON.stringify({q: hex.q, r: hex.r}))) {
+                return {...hex, clickable: true}
+              }
+              return hex
+            })
+
+
+            return newHexes
+          })
           messageData.data.tiles.forEach((tile: {q: number; r: number; fill: string}) => {
             console.log(tile)
             // TODO: add clickable property to hexes

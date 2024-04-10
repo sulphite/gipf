@@ -7,9 +7,10 @@ type PropsData = {
   data: HexagonProps;
   handleSelect: (coord: string) => void;
   selected: boolean;
+  clickable: boolean | undefined;
 }
 
-export const Hexagon = ({ data, handleSelect, selected }: PropsData) => {
+export const Hexagon = ({ data, handleSelect, selected, clickable }: PropsData) => {
   const sendFunc = useContext(wsMessengerContext)
 
   const formatPoints = (pointsarray: Point[]): string => {
@@ -33,7 +34,7 @@ export const Hexagon = ({ data, handleSelect, selected }: PropsData) => {
 
   const centerX = data.points.reduce((sum, vertex) => sum + vertex.x, 0) / 6
   const centerY = data.points.reduce((sum, vertex) => sum + vertex.y, 0) / 6
-  const classes = `hexagon ${data.outer ? "outer" : ""} ${selected ? "selected" : ""}`
+  const classes = `hexagon ${data.outer ? "outer" : ""} ${selected ? "selected" : ""} ${clickable ? "clickable" : ""}`
 
   return (
     <g className={classes} onClick={clickHandle}>

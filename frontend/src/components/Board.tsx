@@ -33,7 +33,8 @@ export const Board = ( {hexes, colour}: {hexes: GridHexData[]; colour: string} )
     }}
     handleSelect={handleSelect}
     key={JSON.stringify({q: hex.q, r: hex.r})}
-    selected={thisIsSelected} />
+    selected={thisIsSelected}
+    clickable={hex.clickable} />
   })
 
   return (<svg
