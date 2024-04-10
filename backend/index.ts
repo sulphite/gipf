@@ -73,8 +73,17 @@ const server = Bun.serve<{ name: string; }>({
         let room = lobby.rooms[message.data.room];
         if (room) {
           // place piece at coord
-          room.game.makeMove(message.data.coord, message.data.moveTo)
+          let coordOuter = JSON.parse(message.data.coord)
+          let coordInner = JSON.parse(message.data.moveTo)
+          const matches = room.game.makeMove(coordOuter,coordInner)
           // publish update to whole room
+          let response = {
+            type: "update",
+            data: {
+              grid: room.game.board.serialise()
+            }
+          }
+          ws.publish(room.id, JSON.stringify(response))
         }
       }
 

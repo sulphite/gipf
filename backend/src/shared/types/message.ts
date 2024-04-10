@@ -28,8 +28,8 @@ export interface MoveData extends Message {
   type: "move";
   data: {
     room: string;
-    coord: HexCoordinates;
-    moveTo: HexCoordinates;
+    coord: string;
+    moveTo: string;
   };
 }
 

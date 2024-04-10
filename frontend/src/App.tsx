@@ -27,31 +27,52 @@ function App() {
     mysocket.onmessage = msg => {
       const messageData = JSON.parse(msg.data)
 
-      // on joining room, room and player colour are set
-      // board is loaded
-      if(messageData.type == "roomJoined") {
-        setRoom(messageData.data.room)
-        messageData.data.playerColour == "1" ? setColour("W") : setColour("B")
-        const grid: GridHexData[] = JSON.parse(messageData.data.grid)
-        setHexes(grid)
-      }
-
-      if(messageData.type == "moveValidityResponse") {
-        console.log(messageData)
-        if (messageData.data.valid) {
-          const clickableTilesStringArray: string[] = messageData.data.tiles.map((tile:{q: number; r: number; fill: string}) => JSON.stringify({q: tile.q, r: tile.r}))
-          setHexes((prevHexes: GridHexData[]) => {
-            const newHexes: GridHexData[] = prevHexes.map(hex => {
-              if(clickableTilesStringArray.includes(JSON.stringify({q: hex.q, r: hex.r}))) {
-                return {...hex, clickable: true}
-              }
-              return hex
-            })
-            return newHexes
-          })
-
+      switch (messageData.type) {
+        // on joining room, room and player colour are set
+        // board is loaded
+        case "roomJoined": {
+          setRoom(messageData.data.room)
+          messageData.data.playerColour == "1" ? setColour("W") : setColour("B")
+          let grid: GridHexData[] = JSON.parse(messageData.data.grid)
+          setHexes(grid)
         }
+
+          break;
+
+        // when checking possible valid moves
+        case "moveValidityResponse":
+          console.log(messageData)
+          if (messageData.data.valid) {
+            const clickableTilesStringArray: string[] = messageData.data.tiles.map((tile:{q: number; r: number; fill: string}) => JSON.stringify({q: tile.q, r: tile.r}))
+            setHexes((prevHexes: GridHexData[]) => {
+              const newHexes: GridHexData[] = prevHexes.map(hex => {
+                if(clickableTilesStringArray.includes(JSON.stringify({q: hex.q, r: hex.r}))) {
+                  return {...hex, clickable: true}
+                }
+                return hex
+              })
+              return newHexes
+            })
+
+          }
+        break;
+
+        case "update": {
+          let grid: GridHexData[] = JSON.parse(messageData.data.grid)
+          setHexes(grid)
+        }
+        break;
+
+        //
+        default:
+          console.log(messageData)
+          break;
       }
+      // if(messageData.type == "roomJoined") {
+      // }
+
+      // if(messageData.type == "moveValidityResponse") {
+      // }
     }
 
     mysocket.onerror = (e) => {
