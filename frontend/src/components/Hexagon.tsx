@@ -8,9 +8,10 @@ type PropsData = {
   handleSelect: (coord: string) => void;
   selected: boolean;
   clickable: boolean | undefined;
+  handleSendMove: (moveTo: string) => void
 }
 
-export const Hexagon = ({ data, handleSelect, selected, clickable }: PropsData) => {
+export const Hexagon = ({ data, handleSelect, selected, clickable, handleSendMove }: PropsData) => {
   const sendFunc = useContext(wsMessengerContext)
 
   const formatPoints = (pointsarray: Point[]): string => {
@@ -24,6 +25,13 @@ export const Hexagon = ({ data, handleSelect, selected, clickable }: PropsData) 
         console.log(`sending ${data.coords} to backend`)
         sendFunc("place", {coord: data.coords})
         console.log("sent successfully")
+      } catch (error: unknown) {
+        console.error(error)
+      }
+    } else if(clickable) {
+      try {
+        console.log(`sending ${data.coords} to backend`)
+        handleSendMove(data.coords)
       } catch (error: unknown) {
         console.error(error)
       }

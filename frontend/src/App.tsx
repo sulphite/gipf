@@ -47,14 +47,9 @@ function App() {
               }
               return hex
             })
-
-
             return newHexes
           })
-          messageData.data.tiles.forEach((tile: {q: number; r: number; fill: string}) => {
-            console.log(tile)
-            // TODO: add clickable property to hexes
-          })
+
         }
       }
     }
