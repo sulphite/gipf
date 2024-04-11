@@ -33,15 +33,15 @@ const server = Bun.serve<{ name: string; }>({
       // join a room
       if (isJoinMessage(message)) {
         let room = lobby.getOpenRoom();
-        room.addSocket(ws);
+        let playerColour = room.addSocket(ws);
         ws.unsubscribe("lobby");
         ws.subscribe(room.id);
-        console.log(`added ${message.data.name} to room ${room.id}`)
+        console.log(`added ${message.data.name} to room ${room.id} as player ${playerColour}`)
         let response: RoomJoinedData = {
           type: "roomJoined", data:
           {
             room: room.id,
-            playerColour: "1",
+            playerColour,
             grid: room.game.board.serialise()
           }
         }

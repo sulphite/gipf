@@ -32,7 +32,7 @@ function App() {
         // board is loaded
         case "roomJoined": {
           setRoom(messageData.data.room)
-          messageData.data.playerColour == "1" ? setColour("W") : setColour("B")
+          setColour(messageData.data.playerColour)
           let grid: GridHexData[] = JSON.parse(messageData.data.grid)
           setHexes(grid)
         }
@@ -43,11 +43,11 @@ function App() {
         case "moveValidityResponse":
           console.log(messageData)
           if (messageData.data.valid) {
-            const clickableTilesStringArray: string[] = messageData.data.tiles.map((tile:{q: number; r: number; fill: string}) => JSON.stringify({q: tile.q, r: tile.r}))
+            const clickableTilesStringArray: string[] = messageData.data.tiles.map((tile: { q: number; r: number; fill: string }) => JSON.stringify({ q: tile.q, r: tile.r }))
             setHexes((prevHexes: GridHexData[]) => {
               const newHexes: GridHexData[] = prevHexes.map(hex => {
-                if(clickableTilesStringArray.includes(JSON.stringify({q: hex.q, r: hex.r}))) {
-                  return {...hex, clickable: true}
+                if (clickableTilesStringArray.includes(JSON.stringify({ q: hex.q, r: hex.r }))) {
+                  return { ...hex, clickable: true }
                 }
                 return hex
               })
@@ -55,24 +55,20 @@ function App() {
             })
 
           }
-        break;
+          break;
 
         case "update": {
           let grid: GridHexData[] = JSON.parse(messageData.data.grid)
           setHexes(grid)
         }
-        break;
+          break;
 
         //
         default:
           console.log(messageData)
           break;
       }
-      // if(messageData.type == "roomJoined") {
-      // }
 
-      // if(messageData.type == "moveValidityResponse") {
-      // }
     }
 
     mysocket.onerror = (e) => {
@@ -89,9 +85,9 @@ function App() {
   }, [])
 
   const joinRoom = () => {
-    if(socket) {
+    if (socket) {
       console.log("trying to join a room")
-      let message = JSON.stringify({type: "join", data: {name: name}})
+      let message = JSON.stringify({ type: "join", data: { name: name } })
       socket.send(message)
     }
   }
@@ -104,7 +100,7 @@ function App() {
     if (socket) {
       socket.send(JSON.stringify({
         type: type,
-        data: {...data, room: room}
+        data: { ...data, room: room }
       }))
     } else {
       throw new Error("socket is not connected")
@@ -115,12 +111,12 @@ function App() {
 
   return (
     <>
-      <div className={connectionStatusClass} >{ socketConnected ? "connected!" : "connecting to server..." }</div>
+      <div className={connectionStatusClass} >{socketConnected ? "connected!" : "connecting to server..."}</div>
       <h1>Hello {name}!</h1>
-      { room ?
+      {room ?
         <h2>You're in room {room}</h2> :
         <div className="card">
-          <input type="text" value={name} onChange={handleNameChange} placeholder='your name'/>
+          <input type="text" value={name} onChange={handleNameChange} placeholder='your name' />
           <button onClick={joinRoom} disabled={name == ""} >
             join room
           </button>
