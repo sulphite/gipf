@@ -1,5 +1,3 @@
-import { HexCoordinates } from "honeycomb-grid";
-
 export interface Message {
   type: "join" | "roomJoined" | "lobby" | "move" | "place";
   data: unknown;

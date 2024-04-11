@@ -21,10 +21,10 @@ export class Room {
     if (this.sockets.length == 2) {
       this.isFull = true;
       this.game.player2 = ws.data.name;
-      return "W"
+      return "W";
     } else {
       this.game.player1 = ws.data.name;
-      return "B"
+      return "B";
     }
   }
 
