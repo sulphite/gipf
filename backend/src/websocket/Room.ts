@@ -34,7 +34,7 @@ export class Room {
 
   sendBoardUpdate() {
     this.broadcast({
-      type: "boardUpdate",
+      type: "update",
       data: { grid: this.game.board.serialise() },
     });
   }

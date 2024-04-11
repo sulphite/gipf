@@ -61,10 +61,12 @@ const server = Bun.serve<{ name: string; }>({
             data: {
               valid: tiles.length > 0,
               tiles: tiles
-          }}
+            }
+          }
           ws.send(JSON.stringify(response))
           // no need to update board until the move is confirmed
-      }}
+        }
+      }
 
       // player makes a move
       if (isMoveMessage(message)) {
@@ -75,15 +77,12 @@ const server = Bun.serve<{ name: string; }>({
           // place piece at coord
           let coordOuter = JSON.parse(message.data.coord)
           let coordInner = JSON.parse(message.data.moveTo)
-          const matches = room.game.makeMove(coordOuter,coordInner)
-          // publish update to whole room
-          let response = {
-            type: "update",
-            data: {
-              grid: room.game.board.serialise()
-            }
+          const matches = room.game.makeMove(coordOuter, coordInner)
+          if (matches) {
+            console.log("Matches", matches)
           }
-          ws.publish(room.id, JSON.stringify(response))
+          // publish update to whole room
+          room.sendBoardUpdate()
         }
       }
 
