@@ -1,6 +1,7 @@
 {
   "scripts": {
     "back": "cd backend && npm run dev",
-    "front": "cd frontend && npm run dev"
+    "front": "cd frontend && npm run dev",
+    "cypress:open": "cd frontend && cypress open"
   }
 }
