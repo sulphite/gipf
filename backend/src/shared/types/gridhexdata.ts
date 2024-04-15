@@ -6,4 +6,5 @@ export type GridHexData = {
   r: number;
   corners: Point[];
   outer: boolean;
+  clickable?: boolean;
 };

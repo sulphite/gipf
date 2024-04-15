@@ -1,7 +1,5 @@
-import { HexCoordinates } from "honeycomb-grid";
-
 export interface Message {
-  type: "join" | "roomJoined" | "lobby" | "move";
+  type: "join" | "roomJoined" | "lobby" | "move" | "place";
   data: unknown;
 }
 
@@ -28,7 +26,15 @@ export interface MoveData extends Message {
   type: "move";
   data: {
     room: string;
-    coord: HexCoordinates;
-    moveTo: HexCoordinates;
+    coord: string;
+    moveTo: string;
+  };
+}
+
+export interface PlaceData extends Message {
+  type: "place";
+  data: {
+    room: string;
+    coord: string;
   };
 }

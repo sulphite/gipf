@@ -1,23 +1,48 @@
-import { Point } from "honeycomb-grid"
-import { HexagonProps } from "./Board"
+import { Point } from "honeycomb-grid";
+import { HexagonProps } from "./Board";
+import { useContext } from "react";
+import { wsMessengerContext } from "../Context";
 
 type PropsData = {
   data: HexagonProps;
+  handleSelect: (coord: string) => void;
+  selected: boolean;
+  clickable: boolean | undefined;
+  handleSendMove: (moveTo: string) => void
 }
 
-export const Hexagon = ({ data }: PropsData) => {
+export const Hexagon = ({ data, handleSelect, selected, clickable, handleSendMove }: PropsData) => {
+  const sendFunc = useContext(wsMessengerContext)
 
   const formatPoints = (pointsarray: Point[]): string => {
     return pointsarray.map(coord => `${coord.x},${coord.y}`).join(" ")
   }
 
   const clickHandle = () => {
-    console.log("click")
+    if (data.outer && sendFunc) {
+      handleSelect(data.coords)
+      try {
+        console.log(`sending ${data.coords} to backend`)
+        sendFunc("place", {coord: data.coords})
+        console.log("sent successfully")
+      } catch (error: unknown) {
+        console.error(error)
+      }
+    } else if(clickable) {
+      try {
+        console.log(`sending ${data.coords} to backend`)
+        handleSendMove(data.coords)
+      } catch (error: unknown) {
+        console.error(error)
+      }
+    } else {
+      console.log("clicked inner hex")
+    }
   }
 
   const centerX = data.points.reduce((sum, vertex) => sum + vertex.x, 0) / 6
   const centerY = data.points.reduce((sum, vertex) => sum + vertex.y, 0) / 6
-  const classes = `hexagon ${data.outer ? "outer" : ""}`
+  const classes = `hexagon ${data.outer ? "outer" : ""} ${selected ? "selected" : ""} ${clickable ? "clickable" : ""}`
 
   return (
     <g className={classes} onClick={clickHandle}>

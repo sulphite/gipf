@@ -1,6 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
+import { wsMessengerContext } from './Context';
+import { GridHexData } from '../../backend/src/shared/types/gridhexdata';
 
 const wsAddress: string = "ws://localhost:3000";
 
@@ -9,9 +11,8 @@ function App() {
   const [socketConnected, setSocketConnected] = useState(false)
   const [name, setName] = useState("")
   const [room, setRoom] = useState(null)
-  const [colour, setColour] = useState<string | null>(null)
-  const [hexes, setHexes] = useState<any[] | null>(null)
-
+  const [colour, setColour] = useState<string>("")
+  const [hexes, setHexes] = useState<GridHexData[]>([])
 
   useEffect(() => {
     // Connect to server
@@ -24,19 +25,50 @@ function App() {
     }
     // Log messages from server
     mysocket.onmessage = msg => {
-      // console.log("message", msg.data);
       const messageData = JSON.parse(msg.data)
 
-      // on joining room, room and player colour are set
-      // board is loaded
-      if(messageData.type == "roomJoined") {
-        setRoom(messageData.data.room)
-        messageData.data.playerColour == "1" ? setColour("W") : setColour("B")
-        const grid = JSON.parse(messageData.data.grid)
+      switch (messageData.type) {
+        // on joining room, room and player colour are set
+        // board is loaded
+        case "roomJoined": {
+          setRoom(messageData.data.room)
+          setColour(messageData.data.playerColour)
+          let grid: GridHexData[] = JSON.parse(messageData.data.grid)
+          setHexes(grid)
+        }
 
-        console.log(grid)
-        setHexes(grid)
+          break;
+
+        // when checking possible valid moves
+        case "moveValidityResponse":
+          console.log(messageData)
+          if (messageData.data.valid) {
+            const clickableTilesStringArray: string[] = messageData.data.tiles.map((tile: { q: number; r: number; fill: string }) => JSON.stringify({ q: tile.q, r: tile.r }))
+            setHexes((prevHexes: GridHexData[]) => {
+              const newHexes: GridHexData[] = prevHexes.map(hex => {
+                if (clickableTilesStringArray.includes(JSON.stringify({ q: hex.q, r: hex.r }))) {
+                  return { ...hex, clickable: true }
+                }
+                return hex
+              })
+              return newHexes
+            })
+
+          }
+          break;
+
+        case "update": {
+          let grid: GridHexData[] = JSON.parse(messageData.data.grid)
+          setHexes(grid)
+        }
+          break;
+
+        //
+        default:
+          console.log(messageData)
+          break;
       }
+
     }
 
     mysocket.onerror = (e) => {
@@ -49,12 +81,13 @@ function App() {
       setSocketConnected(false)
     }
     setSocket(mysocket)
+
   }, [])
 
   const joinRoom = () => {
-    if(socket) {
+    if (socket) {
       console.log("trying to join a room")
-      let message = JSON.stringify({type: "join", data: {name: name}})
+      let message = JSON.stringify({ type: "join", data: { name: name } })
       socket.send(message)
     }
   }
@@ -63,22 +96,35 @@ function App() {
     setName(e.target.value)
   }
 
+  const sendSocketMessageWithRoom = (type: string, data: any): void => {
+    if (socket) {
+      socket.send(JSON.stringify({
+        type: type,
+        data: { ...data, room: room }
+      }))
+    } else {
+      throw new Error("socket is not connected")
+    }
+  }
+
   const connectionStatusClass = socketConnected ? "connection connection-ok" : "connection connection-warn"
 
   return (
     <>
-      <div className={connectionStatusClass} >{ socketConnected ? "connected!" : "connecting to server..." }</div>
+      <div className={connectionStatusClass} >{socketConnected ? "connected!" : "connecting to server..."}</div>
       <h1>Hello {name}!</h1>
-      { room ?
+      {room ?
         <h2>You're in room {room}</h2> :
         <div className="card">
-          <input type="text" value={name} onChange={handleNameChange} placeholder='your name'/>
+          <input type="text" value={name} onChange={handleNameChange} placeholder='your name' />
           <button onClick={joinRoom} disabled={name == ""} >
             join room
           </button>
         </div>
       }
-      {hexes && <Board hexes={hexes} />}
+      <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
+        {hexes && <Board hexes={hexes} colour={colour} />}
+      </wsMessengerContext.Provider>
     </>
   )
 }
