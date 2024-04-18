@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
-import { wsMessengerContext } from './Context';
-import { PlayerProvider } from './Provider';
+import { wsMessengerContext } from './contexts/Context';
+import { PlayerProvider } from './contexts/PlayerProvider';
 import { GridHexData } from '../../backend/src/shared/types/gridhexdata';
 
 const wsAddress: string = "ws://localhost:3000";

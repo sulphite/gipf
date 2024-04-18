@@ -2,7 +2,7 @@ import { Point } from 'honeycomb-grid'
 import { Hexagon } from "./Hexagon"
 import { GridHexData } from "../../../backend/src/shared/types/gridhexdata"
 import { useContext, useState } from 'react';
-import { wsMessengerContext } from '../Context';
+import { wsMessengerContext } from '../contexts/Context';
 
 export type HexagonProps = {
   coords: string;

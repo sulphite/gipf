@@ -15,13 +15,13 @@ export const PlayerProvider: React.FC<PlayerProviderProps> = ({
   const [currentPlayer, setCurrentPlayer] = useState<boolean>(
     initialCurrentPlayer !== null ? initialCurrentPlayer : true
   );
-  const [playerColor, setPlayerColor] = useState<string>(initialPlayerColour);
+  const [playerColour, setPlayerColour] = useState<string>(initialPlayerColour);
 
   const value: PlayerContextValue = {
     currentPlayer,
     setCurrentPlayer,
-    playerColor,
-    setPlayerColor,
+    playerColour,
+    setPlayerColour,
   };
 
   return <PlayerContext.Provider value={ value }> { children } </PlayerContext.Provider>;

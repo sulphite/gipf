@@ -8,13 +8,13 @@ export const wsMessengerContext = createContext<messageFunction | null>(null)
 export interface PlayerContextValue {
   currentPlayer: boolean;
   setCurrentPlayer: (player: boolean) => void;
-  playerColor: string;
-  setPlayerColor: (color: string) => void;
+  playerColour: string;
+  setPlayerColour: (color: string) => void;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
   currentPlayer: false,
   setCurrentPlayer: () => { },
-  playerColor: "",
-  setPlayerColor: () => { },
+  playerColour: "",
+  setPlayerColour: () => { },
 });

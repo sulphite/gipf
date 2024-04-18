@@ -1,7 +1,7 @@
 import { Point } from "honeycomb-grid";
 import { HexagonProps } from "./Board";
 import { useContext } from "react";
-import { wsMessengerContext } from "../Context";
+import { wsMessengerContext } from "../contexts/Context";
 
 type PropsData = {
   data: HexagonProps;
