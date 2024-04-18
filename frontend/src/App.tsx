@@ -1,7 +1,7 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
-import { wsMessengerContext } from './contexts/Context';
+import { CurrentPlayerContext, wsMessengerContext } from './contexts/Context';
 import { PlayerProvider } from './contexts/PlayerProvider';
 import { GridHexData } from '../../backend/src/shared/types/gridhexdata';
 
@@ -14,7 +14,7 @@ function App() {
   const [room, setRoom] = useState(null)
   const [hexes, setHexes] = useState<GridHexData[]>([])
   const [initialColour, setInitialColour] = useState<string>("")
-  const [initialCurrentPlayer, setInitialCurrentPlayer] = useState<boolean>(false)
+  const { currentPlayer, setCurrentPlayer } = useContext(CurrentPlayerContext)
 
   useEffect(() => {
     // Connect to server
@@ -34,12 +34,14 @@ function App() {
         // board is loaded
         // set current player to true
         case "roomJoined": {
+          //console.log(messageData.data)
           setRoom(messageData.data.room)
           setInitialColour(messageData.data.playerColour)
+          console.log("playercolour from backend",messageData.data.playerColour)
           let grid: GridHexData[] = JSON.parse(messageData.data.grid)
           setHexes(grid)
           if (messageData.data.playerColour == "B") {
-            setInitialCurrentPlayer(true)
+            setCurrentPlayer(true)
           }
         }
 
@@ -128,7 +130,8 @@ function App() {
           </button>
         </div>
       }
-      <PlayerProvider initialCurrentPlayer={initialCurrentPlayer} initialPlayerColour={initialColour}>
+      <PlayerProvider initialPlayerColour={initialColour}>
+      <div>{currentPlayer ? "Its your turn" : "Waiting for other player...." }</div>
         <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
           {hexes && <Board hexes={hexes} />}
         </wsMessengerContext.Provider>
