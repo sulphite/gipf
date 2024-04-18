@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import { PlayerContext, PlayerContextValue } from "./Context";
 
 interface PlayerProviderProps {
@@ -16,6 +16,12 @@ export const PlayerProvider: React.FC<PlayerProviderProps> = ({
     initialCurrentPlayer !== null ? initialCurrentPlayer : true
   );
   const [playerColour, setPlayerColour] = useState<string>(initialPlayerColour);
+
+  useEffect(() => {
+    // Update playerColor when initialPlayerColour changes
+    // this is important so we don't get stuck with default ""
+    setPlayerColour(initialPlayerColour);
+  }, [initialPlayerColour]);
 
   const value: PlayerContextValue = {
     currentPlayer,

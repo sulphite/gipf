@@ -16,6 +16,7 @@ export const Board = ({ hexes }: { hexes: GridHexData[] }) => {
   const [selected, setSelected] = useState<string | null>(null)
   const sendFunc = useContext(wsMessengerContext)
   const colour = usePlayerColour()
+  console.log("playercolour from hook", colour)
 
   const handleSelect = (coord: string) => {
     if (selected) {

@@ -71,7 +71,7 @@ function App() {
 
         //
         default:
-          console.log(messageData)
+          console.log("unknown message type", messageData)
           break;
       }
 
