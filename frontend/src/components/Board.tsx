@@ -3,6 +3,7 @@ import { Hexagon } from "./Hexagon"
 import { GridHexData } from "../../../backend/src/shared/types/gridhexdata"
 import { useContext, useState } from 'react';
 import { wsMessengerContext } from '../contexts/Context';
+import { usePlayerColour } from '../hooks/usePlayerColour';
 
 export type HexagonProps = {
   coords: string;
@@ -11,9 +12,10 @@ export type HexagonProps = {
   outer: boolean;
 }
 
-export const Board = ({ hexes, colour }: { hexes: GridHexData[]; colour: string }) => {
+export const Board = ({ hexes }: { hexes: GridHexData[] }) => {
   const [selected, setSelected] = useState<string | null>(null)
   const sendFunc = useContext(wsMessengerContext)
+  const colour = usePlayerColour()
 
   const handleSelect = (coord: string) => {
     if (selected) {

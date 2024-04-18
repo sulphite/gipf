@@ -130,7 +130,7 @@ function App() {
       }
       <PlayerProvider initialCurrentPlayer={initialCurrentPlayer} initialPlayerColour={initialColour}>
         <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
-          {hexes && <Board hexes={hexes} colour={initialColour} />}
+          {hexes && <Board hexes={hexes} />}
         </wsMessengerContext.Provider>
       </PlayerProvider>
     </>
