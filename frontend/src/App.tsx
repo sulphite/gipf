@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
 import { wsMessengerContext } from './Context';
+import { PlayerProvider } from './Provider';
 import { GridHexData } from '../../backend/src/shared/types/gridhexdata';
 
 const wsAddress: string = "ws://localhost:3000";
@@ -11,8 +12,9 @@ function App() {
   const [socketConnected, setSocketConnected] = useState(false)
   const [name, setName] = useState("")
   const [room, setRoom] = useState(null)
-  const [colour, setColour] = useState<string>("")
   const [hexes, setHexes] = useState<GridHexData[]>([])
+  const [initialColour, setInitialColour] = useState<string>("")
+  const [initialCurrentPlayer, setInitialCurrentPlayer] = useState<boolean>(false)
 
   useEffect(() => {
     // Connect to server
@@ -30,11 +32,15 @@ function App() {
       switch (messageData.type) {
         // on joining room, room and player colour are set
         // board is loaded
+        // set current player to true
         case "roomJoined": {
           setRoom(messageData.data.room)
-          setColour(messageData.data.playerColour)
+          setInitialColour(messageData.data.playerColour)
           let grid: GridHexData[] = JSON.parse(messageData.data.grid)
           setHexes(grid)
+          if (messageData.data.playerColour == "B") {
+            setInitialCurrentPlayer(true)
+          }
         }
 
           break;
@@ -122,9 +128,11 @@ function App() {
           </button>
         </div>
       }
-      <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
-        {hexes && <Board hexes={hexes} colour={colour} />}
-      </wsMessengerContext.Provider>
+      <PlayerProvider initialCurrentPlayer={initialCurrentPlayer} initialPlayerColour={initialColour}>
+        <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
+          {hexes && <Board hexes={hexes} colour={initialColour} />}
+        </wsMessengerContext.Provider>
+      </PlayerProvider>
     </>
   )
 }
