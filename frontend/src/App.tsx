@@ -15,7 +15,6 @@ function App() {
   const [hexes, setHexes] = useState<GridHexData[]>([])
   const [initialColour, setInitialColour] = useState<string>("")
   const { currentPlayer, setCurrentPlayer } = useContext(CurrentPlayerContext)
-  console.log("current player", currentPlayer)
 
   useEffect(() => {
     // Connect to server
@@ -50,7 +49,6 @@ function App() {
 
         // when checking possible valid moves
         case "moveValidityResponse":
-          console.log(messageData)
           if (messageData.data.valid) {
             const clickableTilesStringArray: string[] = messageData.data.tiles.map((tile: { q: number; r: number; fill: string }) => JSON.stringify({ q: tile.q, r: tile.r }))
             setHexes((prevHexes: GridHexData[]) => {
@@ -69,8 +67,6 @@ function App() {
           break;
 
         case "newTurn":
-          console.log("got the turn end message")
-          console.log(currentPlayer ? "my turn is over" : "its my turn now")
           setCurrentPlayer((prev:boolean) => !prev)
           break;
 
