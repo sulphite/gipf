@@ -1,7 +1,7 @@
 import { Point } from "honeycomb-grid";
 import { HexagonProps } from "./Board";
 import { useContext } from "react";
-import { wsMessengerContext } from "../contexts/Context";
+import { CurrentPlayerContext, wsMessengerContext } from "../contexts/Context";
 import { usePlayerColour } from "../hooks/usePlayerColour";
 
 type PropsData = {
@@ -15,6 +15,7 @@ type PropsData = {
 export const Hexagon = ({ data, handleSelect, selected, clickable, handleSendMove }: PropsData) => {
   const sendFunc = useContext(wsMessengerContext)
   const colour = usePlayerColour();
+  const { currentPlayer } = useContext(CurrentPlayerContext)
 
 
   const formatPoints = (pointsarray: Point[]): string => {
@@ -22,6 +23,10 @@ export const Hexagon = ({ data, handleSelect, selected, clickable, handleSendMov
   }
 
   const clickHandle = () => {
+    if (!currentPlayer) {
+      return
+    }
+
     if (data.outer && sendFunc) {
       handleSelect(data.coords)
       try {

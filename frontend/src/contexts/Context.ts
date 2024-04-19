@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import React, { createContext } from "react";
 
 type messageFunction = (type: string, data: any) => void
 
@@ -17,7 +17,7 @@ export const PlayerContext = createContext<PlayerContextValue>({
 
 export interface CurrentPlayerContextValue {
   currentPlayer: boolean;
-  setCurrentPlayer: (player: boolean) => void;
+  setCurrentPlayer: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const CurrentPlayerContext = createContext<CurrentPlayerContextValue>({
