@@ -98,9 +98,15 @@ const server = Bun.serve<{ name: string }>({
           const matches = room.game.makeMove(coordOuter, coordInner);
           if (matches) {
             console.log("Matches", matches);
+            // TODO: handle case of 2 simultaneous rows of 4
           }
           // publish update to whole room
+          room.game.endTurn();
           room.sendBoardUpdate();
+          room.broadcast({
+            type: "newTurn",
+            data: { score: room.game.score }
+          })
         }
       }
 
