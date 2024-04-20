@@ -1,7 +1,8 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import './App.css'
 import { Board } from './components/Board';
-import { wsMessengerContext } from './Context';
+import { CurrentPlayerContext, wsMessengerContext } from './contexts/Context';
+import { PlayerProvider } from './contexts/PlayerProvider';
 import { GridHexData } from '../../backend/src/shared/types/gridhexdata';
 
 const wsAddress: string = "ws://localhost:3000";
@@ -11,8 +12,9 @@ function App() {
   const [socketConnected, setSocketConnected] = useState(false)
   const [name, setName] = useState("")
   const [room, setRoom] = useState(null)
-  const [colour, setColour] = useState<string>("")
   const [hexes, setHexes] = useState<GridHexData[]>([])
+  const [initialColour, setInitialColour] = useState<string>("")
+  const { currentPlayer, setCurrentPlayer } = useContext(CurrentPlayerContext)
 
   useEffect(() => {
     // Connect to server
@@ -30,31 +32,42 @@ function App() {
       switch (messageData.type) {
         // on joining room, room and player colour are set
         // board is loaded
+        // set current player to true
         case "roomJoined": {
+          //console.log(messageData.data)
           setRoom(messageData.data.room)
-          setColour(messageData.data.playerColour)
+          setInitialColour(messageData.data.playerColour)
+          console.log("playercolour from backend",messageData.data.playerColour)
           let grid: GridHexData[] = JSON.parse(messageData.data.grid)
           setHexes(grid)
+          if (messageData.data.playerColour == "B") {
+            setCurrentPlayer(true)
+          }
         }
 
           break;
 
         // when checking possible valid moves
         case "moveValidityResponse":
-          console.log(messageData)
           if (messageData.data.valid) {
             const clickableTilesStringArray: string[] = messageData.data.tiles.map((tile: { q: number; r: number; fill: string }) => JSON.stringify({ q: tile.q, r: tile.r }))
             setHexes((prevHexes: GridHexData[]) => {
               const newHexes: GridHexData[] = prevHexes.map(hex => {
                 if (clickableTilesStringArray.includes(JSON.stringify({ q: hex.q, r: hex.r }))) {
                   return { ...hex, clickable: true }
+                } else {
+
+                  return {...hex, clickable: false}
                 }
-                return hex
               })
               return newHexes
             })
 
           }
+          break;
+
+        case "newTurn":
+          setCurrentPlayer((prev:boolean) => !prev)
           break;
 
         case "update": {
@@ -65,7 +78,7 @@ function App() {
 
         //
         default:
-          console.log(messageData)
+          console.log("unknown message type", messageData)
           break;
       }
 
@@ -122,9 +135,12 @@ function App() {
           </button>
         </div>
       }
-      <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
-        {hexes && <Board hexes={hexes} colour={colour} />}
-      </wsMessengerContext.Provider>
+      <PlayerProvider initialPlayerColour={initialColour}>
+      <div>{currentPlayer ? "Its your turn" : "Waiting for other player...." }</div>
+        <wsMessengerContext.Provider value={sendSocketMessageWithRoom}>
+          {hexes && <Board hexes={hexes} />}
+        </wsMessengerContext.Provider>
+      </PlayerProvider>
     </>
   )
 }

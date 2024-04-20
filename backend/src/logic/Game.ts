@@ -33,10 +33,6 @@ export class Game {
       .getInnerNeighbours(coord)
       .filter((tile) => this.board.isPushable(this.board.getRow(coord, tile)))
       .toArray();
-    // if (legalTiles.length > 0) {
-    //   this.board.fillTile(coord, player);
-    //   this.score[player] -= 1;
-    // }
     return legalTiles;
   }
 

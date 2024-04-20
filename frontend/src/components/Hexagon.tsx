@@ -1,7 +1,8 @@
 import { Point } from "honeycomb-grid";
 import { HexagonProps } from "./Board";
 import { useContext } from "react";
-import { wsMessengerContext } from "../Context";
+import { CurrentPlayerContext, wsMessengerContext } from "../contexts/Context";
+import { usePlayerColour } from "../hooks/usePlayerColour";
 
 type PropsData = {
   data: HexagonProps;
@@ -13,12 +14,19 @@ type PropsData = {
 
 export const Hexagon = ({ data, handleSelect, selected, clickable, handleSendMove }: PropsData) => {
   const sendFunc = useContext(wsMessengerContext)
+  const colour = usePlayerColour();
+  const { currentPlayer } = useContext(CurrentPlayerContext)
+
 
   const formatPoints = (pointsarray: Point[]): string => {
     return pointsarray.map(coord => `${coord.x},${coord.y}`).join(" ")
   }
 
   const clickHandle = () => {
+    if (!currentPlayer) {
+      return
+    }
+
     if (data.outer && sendFunc) {
       handleSelect(data.coords)
       try {
@@ -42,7 +50,7 @@ export const Hexagon = ({ data, handleSelect, selected, clickable, handleSendMov
 
   const centerX = data.points.reduce((sum, vertex) => sum + vertex.x, 0) / 6
   const centerY = data.points.reduce((sum, vertex) => sum + vertex.y, 0) / 6
-  const classes = `hexagon ${data.outer ? "outer" : ""} ${selected ? "selected" : ""} ${clickable ? "clickable" : ""}`
+  const classes = `hexagon ${data.outer ? "outer" : ""} ${selected ? "selected " + colour : ""} ${clickable ? "clickable" : ""}`
 
   return (
     <g className={classes} onClick={clickHandle}>
