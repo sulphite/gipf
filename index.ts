@@ -30,7 +30,7 @@ const server = Bun.serve<{ name: string }>({
     open(ws) {
       lobby.addPlayer(ws.data.name, ws);
       ws.subscribe("lobby");
-      let connectionMessage: LobbyData = {
+      const connectionMessage: LobbyData = {
         type: "lobby",
         data: {
           msg: `${ws.data.name} connected. ${
@@ -46,14 +46,14 @@ const server = Bun.serve<{ name: string }>({
 
       // join a room
       if (isJoinMessage(message)) {
-        let room = lobby.getOpenRoom();
-        let playerColour = room.addSocket(ws);
+        const room = lobby.getOpenRoom();
+        const playerColour = room.addSocket(ws);
         ws.unsubscribe("lobby");
         ws.subscribe(room.id);
         console.log(
           `added ${message.data.name} to room ${room.id} as player ${playerColour}`,
         );
-        let response: RoomJoinedData = {
+        const response: RoomJoinedData = {
           type: "roomJoined",
           data: {
             room: room.id,
@@ -67,14 +67,14 @@ const server = Bun.serve<{ name: string }>({
       // placing a piece
       if (isPlaceMessage(message)) {
         console.log("Received place message", message.data);
-        let room = lobby.rooms[message.data.room];
+        const room = lobby.rooms[message.data.room];
         if (room) {
           // place piece at coord
           const tiles = room.game.getPushableTiles(
             JSON.parse(message.data.coord),
           );
           // return legal tiles to push to
-          let response = {
+          const response = {
             type: "moveValidityResponse",
             data: {
               valid: tiles.length > 0,
@@ -90,11 +90,11 @@ const server = Bun.serve<{ name: string }>({
       if (isMoveMessage(message)) {
         console.log(message.data);
         // handle game move
-        let room = lobby.rooms[message.data.room];
+        const room = lobby.rooms[message.data.room];
         if (room) {
           // place piece at coord
-          let coordOuter = JSON.parse(message.data.coord);
-          let coordInner = JSON.parse(message.data.moveTo);
+          const coordOuter = JSON.parse(message.data.coord);
+          const coordInner = JSON.parse(message.data.moveTo);
           const matches = room.game.makeMove(coordOuter, coordInner);
           if (matches) {
             console.log("Matches", matches);
@@ -105,8 +105,8 @@ const server = Bun.serve<{ name: string }>({
           room.sendBoardUpdate();
           room.broadcast({
             type: "newTurn",
-            data: { score: room.game.score }
-          })
+            data: { score: room.game.score },
+          });
         }
       }
 
